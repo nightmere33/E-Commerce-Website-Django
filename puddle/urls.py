@@ -16,13 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from core.views import index,contact
+
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
-    path('', index, name='index'),  # URL for the index view
+    path('', include('core.urls')),  # URL for the index view
     path('item/', include('item.urls')),  # Include item app URLs
     path('admin/', admin.site.urls),
-    path('contact/', contact, name='contact'),  # URL for the contact view
+   
 
 ] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)
