@@ -1,0 +1,59 @@
+{% extends 'core/base.html'%}
+
+{% block title%} Browse {% endblock %}
+
+
+{% block content%}
+
+    <div class="pb-6 grid grid-cols-4 gap-4 bg-gray-100 rounded-xl">
+        <div class="col-span-1">
+            <form method="GET" action="{% url 'item:browse' %}" class="mt-6 ml-6">
+                <input type="text" name="query" placeholder="Search..." class="w-full p-4 border rounded-xl" value="{{ query }}">
+                <button type="submit" class="mt-2 py-4 px-8 bg-teal-500 text-white text-lg rounded-xl">Search</button>
+
+            </form>
+
+            <hr class="my-6">
+
+            <p class="font-semibold ml-4"> Categories</p>
+
+            <ul class="ml-12 mt-6">
+                {% for category in categories %}
+                    <li class="py-2 px-2 rounded-xl {% if category.id == category_id %} bg-gray-200 {% endif %}">
+                        <a href="{% url 'item:browse' %}?query={{query}}&category={{ category.id }}" >{{ category.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <hr class="my-6">
+
+            <p class="font-semibold ml-4"> Clear filters</p>
+            <ul class="ml-12 ">
+                <li> <a href ="{% url 'item:browse' %}" class="mt-2 inline-flex items-center justify-center inline-block bg-gray-500 text-lg  text-white" style="width:200px; height:36px ;background-color: #56524d; border-width : 1px;
+                    border-color:red;  font-family: Montserrat, sans-serif;">Reset filters</a></li> 
+            </ul>
+
+        </div>
+
+        <div class="col-span-3">
+            <div class="grid grid-cols-3 gap-2">
+                {% for item in items %}
+                    <div class="w-52 mx-auto mt-5">  <!-- Set fixed width for the entire card -->
+                        <a href="{% url 'item:detail' item.id %}">
+                            <div>
+                                <img src="{{ item.image.url }}" class="rounded-t-xl" style="width: 200px; height: 250px; object-fit: cover;">
+                            </div>
+                            <div class="p-4 bg-white rounded-b-xl">
+                                <h2 class="text-lg font-semibold ">{{ item.name }}</h2>
+                                <p class="text-gray-500 text-sm">Price: {{ item.price }}$</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+            
+        </div>
+    </div>
+
+
+{% endblock%}

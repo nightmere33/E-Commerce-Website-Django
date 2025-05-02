@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+       
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <title>{% block title %} {%endblock %} | GameVerse</title>
 </head>
@@ -14,11 +18,11 @@
 
         <div class="space-x-6">
             <a href="{% url 'item:new'%}" class="text-lg font-semibold hover:text-gray-500">New item</a>
-            <a href="#" class="text-lg font-semibold hover:text-gray-500">Browse</a>
+            <a href="{% url 'item:browse' %}" class="text-lg font-semibold hover:text-gray-500">Browse</a>
             {% if request.user.is_authenticated%}
                 
                 <a href="#" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
-                <a href="#" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
+                <a href="{% url 'dashboard:index'%}" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
                 <form method="POST" action="{% url 'core:logout' %}" class="inline-block">
                     {% csrf_token %}
                     <button type="submit" class="px-6 py-3 text-lg font-semibold bg-red-400 text-white rounded-xl hover:bg-orange-700">Log out</button>
