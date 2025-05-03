@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('core.urls')),  # URL for the index view
     path('item/', include('item.urls')),  # Include item app URLs
     path('dashboard/', include('dashboard.urls')),  # Include dashboard app URLs
+    path('inbox/', include('conversation.urls')),  # Include conversation app URLs
     path('admin/', admin.site.urls),
    
 
