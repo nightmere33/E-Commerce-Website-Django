@@ -1,32 +1,30 @@
-{% extends 'core/base.html'%}
+{% extends 'core/base.html' %}
 
-{% block title%} New Conversation {% endblock %}
+{% block title %} New Message {% endblock %}
 
-
-
-
-{% block content%}
-    
-        <h1 class="mb-6 text-3xl">New Conversation</h1>
-        <form method="POST" action="." >
-       
-                {% csrf_token %}
-                <div class="space-y-4">
-                    {{form.as_p}}
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white rounded-xl shadow-lg p-8">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">New Message</h1>
+        
+        <form method="POST" action="." class="space-y-6">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="space-y-2">
+                    <label class="text-gray-700 font-semibold">{{ field.label }}</label>
+                    {{ field }}
                 </div>
-        
-                {% if form.errors or form.non_field_errors%}
-                    <div class="mb-3 p-6 bg-red-100 rounded-xl">
-                        {% for field in form%}
-                            {{field.errors}}
-                        {% endfor%}
-                        {{ form.non_field_errors }}
-                    </div>
-                {% endif %}
-        
-                <button class="mt-6 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">Send </button>
-                <a href="/" class="mt-6 py-4 px-8 text-lg bg-gray-500 hover:bg-gray-700 rounded-xl text-white">Close </a>
-            </form>
-                
-    
-{% endblock%}
+            {% endfor %}
+            
+            <div class="flex space-x-4">
+                <button type="submit" class="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition duration-300">
+                    Send Message
+                </button>
+                <a href="/" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition duration-300">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
