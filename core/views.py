@@ -18,7 +18,6 @@ def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            # Ici tu peux traiter les données : les enregistrer ou envoyer un email
             messages.success(request, "Your message has been sent!")
             return redirect('contact')
     else:
@@ -39,3 +38,6 @@ def signup(request):
     return render(request, 'core/signup.html', {
         'form': form,
     })
+
+def about(request):
+    return render(request, 'about.html')
