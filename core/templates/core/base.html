@@ -12,10 +12,54 @@
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #0f172a; /* Dark blue background */
+            color: #e2e8f0;
         }
         .nav-gradient {
-            background: linear-gradient(to right, #2dd4bf, #0d9488);
+            background: linear-gradient(to right, #1e293b, #0f172a);
+            border-bottom: 1px solid #2dd4bf;
+        }
+        .game-card {
+            transition: all 0.3s ease;
+            transform-origin: center;
+            height: 100%;
+            width: 75%;
+            margin: 0 auto;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid #2dd4bf33;
+        }
+        .game-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(45, 212, 191, 0.2);
+            border-color: #2dd4bf;
+        }
+        .game-image {
+            aspect-ratio: 3/4;
+            object-fit: cover; /* changed back to cover to remplir le conteneur */
+            width: 100%; /* L'image prend toute la largeur */
+            border-radius: 8px 8px 0 0;
+            display: block;
+            padding: 0; /* Supprime le padding */
+        }
+        .image-container {
+            width: 100%;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .image-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(0deg, #1e293b 0%, transparent 10%);
+        }
+        .price-tag {
+            font-weight: bold;
+            color: #2dd4bf;
+            font-size: 1.1rem;
         }
     </style>
     <title>{% block title %}{% endblock %} | GameVerse</title>
