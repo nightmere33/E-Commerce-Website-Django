@@ -38,10 +38,11 @@
         <div class="col-span-3">
             <div class="grid grid-cols-3 gap-2">
                 {% for item in items %}
-                    <div class="w-52 mx-auto mt-5">  <!-- Set fixed width for the entire card -->
+                    <div class="w-64 mx-auto bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow">
                         <a href="{% url 'item:detail' item.id %}">
-                            <div>
-                                <img src="{{ item.image.url }}" class="rounded-t-xl" style="width: 200px; height: 250px; object-fit: cover;">
+                            <div class="p-2">
+                                <img src="{{ item.image.url }}" 
+                                     class="rounded-lg w-full h-48 object-contain bg-white">
                             </div>
                             <div class="p-4 bg-white rounded-b-xl">
                                 <h2 class="text-lg font-semibold ">{{ item.name }}</h2>
