@@ -43,9 +43,18 @@ INSTALLED_APPS = [
     'core',
     'item',
     'dashboard',
+    'tailwind',
+    'theme',
     'conversation',
 ]
 
+TAILWIND_APP_NAME = 'theme'
+
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

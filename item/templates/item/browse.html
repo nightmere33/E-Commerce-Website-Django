@@ -5,19 +5,19 @@
 
 {% block content%}
 
-    <div class="pb-6 grid grid-cols-4 gap-4 bg-gray-100 rounded-xl">
+    <div class="pb-6 grid grid-cols-4 gap-6 bg-gray-100 rounded-xl p-6">
         <div class="col-span-1">
-            <form method="GET" action="{% url 'item:browse' %}" class="mt-6 ml-6">
-                <input type="text" name="query" placeholder="Search..." class="w-full p-4 border rounded-xl" value="{{ query }}">
-                <button type="submit" class="mt-2 py-4 px-8 bg-teal-500 text-white text-lg rounded-xl">Search</button>
+            <form method="GET" action="{% url 'item:browse' %}" class="space-y-4">
+                <input type="text" name="query" placeholder="Search..." class="w-full p-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400" value="{{ query }}">
+                <button type="submit" class="w-full py-3 bg-teal-500 text-white text-lg font-semibold rounded-xl hover:bg-teal-600 transition-colors">Search</button>
 
             </form>
 
-            <hr class="my-6">
+            <hr class="my-6 border-gray-300">
 
-            <p class="font-semibold ml-4"> Categories</p>
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">Categories</h3>
 
-            <ul class="ml-12 mt-6">
+            <ul class="space-y-2">
                 {% for category in categories %}
                     <li class="py-2 px-2 rounded-xl {% if category.id == category_id %} bg-gray-200 {% endif %}">
                         <a href="{% url 'item:browse' %}?query={{query}}&category={{ category.id }}" >{{ category.name }}</a>
@@ -27,21 +27,20 @@
 
             <hr class="my-6">
 
-            <p class="font-semibold ml-4"> Clear filters</p>
+            <h3 class="text-lg font-semibold text-gray-800 mb-3"> Clear filters</h3>
             <ul class="ml-12 ">
-                <li> <a href ="{% url 'item:browse' %}" class="mt-2 inline-flex items-center justify-center inline-block bg-gray-500 text-lg  text-white" style="width:200px; height:36px ;background-color: #56524d; border-width : 1px;
-                    border-color:red;  font-family: Montserrat, sans-serif;">Reset filters</a></li> 
+                <li> <a href ="{% url 'item:browse' %}" class="inline-block w-full text-center py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl transition-colors">Reset filters</a></li> 
             </ul>
 
         </div>
 
         <div class="col-span-3">
-            <div class="grid grid-cols-3 gap-2">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {% for item in items %}
-                    <div class="w-52 mx-auto mt-5">  <!-- Set fixed width for the entire card -->
+                    <div class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">  <!-- Set fixed width for the entire card -->
                         <a href="{% url 'item:detail' item.id %}">
                             <div>
-                                <img src="{{ item.image.url }}" class="rounded-t-xl" style="width: 200px; height: 250px; object-fit: cover;">
+                                <img src="{{ item.image.url }}" class="w-full h-48 object-cover">
                             </div>
                             <div class="p-4 bg-white rounded-b-xl">
                                 <h2 class="text-lg font-semibold ">{{ item.name }}</h2>

@@ -5,7 +5,55 @@
 
 
 {% block content %}
+<div class="w-full max-w-2xl mx-auto mt-10 p-8 bg-white rounded-xl shadow-md">
+    <h1 class="text-3xl font-semibold text-center mb-6">Contact Us</h1>
 
-    <h1>The Contact Page</h1>
+    <form method="POST" action="." class="space-y-5">
+        {% csrf_token %}
+
+        <!-- Name -->
+        <div>
+            <label for="{{ form.name.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-700">Name</label>
+            {{ form.name }}
+            {% if form.name.errors %}
+                <p class="text-red-500 text-sm mt-1">{{ form.name.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Email -->
+        <div>
+            <label for="{{ form.email.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-700">Email</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <p class="text-red-500 text-sm mt-1">{{ form.email.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Message -->
+        <div>
+            <label for="{{ form.message.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-700">Message</label>
+            {{ form.message }}
+            {% if form.message.errors %}
+                <p class="text-red-500 text-sm mt-1">{{ form.message.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Success message -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="p-4 bg-green-100 text-green-800 rounded-lg">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Submit Button -->
+        <div>
+            <button type="submit" class="w-full bg-teal-600 text-white py-3 px-6 rounded-lg hover:bg-teal-700 transition">
+                Send Message
+            </button>
+        </div>
+    </form>
+</div>
 
 {% endblock %}

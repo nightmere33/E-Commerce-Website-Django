@@ -1,50 +1,44 @@
 {% extends 'core/base.html' %}
-{%block title %}{{item.name}}  {% endblock %}
-
-
-
-
+{%block title %}{{item.name}}{% endblock %}
 {% block content %} 
-    <div class="grid grid-cols-5 gap-6">
-        <div class="col-span-2">
-            <img src="{{item.image.url}}" class="rounded-xl" style="width: 450px; height: 500px; object-fit: cover;">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+        <!--image section-->
+        <div class="md:col-span-2">
+            <img src="{{item.image.url}}" class="rounded-xl w-full h-[500px] object-cover" alt="{{ item.name }}">
 
         </div>
 
-        <div class="col-span-3 p-6 bg-gray-100 rounded-xl">
-            <h1 class="mb-6 text-4xl">{{ item.name }}</h1>
-            <p class="text-gray-500"><strong>Price: {{item.price}}$</strong></p>
-            <p class="text-gray-500"><strong>Seller: {{item.created_by.username}}</strong></p>
+        <!--infos section-->
+        <div class="md:col-span-3 p-6 bg-gray-100 rounded-xl">
+            <h1 class="mb-6 text-4xl font-bold">{{ item.name }}</h1>
+            <p class="mb-2 text-lg text-gray-600"><strong> Price : {{item.price}}$</strong></p>
+            <p class="mb-2 text-lg text-gray-600"><strong> Seller : {{item.created_by.username}}</strong></p>
             
             {% if item.description %}
-            <p class="text-gray-700">
-                <strong class="text-gray-500">Description: <br> {{item.description}}</strong></p>
+            <p class="mb-2 text-lg text-gray-600"><strong > Description : <br> {{item.description}}</strong></p>
             {% endif %}   
             
             <!-- to know that the user who created the item-->
             {%if request.user == item.created_by or request.user.is_superuser %}
-                <div class="my-6 p-6 bg-white rounded-xl">
+                <div class="my-6 p-6 bg-white rounded-xl border">
                     
                     {%if request.user.is_superuser %}
-                        <p> Admin Controle</p>
+                        <p class="mb-4 text-gray-700 font-medium"> Admin Controle</p>
                     {% else %}
-                        <p> this is your item </p>
+                        <p class="mb-4 text-gray-700 font-medium"> this is your item </p>
                     {% endif %}   
-                    <a href="{% url 'item:edit' item.id %}" 
-                   
-                    class="inline-block mt-6 py-3 px-3 font-semibold bg-green-500 text-white rounded-xl  hover:text-black">
-                    Edit
+
+                    <a href="{% url 'item:edit' item.id %}" class="inline-block mr-4 py-3 px-5 font-semibold bg-green-500 text-white rounded-xl hover:bg-green-600">
+                        Edit
                     </a> 
-                    <a href="{% url 'item:delete' item.id %}" 
-                    onclick="return confirm('Are you sure you want to delete this item?');"
-                    class="inline-block mt-6 py-3 px-3 font-semibold bg-red-500 text-white rounded-xl  hover:text-black">
-                    Delete
+                    <a href="{% url 'item:delete' item.id %}" onclick="return confirm('Are you sure you want to delete this item?');"class="inline-block py-3 px-5 font-semibold bg-red-500 text-white rounded-xl hover:bg-red-600">
+                        Delete
                     </a>
 
                 
                 </div>
             {% else %}    
-            <a href="{% url 'conversation:new' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white hover:bg-teal-700 rounded-xl"> Contact Seller</a>
+            <a href="{% url 'conversation:new' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-600">Contact Seller</a>
 
             {% endif %}    
             
@@ -54,19 +48,19 @@
         
     </div>
 
-    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
-        <h2 class="mb-12 text-2xl text-center">Related items</h2>
+    <div class="mt-12 px-6 py-12 bg-gray-100 rounded-xl">
+        <h2 class="mb-10 text-2xl text-center font-semibold text-gray-800">Related items</h2>
 
-        <div class="grid grid-cols-3 gap-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {% for item in related_items %}
-                <div class="w-52 mx-auto">  <!-- Set fixed width for the entire card -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md">  <!-- Set fixed width for the entire card -->
                     <a href="{% url 'item:detail' item.id %}">
                         <div>
-                            <img src="{{ item.image.url }}" class="rounded-t-xl" style="width: 200px; height: 250px; object-fit: cover;">
+                            <img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-56 object-cover">
                         </div>
-                        <div class="p-4 bg-white rounded-b-xl">
-                            <h2 class="text-lg font-semibold ">{{ item.name }}</h2>
-                            <p class="text-gray-500 text-sm">Price: {{ item.price }}$</p>
+                        <div class="p-4">
+                            <h2 class="text-lg font-semibold text-gray-800">{{ item.name }}</h2>
+                            <p class="text-sm text-gray-500">Price : {{ item.price }}$</p>
                         </div>
                     </a>
                 </div>
