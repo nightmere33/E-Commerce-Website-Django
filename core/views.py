@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect
 from item.models import Category,Item
 from .forms import SignUpForm
 # Create your views here.
+from .forms import ContactForm
+from django.contrib import messages
 
 def index(request):
     items = Item.objects.filter(is_sold=False)[0:6]
@@ -13,7 +15,16 @@ def index(request):
     })
 
 def contact(request):
-    return render(request, 'core/contact.html')
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            # Ici tu peux traiter les données : les enregistrer ou envoyer un email
+            messages.success(request, "Your message has been sent!")
+            return redirect('contact')
+    else:
+        form = ContactForm()
+    
+    return render(request, 'core/contact.html', {'form': form})
 
 def signup(request):
     if request.method =='POST':
