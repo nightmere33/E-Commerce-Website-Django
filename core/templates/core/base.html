@@ -6,6 +6,8 @@
        
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,12 +15,115 @@
 </head>
 
 <body>
+    <style>
+.mario-text {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.5rem;
+  color: #ffcc00;
+  text-shadow:
+    2px 2px 0 #000,
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000;
+  position: relative;
+  animation: tv-signal 2s infinite;
+  display: inline-block;
+  cursor: default;
+  user-select: none;
+  background: black;
+  padding: 0 10px;
+  overflow: visible;
+}
+
+.mario-text::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,255,255,0.05) 0,
+    rgba(255,255,255,0.05) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  pointer-events: none;
+  animation: scanlines 0.2s linear infinite;
+  mix-blend-mode: screen;
+  z-index: 1;
+}
+
+@keyframes tv-signal {
+  0%, 10%, 100% {
+    opacity: 1;
+    transform: translate(0, 0) skew(0);
+    filter: none;
+  }
+  15% {
+    opacity: 0;
+    transform: translate(-5px, 2px) skew(-10deg);
+    filter: brightness(0.6);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(5px, -3px) skew(10deg);
+    filter: brightness(1.2);
+  }
+  25% {
+    opacity: 0;
+    transform: translate(-3px, 3px) skew(-5deg);
+    filter: brightness(0.7);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(0, 0) skew(0);
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(0, 0) skew(0);
+    filter: none;
+  }
+  55% {
+    opacity: 0;
+    transform: translate(4px, -2px) skew(7deg);
+    filter: brightness(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(-4px, 2px) skew(-7deg);
+    filter: brightness(1.3);
+  }
+  65% {
+    opacity: 0;
+    transform: translate(3px, 3px) skew(10deg);
+    filter: brightness(0.4);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(0, 0) skew(0);
+    filter: none;
+  }
+}
+
+@keyframes scanlines {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 4px;
+  }
+}
+
+
+
+</style>
+
     <nav class="py-6 px-6 flex justify-between items-center border-b border-gray-200">
         <a href="/" class="text-xl font-semibold">GameVerse</a>
 
         <div class="space-x-6">
-            <a href="{% url 'item:new'%}" class="text-lg font-semibold hover:text-gray-500">New item</a>
-            <a href="{% url 'item:browse' %}" class="text-lg font-semibold hover:text-gray-500">Browse</a>
+            <a href="{% url 'item:new'%}" class="text-lg font-semibold hover:text-gray-500">New Key</a>
+            <a href="{% url 'item:browse' %}" class="text-lg font-semibold hover:text-gray-500">Key Market</a>
             {% if request.user.is_authenticated%}
                 
                 <a href="{% url 'conversation:inbox' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
@@ -50,16 +155,16 @@
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
             <!-- About -->
             <div>
-                <h3 class="italic mb-4 text-xl font-semibold text-white">About GameVerse</h3>
+                <h3 class="mb-4 text-xl font-semibold text-white">About GameVerse</h3>
                 <p class="text-sm leading-relaxed text-gray-400">
-                GameVerse est une plateforme dédiée aux passionnés de jeux vidéo pour découvrir, échanger et vendre des articles liés à l'univers du gaming.
+                At GameVerse, we bring gamers together to discover, share, and buy game keys easily and quickly. Whether you’re hunting for your next favorite game or looking to trade with fellow players, we’ve got you covered. Join our community and level up your gaming experience!
                 </p>
             </div>
             <!-- Menu -->
             <div>
-                <h3 class="italic mb-4 text-xl font-semibold text-white">Menu</h3>
+                <h3 class="mb-4 text-xl font-semibold text-white">Menu</h3>
                 <ul class="space-y-3">
-                    <li><a href="#" class="hover:text-teal-400 transition">About</a></li>
+                    <li><a href="{% url 'core:about' %}" class="hover:text-teal-400 transition">About</a></li>
                     <li><a href="{% url 'core:contact' %}" class="hover:text-teal-400 transition">Contact</a></li>
                     <li><a href="#" class="hover:text-teal-400 transition">Privacy Policy</a></li>
                     <li><a href="#" class="hover:text-teal-400 transition">Terms of Use</a></li>
@@ -68,7 +173,7 @@
 
             <!-- Socials -->
             <div>
-                <h3 class="italic mb-4 text-xl font-semibold text-white">Follow Us</h3>
+                <h3 class=" mb-4 text-xl font-semibold text-white">Follow Us</h3>
                 <ul class="flex space-x-6">
                     <li><a href="#" class="hover:text-teal-400 transition">Facebook</a></li>
                     <li><a href="#" class="hover:text-teal-400 transition">Twitter</a></li>
@@ -80,5 +185,38 @@
             © 2025 GameVerse. All rights reserved.
         </div>
     </footer>
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+    particlesJS("particles-js", {
+    "particles": {
+    "number": { "value": 80 },
+    "size": { "value": 3 },
+    "color": { "value": "#a78bfa" },
+    "line_linked": {
+      "enable": true,
+      "distance": 150,
+      "color": "#f472b6",
+      "opacity": 0.4,
+      "width": 1
+    },
+    "move": {
+      "enable": true,
+      "speed": 2
+    }
+  },
+  "interactivity": {
+    "events": {
+      "onhover": { "enable": true, "mode": "grab" },
+      "onclick": { "enable": true, "mode": "push" }
+    },
+    "modes": {
+      "grab": { "distance": 200, "line_linked": { "opacity": 0.5 } },
+      "push": { "particles_nb": 4 }
+    }
+  }
+});
+</script>
+
 </body>
 </html>
