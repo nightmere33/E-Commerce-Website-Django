@@ -7,8 +7,10 @@
 {% block content %} 
     <div class="grid grid-cols-5 gap-6">
         <div class="col-span-2">
-            <img src="{{item.image.url}}" class="rounded-xl" style="width: 450px; height: 500px; object-fit: cover;">
-
+            <!-- Modification du style de l'image principale -->
+            <img src="{{item.image.url}}" 
+                 class="rounded-xl w-full h-auto object-contain bg-white p-2 shadow-lg" 
+                 style="max-height: 600px;">
         </div>
 
         <div class="col-span-3 p-6 bg-gray-100 rounded-xl">
@@ -57,12 +59,14 @@
     <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
         <h2 class="mb-12 text-2xl text-center">Related items</h2>
 
+        <!-- Modification du style des images reliées -->
         <div class="grid grid-cols-3 gap-1">
             {% for item in related_items %}
-                <div class="w-52 mx-auto">  <!-- Set fixed width for the entire card -->
+                <div class="w-64 mx-auto bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow">
                     <a href="{% url 'item:detail' item.id %}">
-                        <div>
-                            <img src="{{ item.image.url }}" class="rounded-t-xl" style="width: 200px; height: 250px; object-fit: cover;">
+                        <div class="p-2">
+                            <img src="{{ item.image.url }}" 
+                                 class="rounded-lg w-full h-48 object-contain bg-white">
                         </div>
                         <div class="p-4 bg-white rounded-b-xl">
                             <h2 class="text-lg font-semibold ">{{ item.name }}</h2>

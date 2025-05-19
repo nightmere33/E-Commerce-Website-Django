@@ -2,33 +2,78 @@
 
 {% block title%} Inbox {% endblock %}
 
-
-
-
 {% block content%}
-    
-        <h1 class="mb-6 text-3xl">Inbox</h1>
+<div class="max-w-6xl mx-auto p-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">My Messages</h1>
+        <div class="text-gray-500">
+            {{ conversations|length }} conversation{{ conversations|length|pluralize }}
+        </div>
+    </div>
 
-        <div class="space-y-6">
+    <!-- Messages List -->
+    <div class="space-y-4">
+        {% if conversations %}
             {% for conversation in conversations %}
-                <a href="{% url 'conversation:detail' conversation.id %}"> 
-                    <div class="p-6 flex bg-gray-100 rounded-xl">
-                        <div class="pr-6" >
-                            <img   src="{{conversation.item.image.url}}" class="w-20 rounded-xl" >
-                        </div>
+                <a href="{% url 'conversation:detail' conversation.id %}" class="block"> 
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200">
+                        <div class="flex items-start space-x-6">
+                            <!-- Image -->
+                            <div class="flex-shrink-0">
+                                <img src="{{ conversation.item.image.url }}" 
+                                     class="w-24 h-24 object-contain bg-gray-50 rounded-lg"
+                                     alt="{{ conversation.item.name }}">
+                            </div>
 
-                        <div >
-                            {% for member in conversation.members.all %}
-                                {% if member != request.user %}
-                                    <p class="mb-4 text-gray-500"><strong>Seller: {{member.username}}</strong> | {{conversation.modefied_at }}</p>
-                                    <p>{{conversation.item.name}} </p>
-                                {% endif %}
-                            {% endfor%}
-                            
-                            
+                            <!-- Content -->
+                            <div class="flex-grow">
+                                <div class="flex justify-between items-start">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-2">
+                                        {{ conversation.item.name }}
+                                    </h3>
+                                    <span class="text-sm text-gray-500">
+                                        {{ conversation.modified_at|date:"M d, Y" }}
+                                    </span>
+                                </div>
+
+                                {% for member in conversation.members.all %}
+                                    {% if member != request.user %}
+                                        <p class="text-gray-600 mb-2">
+                                            <i class="fas fa-user mr-2"></i>
+                                            {{ member.username }}
+                                        </p>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <div class="flex justify-between items-center mt-3">
+                                    <span class="text-teal-600 font-semibold">
+                                        ${{ conversation.item.price }}
+                                    </span>
+                                    <span class="bg-teal-100 text-teal-800 text-sm px-3 py-1 rounded-full">
+                                        <i class="fas fa-comments mr-1"></i>
+                                        {{ conversation.messages.count }} message{{ conversation.messages.count|pluralize }}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </a>
-            {% endfor%}
-
-{% endblock%}
+            {% endfor %}
+        {% else %}
+            <!-- Empty State -->
+            <div class="text-center py-12">
+                <div class="text-gray-400 mb-4">
+                    <i class="fas fa-inbox text-6xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">Your inbox is empty</h3>
+                <p class="text-gray-500">Messages from your conversations will appear here</p>
+                <a href="{% url 'item:browse' %}" 
+                   class="inline-block mt-6 px-6 py-3 bg-teal-500 text-white rounded-xl hover:bg-teal-600 transition duration-200">
+                    Browse Items
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
