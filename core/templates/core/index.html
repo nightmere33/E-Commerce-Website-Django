@@ -91,21 +91,38 @@
         </div>
     {% endif %}
 
-    <div class="mt-6 px-6 py-12 bg-slate-800/50 rounded-xl backdrop-blur-sm border border-slate-700">
-        <h2 class="mb-12 text-2xl text-center text-gray-100">Categories</h2>
-        <div class="grid grid-cols-3 gap-1">
-            {% for category in categories %}
-                <div class="w-52 mx-auto">
-                    <a href="" class="block transition hover:-translate-y-1">
-                        <div class="p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-teal-500">
-                            <h2 class="text-2xl text-gray-100">{{ category.name }}</h2>
-                            <p class="text-teal-400 text-sm">{{ category.items.count }} items</p>
+   <!-- Category Carousel -->
+    <div class="mt-12 px-6 py-12 bg-slate-800/50 rounded-xl backdrop-blur-sm border border-slate-700 relative">
+        <h2 class="mb-8 text-2xl text-center text-gray-100">Categories</h2>
+
+        <div class="relative">
+            <div id="category-carousel" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar px-2">
+                {% for category in categories %}
+                    <div class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border border-slate-700 hover:border-teal-500 transition">
+                        <img src="{{ MEDIA_URL }}item_images/{{ category.name }}.jpg" 
+                             alt="{{ category.name }}"
+                            class="absolute inset-0 w-full h-full object-cover blur-sm group-hover:scale-110 transition duration-300" />
+                        <div class="absolute inset-0 bg-black/40"></div>
+                        <div class="relative h-full flex items-center justify-center group-hover:items-end transition-all duration-300 p-4">
+                            <span class="text-white font-semibold text-lg text-center transition-all duration-300">{{ category.name }}</span>
                         </div>
-                    </a>
-                </div>
-            {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+
+
+            <!-- Scroll buttons -->
+            <button onclick="scrollCategories(-300)"
+                    class="absolute left-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button onclick="scrollCategories(300)"
+                    class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
     </div>
+
 
 
 
@@ -176,5 +193,48 @@ document.addEventListener('DOMContentLoaded', function() {
     
     nextButton.addEventListener('click', nextSlide);
 });
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('category-carousel');
+    if (!container) return;
+
+    const originalItems = Array.from(container.querySelectorAll('.carousel-item'));
+    const itemCount = originalItems.length;
+    const itemWidth = originalItems[0].offsetWidth + 24; // 24 = space-x-6 approx
+
+    // Clone à gauche
+    originalItems.slice().reverse().forEach(item => {
+        const clone = item.cloneNode(true);
+        clone.classList.add('cloned');
+        container.insertBefore(clone, container.firstChild);
+    });
+
+    // Clone à droite
+    originalItems.forEach(item => {
+        const clone = item.cloneNode(true);
+        clone.classList.add('cloned');
+        container.appendChild(clone);
+    });
+
+    // Scroll initial vers les vrais items
+    container.scrollLeft = itemCount * itemWidth;
+
+    // Réajuster quand on approche des extrémités
+    container.addEventListener('scroll', () => {
+        const maxScroll = itemWidth * itemCount * 2;
+        if (container.scrollLeft < itemWidth) {
+            container.scrollLeft += itemCount * itemWidth;
+        } else if (container.scrollLeft > maxScroll - itemWidth) {
+            container.scrollLeft -= itemCount * itemWidth;
+        }
+    });
+});
+
+function scrollCategories(offset) {
+    const container = document.getElementById('category-carousel');
+    if (!container) return;
+    container.scrollBy({ left: offset, behavior: 'smooth' });
+}
+
+
 </script>
 {% endblock %}

@@ -2,6 +2,8 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 from .forms import LoginForm
+from django.conf import settings
+from django.conf.urls.static import static
 app_name = 'core'
 
 urlpatterns=[
@@ -16,3 +18,6 @@ urlpatterns=[
     path('edit-profile/', views.edit_profile, name='edit_profile'),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
