@@ -6,9 +6,9 @@
     <div class="mt-6 px-6 py-12 bg-gradient-to-b from-slate-800 to-slate-900 rounded-xl border border-slate-700">
         <h2 class="mb-12 text-2xl text-center text-gray-100 font-bold">My Items</h2>
 
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {% for item in items %}
-                <div class="game-card">
+                <div class="game-card  bg-white rounded-lg">
                     <a href="{% url 'item:detail' item.id %}" class="block">
                         <div class="image-container">
                             <img src="{{ item.image.url }}" 

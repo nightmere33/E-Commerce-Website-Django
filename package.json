@@ -1,0 +1,25 @@
+{
+  "name": "e-commerce-website-django",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nightmere33/E-Commerce-Website-Django.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nightmere33/E-Commerce-Website-Django/issues"
+  },
+  "homepage": "https://github.com/nightmere33/E-Commerce-Website-Django#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.7"
+  }
+}

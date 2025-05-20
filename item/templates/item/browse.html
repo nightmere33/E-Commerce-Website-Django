@@ -1,6 +1,6 @@
 {% extends 'core/base.html'%}
 
-{% block title%} Browse {% endblock %}
+{% block title%} Key Market {% endblock %}
 
 {% block content%}
     <div class="pb-6 grid grid-cols-4 gap-4">
@@ -44,7 +44,7 @@
 
         <!-- Game Grid -->
         <div class="col-span-3">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
                 {% for item in items %}
                     <div class="game-card">
                         <a href="{% url 'item:detail' item.id %}" class="block">

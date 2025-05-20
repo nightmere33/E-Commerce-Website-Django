@@ -58,7 +58,7 @@
     <!-- Related Items Section -->
     <div class="mt-12">
         <h2 class="mb-8 text-2xl text-gray-100 font-bold text-center">Related Games</h2>
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {% for item in related_items %}
                 <div class="game-card">
                     <a href="{% url 'item:detail' item.id %}" class="block">

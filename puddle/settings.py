@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'core',
     'item',
     'dashboard',
+    'tailwind',
+    'theme',
     'conversation',
 ]
 

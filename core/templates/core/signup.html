@@ -1,8 +1,28 @@
 {% extends 'core/base.html' %}
 
 {% block title%} Sign up {% endblock %}
+
 {% block content %}
 
+<<<<<<< HEAD
+<div class="w-full max-w-md mx-auto my-10 p-8 bg-white shadow-lg rounded-xl"> 
+    <h1 class="text-3xl font-semibold text-center mb-6 "> Create an Account </h1>
+
+    <form method="POST" action="." class="space-y-5">
+        {% csrf_token %}
+
+        <!--username-->
+        <div class="mb-3">
+            <label class="inline-block mb-2"> Username</label><br>
+            {{form.username}}
+
+        </div>   
+
+        <!--Email-->
+        <div class="mb-3">
+            <label class="inline-block mb-2"> Email</label><br>
+            {{form.email}}
+=======
 <div class="max-w-lg my-6 mx-auto p-8 bg-gradient-to-b from-slate-800 to-slate-900 rounded-xl border border-slate-700 shadow-lg"> 
     <h1 class="mb-8 text-3xl font-bold text-gray-100 text-center">Create Account</h1>
 
@@ -24,6 +44,7 @@
                 <label class="text-gray-300 font-semibold">Password</label>
                 {{form.password1}}
             </div>   
+>>>>>>> 799100388d0bfa00aaa400d0497ea971005fdf4c
 
             <div class="space-y-2">
                 <label class="text-gray-300 font-semibold">Confirm Password</label>
@@ -31,6 +52,20 @@
             </div>
         </div>
 
+<<<<<<< HEAD
+        </div>   
+        <div class="mb-3">
+            <label class="inline-block mb-2">Repeat Password</label><br>
+            {{form.password2}}
+
+        </div> 
+        
+        {% if form.errors or form.non_field_errors%}
+            <div class="bg-red-100 p-4 rounded-lg text-red-700 text-sm">
+                {% for field in form%}
+                    {{field.errors}}
+                {% endfor%}
+=======
         {% if form.errors or form.non_field_errors %}
             <div class="p-4 bg-red-900/50 border border-red-500 rounded-lg">
                 <p class="text-red-400 font-medium">Please correct the following errors:</p>
@@ -40,6 +75,7 @@
                         <li>{{ error }}</li>
                     {% endfor %}
                 {% endfor %}
+>>>>>>> 799100388d0bfa00aaa400d0497ea971005fdf4c
                 {{ form.non_field_errors }}
                 </ul>
             </div>

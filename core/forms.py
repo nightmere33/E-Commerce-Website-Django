@@ -41,7 +41,29 @@ class LoginForm(AuthenticationForm):
         'placeholder': 'Enter your username'
     }))   
 
-    password = forms.CharField(widget=forms.PasswordInput(attrs={
-        'class': INPUT_CLASSES,
-        'placeholder': 'Enter your password'
-    }))
+
+    password = forms.CharField(widget=forms.PasswordInput(attrs=
+                                                     {'class': 'w-full py-4 px-6 rounded-xl ', 
+                                                      'placeholder': 'Enter your password'}))
+    
+class ContactForm(forms.Form):
+    name = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'class': 'w-full px-4 py-2 border rounded-lg',
+            'placeholder': 'Your name'
+        })
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'w-full px-4 py-2 border rounded-lg',
+            'placeholder': 'Your email'
+        })
+    )
+    message = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'class': 'w-full px-4 py-2 border rounded-lg',
+            'placeholder': 'Your message',
+            'rows': 6
+        })
+    )
