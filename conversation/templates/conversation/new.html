@@ -1,11 +1,11 @@
 {% extends 'core/base.html' %}
 
-{% block title %} New Message {% endblock %}
+{% block title %} New Conversation {% endblock %}
 
 {% block content %}
 <div class="max-w-2xl mx-auto">
     <div class="bg-white rounded-xl shadow-lg p-8">
-        <h1 class="text-3xl font-bold mb-6 text-gray-800">New Message</h1>
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">New Conversation</h1>
         
         <form method="POST" action="." class="space-y-6">
             {% csrf_token %}
