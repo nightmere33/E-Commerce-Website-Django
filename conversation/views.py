@@ -56,10 +56,24 @@ def detail(request, pk):
     paginator = Paginator(messages, 10)
     page_number = request.GET.get('page')
     messages = paginator.get_page(page_number)
-    
+
+    if request.method == 'POST':
+        form = ConversationMessageForm(request.POST)
+
+        if form.is_valid():
+            conversation_message = form.save(commit=False)
+            conversation_message.conversation = conversation
+            conversation_message.created_by = request.user
+            conversation_message.save()
+
+            # Optionally, you can redirect to the same page to avoid resubmission
+            return redirect('conversation:detail', pk=pk)
+    else: 
+        form = ConversationMessageForm()
     return render(request, 'conversation/detail.html', {
         'conversation': conversation,
-        'messages': messages
+        'messages': messages,
+        'form': form,
     })
 
 class ChatConsumer(AsyncWebsocketConsumer):

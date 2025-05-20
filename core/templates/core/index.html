@@ -20,15 +20,7 @@
         </div>
     </div>
 
-    <!-- User Navigation Section -->
-    <div class="space-x-6">
-        {% if request.user.is_authenticated %}
-            <!-- Supprimé les liens Inbox, Dashboard, Logout qui étaient ici -->
-        {% else %}
-            <a href="{% url 'core:signup' %}" class="px-6 py-3 text-white hover:text-gray-200">Sign up</a>
-            <a href="{% url 'core:login' %}" class="px-6 py-3 text-white hover:text-gray-200">Log in</a>
-        {% endif %}
-    </div>
+    
 
     <!-- Newest Items Section -->
     <div class="max-w-7xl mx-auto">
