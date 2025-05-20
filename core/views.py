@@ -7,6 +7,7 @@ from .forms import EditProfileForm
 from .forms import ContactForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
+from django.conf import settings  
 
 def index(request):
     items = Item.objects.filter(is_sold=False).order_by('-created_at')[:6]  # Retour à 6 items
@@ -15,6 +16,7 @@ def index(request):
     return render(request, 'core/index.html', {
         'categories': categories,
         'items': items,
+        'MEDIA_URL': settings.MEDIA_URL, 
     })
 
 def contact(request):
