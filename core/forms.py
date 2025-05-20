@@ -41,10 +41,10 @@ class LoginForm(AuthenticationForm):
         'placeholder': 'Enter your username'
     }))   
 
-<<<<<<< HEAD
+
     password = forms.CharField(widget=forms.PasswordInput(attrs=
                                                      {'class': 'w-full py-4 px-6 rounded-xl ', 
-                                                      'placeholder': 'Password'}))
+                                                      'placeholder': 'Enter your password'}))
     
 class ContactForm(forms.Form):
     name = forms.CharField(
@@ -67,9 +67,3 @@ class ContactForm(forms.Form):
             'rows': 6
         })
     )
-=======
-    password = forms.CharField(widget=forms.PasswordInput(attrs={
-        'class': INPUT_CLASSES,
-        'placeholder': 'Enter your password'
-    }))
->>>>>>> 799100388d0bfa00aaa400d0497ea971005fdf4c
