@@ -1,11 +1,12 @@
 {% extends 'core/base.html' %}
 {%block title %}{{item.name}}{% endblock %}
 {% block content %} 
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
-        <!--image section-->
-        <div class="md:col-span-2">
-            <img src="{{item.image.url}}" class="rounded-xl w-full h-[500px] object-cover" alt="{{ item.name }}">
-
+    <div class="grid grid-cols-5 gap-6">
+        <div class="col-span-2">
+            <!-- Modification du style de l'image principale -->
+            <img src="{{item.image.url}}" 
+                 class="rounded-xl w-full h-auto object-contain bg-white p-2 shadow-lg" 
+                 style="max-height: 600px;">
         </div>
 
         <!--infos section-->
@@ -51,12 +52,14 @@
     <div class="mt-12 px-6 py-12 bg-gray-100 rounded-xl">
         <h2 class="mb-10 text-2xl text-center font-semibold text-gray-800">Related items</h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <!-- Modification du style des images reliées -->
+        <div class="grid grid-cols-3 gap-1">
             {% for item in related_items %}
-                <div class="bg-white rounded-xl overflow-hidden shadow-md">  <!-- Set fixed width for the entire card -->
+                <div class="w-64 mx-auto bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow">
                     <a href="{% url 'item:detail' item.id %}">
-                        <div>
-                            <img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-56 object-cover">
+                        <div class="p-2">
+                            <img src="{{ item.image.url }}" 
+                                 class="rounded-lg w-full h-48 object-contain bg-white">
                         </div>
                         <div class="p-4">
                             <h2 class="text-lg font-semibold text-gray-800">{{ item.name }}</h2>

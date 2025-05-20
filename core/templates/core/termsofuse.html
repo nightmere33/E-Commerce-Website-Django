@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Terms of Use | GameVerse{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto py-16 px-6 text-gray-900">
+    <h1 class="text-2xl md:text-3xl retro-font text-black mb-10 text-center">
+        Terms of Use
+    </h1>
+
+    <p class="mb-4">
+        Welcome to GameVerse! By using our website, you agree to the following terms and conditions. Please read them carefully.
+    </p>
+
+    <h2 class="text-xl font-semibold mt-8 luckiest-guy-regular mb-2">1. Use of the Site</h2>
+    <p class="mb-4">
+        You agree to use GameVerse only for lawful purposes and in a way that does not infringe the rights of others or restrict their use of the site.
+    </p>
+
+    <h2 class="text-xl font-semibold mt-8 luckiest-guy-regular mb-2">2. User Accounts</h2>
+    <p class="mb-4">
+        If you create an account, you are responsible for keeping your password confidential and for all activities that occur under your account.
+    </p>
+
+    <h2 class="text-xl font-semibold mt-8 luckiest-guy-regular mb-2">3. Content</h2>
+    <p class="mb-4">
+        All content on GameVerse, including text, images, and software, is owned by or licensed to us. You may not copy, modify, or distribute any content without permission.
+    </p>
+
+    <h2 class="text-xl font-semibold mt-8 luckiest-guy-regular mb-2">4. Prohibited Activities</h2>
+    <p class="mb-4">
+        You agree not to use GameVerse to post illegal content, spam, or engage in any activity that could harm the site or other users.
+    </p>
+
+    <h2 class="text-xl font-semibold mt-8 luckiest-guy-regular mb-2">5. Limitation of Liability</h2>
+    <p class="mb-4">
+        GameVerse is provided "as is" without warranties of any kind. We do not guarantee the accuracy or availability of the site and are not responsible for any damages resulting from its use.
+    </p>
+
+    <h2 class="text-xl font-semibold mt-8 luckiest-guy-regular mb-2">6. Changes to Terms</h2>
+    <p class="mb-4">
+        We may update these terms at any time. Continued use of the site after changes means you accept the new terms.
+    </p>
+
+    <h2 class="text-xl font-semibold mt-8 luckiest-guy-regular mb-2">7. Contact Us</h2>
+    <p>
+        If you have questions about these Terms of Use, please <a href="{% url 'core:contact' %}" class="text-teal-600 hover:underline">Contact Us !</a>
+    </p>
+</div>
+{% endblock %}
