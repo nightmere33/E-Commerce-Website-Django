@@ -157,9 +157,27 @@
 
 <body>
     <nav class="nav-gradient py-4 px-6 flex justify-between items-center shadow-lg">
-        <a href="/" class="text-2xl font-bold text-white hover:text-gray-200 transition duration-300">
-            <i class="fas fa-gamepad mr-2"></i>GameVerse
-        </a>
+        <div class="flex items-center space-x-6">
+            <a href="/" class="text-2xl font-bold text-white hover:text-gray-200 transition duration-300">
+                <i class="fas fa-gamepad mr-2"></i>GameVerse
+            </a>
+            <!-- bouton deroulant -->
+            <div class="relative group">
+                <button class="text-white font-semibold hover:text-teal-300 transition duration-300 flex items-center">
+                    Categories
+                    <i class="fas fa-chevron-down ml-2 text-sm"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all z-50">
+                    {% for category in categories %}
+                        <a href="{% url 'item:browse' %}?category={{ category.id }}" class="block px-4 py-2 hover:bg-teal-100">
+                            {{ category.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        
         <div class="space-x-8">
             <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-gray-200 transition duration-300">Browse</a>
             {% if request.user.is_authenticated %}
