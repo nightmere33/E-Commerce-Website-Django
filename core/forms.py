@@ -43,7 +43,7 @@ class LoginForm(AuthenticationForm):
 
 
     password = forms.CharField(widget=forms.PasswordInput(attrs=
-                                                     {'class': 'w-full py-4 px-6 rounded-xl ', 
+                                                     {'class': INPUT_CLASSES, 
                                                       'placeholder': 'Enter your password'}))
     
 class ContactForm(forms.Form):
