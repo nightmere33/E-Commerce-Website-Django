@@ -20,16 +20,6 @@
         </div>
     </div>
 
-<<<<<<< HEAD
-    <!-- User Navigation Section -->
-    <div class="space-x-6">
-        {% if request.user.is_authenticated %}
-            <!-- Supprimé les liens Inbox, Dashboard, Logout qui étaient ici -->
-        {% else %}
-            <a href="{% url 'core:signup' %}" class="px-6 py-3 text-white hover:text-gray-200">Sign up</a>
-            <a href="{% url 'core:login' %}" class="px-6 py-3 text-white hover:text-gray-200">Log in</a>
-        {% endif %}
-=======
     <!-- Featured Games Carousel -->
     <div class="max-w-7xl mx-auto my-12">
         <h2 class="text-3xl font-bold text-center mb-8 text-gray-100">Featured Games</h2>
@@ -68,7 +58,6 @@
                 {% endfor %}
             </div>
         </div>
->>>>>>> 799100388d0bfa00aaa400d0497ea971005fdf4c
     </div>
 
     <!-- Newest Items Section -->
