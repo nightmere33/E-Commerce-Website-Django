@@ -1,22 +1,22 @@
 {% extends 'core/base.html' %}
 {%block title %}{{item.name}}{% endblock %}
 {% block content %} 
-    <div class="grid grid-cols-5 gap-6">
+    <div class="container mx-auto px-4 py-8">
         <div class="col-span-2">
             <!-- Modification du style de l'image principale -->
             <img src="{{item.image.url}}" 
-                 class="rounded-xl w-full h-auto object-contain bg-white p-2 shadow-lg" 
-                 style="max-height: 600px;">
+                 class="rounded-xl w-full h-auto object-contain bg-black p-2 shadow-lg" 
+                 style="max-height: 300px;">
         </div>
 
         <!--infos section-->
-        <div class="md:col-span-3 p-6 bg-gray-100 rounded-xl">
-            <h1 class="mb-6 text-4xl font-bold">{{ item.name }}</h1>
-            <p class="mb-2 text-lg text-gray-600"><strong> Price : {{item.price}}$</strong></p>
-            <p class="mb-2 text-lg text-gray-600"><strong> Seller : {{item.created_by.username}}</strong></p>
+        <div class="md:col-span-3 p-8 bg-gray-50 rounded-xl shadow">
+            <h1 class="mb-4 text-4xl font-extrabold text-gray-900">{{ item.name }}</h1>
+            <p class="mb-3 text-xl text-green-600 font-semibold"><strong> Price : {{item.price}}$</strong></p>
+            <p class="mb-3 text-lg text-gray-700"><strong> Seller : {{item.created_by.username}}</strong></p>
             
             {% if item.description %}
-            <p class="mb-2 text-lg text-gray-600"><strong > Description : <br> {{item.description}}</strong></p>
+            <p class="text-lg font-semibold text-gray-800 mb-2"><strong > Description : <br> {{item.description}}</strong></p>
             {% endif %}   
             
             <!-- to know that the user who created the item-->
