@@ -20,7 +20,15 @@
         </div>
     </div>
 
-    
+    <!-- User Navigation Section -->
+    <div class="space-x-6">
+        {% if request.user.is_authenticated %}
+            <!-- Supprimé les liens Inbox, Dashboard, Logout qui étaient ici -->
+        {% else %}
+            <a href="{% url 'core:signup' %}" class="px-6 py-3 text-white hover:text-gray-200">Sign up</a>
+            <a href="{% url 'core:login' %}" class="px-6 py-3 text-white hover:text-gray-200">Log in</a>
+        {% endif %}
+    </div>
 
     <!-- Newest Items Section -->
     <div class="max-w-7xl mx-auto">
@@ -53,16 +61,6 @@
         </div>
     {% endif %}
 
-<<<<<<< HEAD
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {% for category in categories %}
-                <div class="bg-white rounded-xl p-6 shadow hover:shadow-lg transition duration-300 text-center">  <!-- Set fixed width for the entire card -->
-                    <a href="">
-                        
-                        <div class="p-4 bg-white rounded-b-xl">
-                            <h2 class="text-xl font-semibold text-gray-800">{{ category.name }}</h2>
-                            <p class="text-gray-500 mt-2"> {{ category.items.count }} items</p>
-=======
     <div class="mt-6 px-6 py-12 bg-slate-800/50 rounded-xl backdrop-blur-sm border border-slate-700">
         <h2 class="mb-12 text-2xl text-center text-gray-100">Categories</h2>
         <div class="grid grid-cols-3 gap-1">
@@ -72,7 +70,6 @@
                         <div class="p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-teal-500">
                             <h2 class="text-2xl text-gray-100">{{ category.name }}</h2>
                             <p class="text-teal-400 text-sm">{{ category.items.count }} items</p>
->>>>>>> 2e343727429fc74f005c0c9ede61033928f70ae0
                         </div>
                     </a>
                 </div>
@@ -80,6 +77,9 @@
         </div>
     </div>
 
+
+
+    
 {% endblock %}
 
 {% block extra_js %}
