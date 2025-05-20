@@ -1,12 +1,17 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
 {% block title %}Welcome{% endblock %}
 
 {% block content %}
 
-    <!-- Hero Section -->
-    <div class="bg-gradient-to-r from-teal-500 to-teal-700 text-white py-16 px-6 rounded-xl mb-12">
-        <div class="max-w-4xl mx-auto text-center">
+    <!-- Hero Section with background image -->
+    <div class="relative bg-gradient-to-r from-teal-500 to-teal-700 text-white py-16 px-6 rounded-xl mb-12 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="{% static 'images/hero-bg.jpg' %}" class="w-full h-full object-cover opacity-20" alt="background">
+            <div class="absolute inset-0 bg-gradient-to-r from-teal-900/90 to-slate-900/90"></div>
+        </div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
             <h1 class="text-4xl md:text-5xl font-bold mb-6">Welcome to GameVerse</h1>
             <p class="text-xl mb-8">Discover the Ultimate Gaming Marketplace</p>
             <a href="{% url 'item:browse' %}" class="bg-white text-teal-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300">
@@ -18,15 +23,7 @@
     <!-- User Navigation Section -->
     <div class="space-x-6">
         {% if request.user.is_authenticated %}
-            <a href="{% url 'conversation:inbox' %}" class="px-6 py-3 text-white hover:text-gray-200">Inbox</a>
-            <a href="{% url 'dashboard:index' %}" class="px-6 py-3 text-white hover:text-gray-200">Dashboard</a>
-            
-            <!-- Modification ici : vérification si l'utilisateur est admin -->
-            {% if request.user.is_superuser %}
-                <a href="{% url 'item:new' %}" class="px-6 py-3 text-white hover:text-gray-200">New item</a>
-            {% endif %}
-
-            <a href="{% url 'core:logout' %}" class="px-6 py-3 text-white hover:text-gray-200">Logout</a>
+            <!-- Supprimé les liens Inbox, Dashboard, Logout qui étaient ici -->
         {% else %}
             <a href="{% url 'core:signup' %}" class="px-6 py-3 text-white hover:text-gray-200">Sign up</a>
             <a href="{% url 'core:login' %}" class="px-6 py-3 text-white hover:text-gray-200">Log in</a>
@@ -34,24 +31,20 @@
     </div>
 
     <!-- Newest Items Section -->
-    <div class="bg-white rounded-xl shadow-lg p-6 mb-12">
-        <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Newest Games</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="max-w-7xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-8 text-gray-100">Newest Games</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {% for item in items %}
-                <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow">
-                    <a href="{% url 'item:detail' item.id %}">
-                        <div class="p-4">
-                            <!-- Modification du style de l'image -->
+                <div class="game-card bg-white rounded-lg">
+                    <a href="{% url 'item:detail' item.id %}" class="block">
+                        <div class="image-container">
                             <img src="{{ item.image.url }}" 
-                                 class="w-full h-64 object-contain bg-white rounded-lg"
+                                 class="game-image"
                                  alt="{{ item.name }}">
                         </div>
-                        <div class="p-4 border-t">
-                            <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ item.name }}</h3>
-                            <div class="flex justify-between items-center">
-                                <p class="text-teal-600 font-bold">${{ item.price }}</p>
-                                <p class="text-gray-500">by {{ item.created_by.username }}</p>
-                            </div>
+                        <div class="p-4">
+                            <h3 class="font-medium text-gray-100 truncate mb-2">{{ item.name }}</h3>
+                            <div class="price-tag mb-2 text-teal-400">${{ item.price }}</div>
                         </div>
                     </a>
                 </div>
@@ -68,6 +61,7 @@
         </div>
     {% endif %}
 
+<<<<<<< HEAD
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {% for category in categories %}
                 <div class="bg-white rounded-xl p-6 shadow hover:shadow-lg transition duration-300 text-center">  <!-- Set fixed width for the entire card -->
@@ -76,17 +70,26 @@
                         <div class="p-4 bg-white rounded-b-xl">
                             <h2 class="text-xl font-semibold text-gray-800">{{ category.name }}</h2>
                             <p class="text-gray-500 mt-2"> {{ category.items.count }} items</p>
+=======
+    <div class="mt-6 px-6 py-12 bg-slate-800/50 rounded-xl backdrop-blur-sm border border-slate-700">
+        <h2 class="mb-12 text-2xl text-center text-gray-100">Categories</h2>
+        <div class="grid grid-cols-3 gap-1">
+            {% for category in categories %}
+                <div class="w-52 mx-auto">
+                    <a href="" class="block transition hover:-translate-y-1">
+                        <div class="p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-teal-500">
+                            <h2 class="text-2xl text-gray-100">{{ category.name }}</h2>
+                            <p class="text-teal-400 text-sm">{{ category.items.count }} items</p>
+>>>>>>> 2e343727429fc74f005c0c9ede61033928f70ae0
                         </div>
                     </a>
                 </div>
             {% endfor %}
-
         </div>
     </div>
 
 {% endblock %}
 
-{% load static %}
 {% block extra_js %}
 <script src="{% static 'js/admin.js' %}"></script>
 {% endblock %}
