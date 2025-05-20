@@ -4,68 +4,57 @@
 
 
 {% block content%}
-    <!-- Bandeau animé -->
-    <div class="relative h-32 flex items-center justify-center overflow-hidden rounded-b-3xl shadow-lg bg-black">
-        <div class="absolute w-full h-full z-0" id="particles-js"></div>
-        <h1 class="mario-text">
-        Your next adventure is just a key away !
-        </h1>
-    </div>
 
-    <div class="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6 rounded-xl space-y-8">
+    <div class="pb-6 grid grid-cols-4 gap-4 bg-gray-100 rounded-xl">
+        <div class="col-span-1">
+            <form method="GET" action="{% url 'item:browse' %}" class="mt-6 ml-6">
+                <input type="text" name="query" placeholder="Search..." class="w-full p-4 border rounded-xl" value="{{ query }}">
+                <button type="submit" class="mt-2 py-4 px-8 bg-teal-500 text-white text-lg rounded-xl">Search</button>
 
-  <!-- Ligne de recherche + reset -->
-  <div class="flex items-center space-x-4 w-full max-w-4xl">
+            </form>
 
-    <!-- Barre de recherche + bouton Search -->
-    <form method="GET" action="{% url 'item:browse' %}" class="flex space-x-4 flex-grow">
-      <input type="text" name="query" placeholder="Search..."
-             class="flex-grow p-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-             value="{{ query }}">
-      <button type="submit"
-              class="w-36 py-2 bg-gray-900 text-white rounded-md shadow-md hover:bg-black transition duration-200 text-center">
-        Search
-      </button>
-    </form>
-    
-    <!-- Bouton Reset filters -->
-    <a href="{% url 'item:browse' %}"
-       class="w-36 py-2 bg-gray-700 text-white rounded-md shadow-md hover:bg-black transition duration-200 text-center">
-      Refresh
-    </a>
+            <hr class="my-6">
 
-  </div>
+            <p class="font-semibold ml-4"> Categories</p>
 
-  <!-- Catégories en dessous, centrées -->
- <div class="flex flex-wrap justify-center gap-4">
-    {% for category in categories %}
-        <a href="{% url 'item:browse' %}?query={{query}}&category={{ category.id }}"
-            class="text-black hover:text-blue-500 transition duration-200 {% if category.id == category_id %} font-bold underline {% endif %}">
-            {{ category.name }}
-        </a>
+            <ul class="ml-12 mt-6">
+                {% for category in categories %}
+                    <li class="py-2 px-2 rounded-xl {% if category.id == category_id %} bg-gray-200 {% endif %}">
+                        <a href="{% url 'item:browse' %}?query={{query}}&category={{ category.id }}" >{{ category.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
 
-    {% endfor %}
-</div>
+            <hr class="my-6">
 
+            <p class="font-semibold ml-4"> Clear filters</p>
+            <ul class="ml-12 ">
+                <li> <a href ="{% url 'item:browse' %}" class="mt-2 inline-flex items-center justify-center inline-block bg-gray-500 text-lg  text-white" style="width:200px; height:36px ;background-color: #56524d; border-width : 1px;
+                    border-color:red;  font-family: Montserrat, sans-serif;">Reset filters</a></li> 
+            </ul>
 
-  <!-- Items grid -->
-  <div class="w-full max-w-6xl">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {% for item in items %}
-        <div class="group bg-[#121212] text-white rounded-xl shadow-lg transition-all duration-200 overflow-hidden border border-cyan-400 hover:scale-[1.03] hover:shadow-cyan-400/50 active:scale-95 active:bg-black">
-          <a href="{% url 'item:detail' item.id %}">
-            <img src="{{ item.image.url }}" class="w-full h-48 object-cover group-hover:brightness-110 transition">
-            <div class="p-4">
-              <h2 class="text-lg font-bold group-hover:text-cyan-400 transition">{{ item.name }}</h2>
-              <p class="text-gray-400 text-sm">Price: <span class="text-green-400 font-semibold">{{ item.price }}$</span></p>
-            </div>
-          </a>
         </div>
-      {% endfor %}
-    </div>
-  </div>
 
-</div>
+        <div class="col-span-3">
+            <div class="grid grid-cols-3 gap-2">
+                {% for item in items %}
+                    <div class="w-64 mx-auto bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+                        <a href="{% url 'item:detail' item.id %}">
+                            <div class="p-2">
+                                <img src="{{ item.image.url }}" 
+                                     class="rounded-lg w-full h-48 object-contain bg-white">
+                            </div>
+                            <div class="p-4 bg-white rounded-b-xl">
+                                <h2 class="text-lg font-semibold ">{{ item.name }}</h2>
+                                <p class="text-gray-500 text-sm">Price: {{ item.price }}$</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+            
+        </div>
+    </div>
 
 
 {% endblock%}

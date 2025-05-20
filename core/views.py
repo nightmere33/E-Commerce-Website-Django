@@ -6,7 +6,7 @@ from .forms import ContactForm
 from django.contrib import messages
 
 def index(request):
-    items = Item.objects.filter(is_sold=False)[0:6]
+    items = Item.objects.filter(is_sold=False).order_by('-created_at')[:6]
     categories = Category.objects.all()
 
     return render(request, 'core/index.html',{
@@ -39,5 +39,10 @@ def signup(request):
         'form': form,
     })
 
-def about(request):
-    return render(request, 'about.html')
+
+def privacy(request):
+    return render(request, 'core/privacy.html')
+
+def termsofuse(request):
+    return render(request, 'core/termsofuse.html')
+

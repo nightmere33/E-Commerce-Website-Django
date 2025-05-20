@@ -3,187 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>{% block title %} {%endblock %} | GameVerse</title>
+    <!-- Ajout de FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .nav-gradient {
+            background: linear-gradient(to right, #2dd4bf, #0d9488);
+        }
+        .retro-font {
+        font-family: 'Press Start 2P', cursive;
+        }
+        .luckiest-guy-regular {
+        font-family: "Luckiest Guy", cursive;
+        font-weight: 400;
+        font-style: normal;
+        }
+    </style>
+    <title>{% block title %}{% endblock %} | GameVerse</title>
 </head>
 
 <body>
-    <style>
-.mario-text {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 1.5rem;
-  color: #ffcc00;
-  text-shadow:
-    2px 2px 0 #000,
-    -2px -2px 0 #000,
-    2px -2px 0 #000,
-    -2px 2px 0 #000;
-  position: relative;
-  animation: tv-signal 2s infinite;
-  display: inline-block;
-  cursor: default;
-  user-select: none;
-  background: black;
-  padding: 0 10px;
-  overflow: visible;
-}
-
-.mario-text::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(255,255,255,0.05) 0,
-    rgba(255,255,255,0.05) 1px,
-    transparent 2px,
-    transparent 4px
-  );
-  pointer-events: none;
-  animation: scanlines 0.2s linear infinite;
-  mix-blend-mode: screen;
-  z-index: 1;
-}
-
-@keyframes tv-signal {
-  0%, 10%, 100% {
-    opacity: 1;
-    transform: translate(0, 0) skew(0);
-    filter: none;
-  }
-  15% {
-    opacity: 0;
-    transform: translate(-5px, 2px) skew(-10deg);
-    filter: brightness(0.6);
-  }
-  20% {
-    opacity: 1;
-    transform: translate(5px, -3px) skew(10deg);
-    filter: brightness(1.2);
-  }
-  25% {
-    opacity: 0;
-    transform: translate(-3px, 3px) skew(-5deg);
-    filter: brightness(0.7);
-  }
-  30% {
-    opacity: 1;
-    transform: translate(0, 0) skew(0);
-    filter: brightness(1);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(0, 0) skew(0);
-    filter: none;
-  }
-  55% {
-    opacity: 0;
-    transform: translate(4px, -2px) skew(7deg);
-    filter: brightness(0.5);
-  }
-  60% {
-    opacity: 1;
-    transform: translate(-4px, 2px) skew(-7deg);
-    filter: brightness(1.3);
-  }
-  65% {
-    opacity: 0;
-    transform: translate(3px, 3px) skew(10deg);
-    filter: brightness(0.4);
-  }
-  70% {
-    opacity: 1;
-    transform: translate(0, 0) skew(0);
-    filter: none;
-  }
-}
-
-@keyframes scanlines {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 0 4px;
-  }
-}
-
-
-
-</style>
-
-    <nav class="py-6 px-6 flex justify-between items-center border-b border-gray-200">
-        <a href="/" class="text-xl font-semibold">GameVerse</a>
-
-        <div class="space-x-6">
-            <a href="{% url 'item:new'%}" class="text-lg font-semibold hover:text-gray-500">New Key</a>
-            <a href="{% url 'item:browse' %}" class="text-lg font-semibold hover:text-gray-500">Key Market</a>
-            {% if request.user.is_authenticated%}
-                
+    <nav class="nav-gradient py-4 px-6 flex justify-between items-center shadow-lg">
+        <a href="/" class="text-2xl font-bold text-white hover:text-gray-200 transition duration-300">
+            <i class="fas fa-gamepad mr-2"></i>GameVerse
+        </a>
+        <div class="space-x-8">
+            <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-gray-200 transition duration-300">Browse</a>
+            {% if request.user.is_authenticated %}
                 <a href="{% url 'conversation:inbox' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
-                <a href="{% url 'dashboard:index'%}" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
+                <a href="{% url 'dashboard:index' %}" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
+                
+                {% if request.user.is_superuser %}
+                    <a href="{% url 'item:new' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">New item</a>
+                {% endif %}
+                
                 <form method="POST" action="{% url 'core:logout' %}" class="inline-block">
                     {% csrf_token %}
                     <button type="submit" class="px-6 py-3 text-lg font-semibold bg-red-400 text-white rounded-xl hover:bg-orange-700">Log out</button>
-                    
                 </form>
-                
-
             {%else%}
-                <a href="{% url 'core:signup' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sing up</a>
+                <a href="{% url 'core:signup' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>
                 <a href="{%url 'core:login' %}" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Log in</a>
             {% endif %}
-
         </div>
     </nav>
 
-    <div class="px-6 py-6">
+    <div class="px-6 py-6 min-h-[calc(100vh-80px)]">
         {% block content %}
-
         {% endblock %}
-
     </div>
 
-
-    <footer class="py-10 px-6 bg-gray-900 text-gray-300">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-            <!-- About -->
-            <div>
-                <h3 class="mb-4 text-xl font-semibold text-white">About GameVerse</h3>
-                <p class="text-sm leading-relaxed text-gray-400">
-                At GameVerse, we bring gamers together to discover, share, and buy game keys easily and quickly. Whether you’re hunting for your next favorite game or looking to trade with fellow players, we’ve got you covered. Join our community and level up your gaming experience!
-                </p>
-            </div>
-            <!-- Menu -->
-            <div>
-                <h3 class="mb-4 text-xl font-semibold text-white">Menu</h3>
-                <ul class="space-y-3">
-                    <li><a href="{% url 'core:about' %}" class="hover:text-teal-400 transition">About</a></li>
-                    <li><a href="{% url 'core:contact' %}" class="hover:text-teal-400 transition">Contact</a></li>
-                    <li><a href="#" class="hover:text-teal-400 transition">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-teal-400 transition">Terms of Use</a></li>
-                </ul>
-            </div>
-
-            <!-- Socials -->
-            <div>
-                <h3 class=" mb-4 text-xl font-semibold text-white">Follow Us</h3>
-                <ul class="flex space-x-6">
-                    <li><a href="#" class="hover:text-teal-400 transition">Facebook</a></li>
-                    <li><a href="#" class="hover:text-teal-400 transition">Twitter</a></li>
-                    <li><a href="#" class="hover:text-teal-400 transition">Instagram</a></li>
-                </ul>
+    <footer class="bg-gray-900 text-gray-400 py-12 px-6">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+        <!--what is GameVerse-->
+        <div>
+            <h3 class="text-xl font-semibold text-white luckiest-guy-regular mb-4">What is GameVerse?</h3>
+            <p class="text-sm leading-relaxedtext-lg text-gray-400">GameVerse is a digital space for gamers <br> to exchange, 
+                connect, and grow their <br> 
+                gaming experience.
+            </p>
+        </div>
+        <!--useful links-->
+        <div>
+            <h3 class="text-xl font-semibold text-white luckiest-guy-regular mb-4">Useful Links</h3>
+            <ul class="space-y-3">
+                <li>
+                    <a href="{% url 'core:contact' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Contact</a>                   
+                </li>
+                <li>
+                    <a href="{% url 'core:privacy' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Privacy Policy</a>                 
+                </li>
+                <li>
+                    <a href="{% url 'core:termsofuse' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Terms Of Use</a>                   
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h3 class="text-xl font-semibold text-white mb-4 luckiest-guy-regular">Follow Us</h3>
+            <div class="flex space-x-4">
+                <a href="#" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="GitHub"><i class="fab fa-github"></i></a>
             </div>
         </div>
-        <div class="mt-10 text-center text-sm text-gray-500 border-t border-gray-700 pt-6">
-            © 2025 GameVerse. All rights reserved.
-        </div>
+      </div>
+      <div class="mt-12 border-t border-gray-700 pt-6 text-center text-sm text-gray-500 select-none">
+        © 2025 GameVerse. All rights reserved.
+      </div>
+        
     </footer>
     <!-- Particles.js -->
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>

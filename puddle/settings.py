@@ -49,13 +49,10 @@ INSTALLED_APPS = [
     'conversation',
 ]
 
-TAILWIND_APP_NAME = 'theme'
-
-NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
-
-INTERNAL_IPS = [
-    "127.0.0.1",
+INSTALLED_APPS += [
+    'channels',
 ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -84,7 +81,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'puddle.wsgi.application'
+ASGI_APPLICATION = 'puddle.asgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
