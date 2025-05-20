@@ -65,18 +65,28 @@
         <h2 class="text-3xl font-bold text-center mb-8 text-gray-100">Newest Games</h2>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {% for item in items %}
-                <div class="game-card bg-white rounded-lg">
+                <div class="game-card bg-white rounded-lg overflow-hidden relative group">
                     <a href="{% url 'item:detail' item.id %}" class="block">
-                        <div class="image-container">
+                        <div class="image-container relative">
                             <img src="{{ item.image.url }}" 
                                  class="game-image"
                                  alt="{{ item.name }}">
+
+                            
                         </div>
-                        <div class="p-4">
+                        
+
+                        
+                    </a>
+                    <!--Add to cart button-->
+                    <button title="Add to Cart" type="button" value="{{item.id}}" id="add-cart" class="absolute top-2 right-2 bg-teal-500 text-white rounded-full w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 shadow-lg hover:bg-teal-600 z-10">
+                        <i class="fas fa-plus"></i>
+                    </button>
+
+                    <div class="p-4">
                             <h3 class="font-medium text-gray-100 truncate mb-2">{{ item.name }}</h3>
                             <div class="price-tag mb-2 text-teal-400">${{ item.price }}</div>
-                        </div>
-                    </a>
+                    </div>       
                 </div>
             {% endfor %}
         </div>
@@ -91,21 +101,35 @@
         </div>
     {% endif %}
 
-    <div class="mt-6 px-6 py-12 bg-slate-800/50 rounded-xl backdrop-blur-sm border border-slate-700">
-        <h2 class="mb-12 text-2xl text-center text-gray-100">Categories</h2>
-        <div class="grid grid-cols-3 gap-1">
-            {% for category in categories %}
-                <div class="w-52 mx-auto">
-                    <a href="" class="block transition hover:-translate-y-1">
-                        <div class="p-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-teal-500">
-                            <h2 class="text-2xl text-gray-100">{{ category.name }}</h2>
-                            <p class="text-teal-400 text-sm">{{ category.items.count }} items</p>
+     <!-- Category Carousel -->
+    <div class="mt-12 px-6 py-12 bg-slate-800/50 rounded-xl backdrop-blur-sm border border-slate-700 relative">
+        <h2 class="mb-8 text-2xl text-center text-gray-100">Categories</h2>
+
+        <div class="relative">
+            <div id="category-carousel" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar px-2">
+                {% for category in categories %}
+                    <div class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border border-slate-700 hover:border-teal-500 transition">
+                        <img src="{{ MEDIA_URL }}item_images/{{ category.name }}.jpg" 
+                             alt="{{ category.name }}"
+                            class="absolute inset-0 w-full h-full object-cover blur-sm group-hover:scale-110 transition duration-300" />
+                        <div class="absolute inset-0 bg-black/40"></div>
+                        <div class="relative h-full flex items-center justify-center group-hover:items-end transition-all duration-300 p-4">
+                            <span class="text-white font-semibold text-lg text-center transition-all duration-300">{{ category.name }}</span>
                         </div>
+                    </div>
+                {% endfor %}
+            </div>
 
-                    </a>
-        </div>
 
-            {% endfor %}
+            <!-- Scroll buttons -->
+            <button onclick="scrollCategories(-300)"
+                    class="absolute left-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button onclick="scrollCategories(300)"
+                    class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
     </div>
 
@@ -116,67 +140,142 @@
 
 {% block scripts %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const track = document.getElementById('carouselTrack');
-    const slides = track.querySelectorAll('.carousel-slide');
-    let currentSlide = 0;
-    let isTransitioning = false;
+    document.addEventListener('DOMContentLoaded', function() {
+        const track = document.getElementById('carouselTrack');
+        const slides = track.querySelectorAll('.carousel-slide');
+        let currentSlide = 0;
+        let isTransitioning = false;
 
-    function nextSlide() {
-        if (isTransitioning) return;
-        isTransitioning = true;
+        function nextSlide() {
+            if (isTransitioning) return;
+            isTransitioning = true;
 
-        // Hide current slide
-        slides[currentSlide].classList.remove('active');
+            // Hide current slide
+            slides[currentSlide].classList.remove('active');
+            
+            // Move to next slide
+            currentSlide = (currentSlide + 1) % slides.length;
+            
+            // Show next slide
+            slides[currentSlide].classList.add('active');
+
+            setTimeout(() => {
+                isTransitioning = false;
+            }, 500);
+        }
+
+        // Set initial state
+        slides[0].classList.add('active');
+
+        // Start autoplay
+        setInterval(nextSlide, 5000);
+
+        // Optional: Add navigation buttons
+        const carousel = track.parentElement;
         
-        // Move to next slide
-        currentSlide = (currentSlide + 1) % slides.length;
+        // Previous button
+        const prevButton = document.createElement('button');
+        prevButton.className = 'absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 transition z-10';
+        prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
         
-        // Show next slide
-        slides[currentSlide].classList.add('active');
-
-        setTimeout(() => {
-            isTransitioning = false;
-        }, 500);
-    }
-
-    // Set initial state
-    slides[0].classList.add('active');
-
-    // Start autoplay
-    setInterval(nextSlide, 5000);
-
-    // Optional: Add navigation buttons
-    const carousel = track.parentElement;
-    
-    // Previous button
-    const prevButton = document.createElement('button');
-    prevButton.className = 'absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 transition z-10';
-    prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
-    
-    // Next button
-    const nextButton = document.createElement('button');
-    nextButton.className = 'absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 transition z-10';
-    nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
-    
-    carousel.appendChild(prevButton);
-    carousel.appendChild(nextButton);
-    
-    // Add click handlers
-    prevButton.addEventListener('click', () => {
-        if (isTransitioning) return;
-        isTransitioning = true;
+        // Next button
+        const nextButton = document.createElement('button');
+        nextButton.className = 'absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 transition z-10';
+        nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
         
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-        slides[currentSlide].classList.add('active');
+        carousel.appendChild(prevButton);
+        carousel.appendChild(nextButton);
         
-        setTimeout(() => {
-            isTransitioning = false;
-        }, 500);
+        // Add click handlers
+        prevButton.addEventListener('click', () => {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            
+            setTimeout(() => {
+                isTransitioning = false;
+            }, 500);
+        });
+        
+        nextButton.addEventListener('click', nextSlide);
     });
     
-    nextButton.addEventListener('click', nextSlide);
+
+
+
+
+
+
+    //check if btn add to cart pressed 
+    $(document).on('click' , '#add-cart',function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart:cart_add" %}',
+            data: {
+                product_id: $('#add-cart').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+
+            success: function(json){
+                console.log(json);
+                document.getElementById('cart_quantity').textContent = json.qty
+            }
+            
+        
+
+
+
+
+        });
+
+    });
+
+    //massil categories 
+    document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('category-carousel');
+    if (!container) return;
+
+    const originalItems = Array.from(container.querySelectorAll('.carousel-item'));
+    const itemCount = originalItems.length;
+    const itemWidth = originalItems[0].offsetWidth + 24; // 24 = space-x-6 approx
+
+    // Clone à gauche
+    originalItems.slice().reverse().forEach(item => {
+        const clone = item.cloneNode(true);
+        clone.classList.add('cloned');
+        container.insertBefore(clone, container.firstChild);
+    });
+
+    // Clone à droite
+    originalItems.forEach(item => {
+        const clone = item.cloneNode(true);
+        clone.classList.add('cloned');
+        container.appendChild(clone);
+    });
+
+    // Scroll initial vers les vrais items
+    container.scrollLeft = itemCount * itemWidth;
+
+    // Réajuster quand on approche des extrémités
+    container.addEventListener('scroll', () => {
+        const maxScroll = itemWidth * itemCount * 2;
+        if (container.scrollLeft < itemWidth) {
+            container.scrollLeft += itemCount * itemWidth;
+        } else if (container.scrollLeft > maxScroll - itemWidth) {
+            container.scrollLeft -= itemCount * itemWidth;
+        }
+    });
 });
+
+function scrollCategories(offset) {
+    const container = document.getElementById('category-carousel');
+    if (!container) return;
+    container.scrollBy({ left: offset, behavior: 'smooth' });
+}
 </script>
 {% endblock %}

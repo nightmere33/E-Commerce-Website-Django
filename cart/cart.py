@@ -11,3 +11,18 @@ class Cart():
       
         # make sure car is available in all pages
         self.cart = cart
+
+    def add(self,product):
+
+        product_id = str(product.id)
+
+        #logic
+        if product_id not in self.cart:
+            pass
+        else:
+            self.cart[product_id] = {'price' : str(product.price),}     
+        
+        self.session.modified = True    
+
+    def __len__(self):
+        return len(self.cart)    
