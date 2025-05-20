@@ -102,8 +102,10 @@
                             <h2 class="text-2xl text-gray-100">{{ category.name }}</h2>
                             <p class="text-teal-400 text-sm">{{ category.items.count }} items</p>
                         </div>
+
                     </a>
-                </div>
+        </div>
+
             {% endfor %}
         </div>
     </div>
@@ -121,6 +123,25 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentSlide = 0;
     let autoplayInterval;
 
+    // Create indicators
+    const indicators = document.createElement('div');
+    indicators.className = 'carousel-indicators';
+    
+    slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.className = `indicator ${index === 0 ? 'active' : ''}`;
+        dot.addEventListener('click', () => goToSlide(index));
+        indicators.appendChild(dot);
+    });
+    track.parentElement.appendChild(indicators);
+
+    function updateIndicators() {
+        const dots = document.querySelectorAll('.indicator');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlide);
+        });
+    }
+
     function goToSlide(index) {
         // Hide current slide
         slides[currentSlide].classList.remove('active');
@@ -128,6 +149,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show new slide
         currentSlide = index;
         slides[currentSlide].classList.add('active');
+        
+        // Update indicators
+        updateIndicators();
     }
 
     function nextSlide() {
@@ -154,6 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set initial state and start autoplay
     slides[0].classList.add('active');
+    updateIndicators(); // Add this
     autoplayInterval = setInterval(nextSlide, 5000);
 
     // Pause on hover
