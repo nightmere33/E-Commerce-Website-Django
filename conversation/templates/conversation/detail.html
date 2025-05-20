@@ -3,24 +3,51 @@
 {% block title %} Conversation {% endblock %}
 
 {% block content %}
-<div class="space-y-6">
-    {%for message in conversation.messages.all %}
-        <div class="p-6 flex {% if message.created_by == request.user  %} bg-blue-100 {% else %} bg-gray-100 {% endif %} rounded-xl">
-        
-            <div class="text-green">
-                <p class="mb-4 text-purple"><strong> {{message.created_by.username}} </strong>@{{message.created_at}}    </p>
-                <p class="text-black"> {{message.content}} </p>
+<div class="max-w-4xl mx-auto p-6">
+    <div class="space-y-4">
+        {% for message in messages %}
+            <div class="p-6 {% if message.created_by == request.user %}bg-teal-500/20 border-teal-500{% else %}bg-slate-800/50 border-slate-700{% endif %} rounded-xl border">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-semibold text-gray-100">{{ message.created_by.username }}</span>
+                    <span class="text-sm text-gray-400">{{ message.created_at|date:"M d, Y H:i" }}</span>
+                </div>
+                <p class="text-gray-300">{{ message.content }}</p>
             </div>
-        
-        
-        </div>
-    {% endfor %}
-</div>
+        {% endfor %}
 
-<form method ="post" action="." class="mt-6">
-    {% csrf_token %}
-    
-    {{form.as_p}}
-    <button type="submit" class="py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">Send </button>
-</form>
+        <!-- Pagination -->
+        {% if messages.paginator.num_pages > 1 %}
+        <div class="flex justify-center space-x-4 mt-6">
+            {% if messages.has_previous %}
+                <a href="?page={{ messages.previous_page_number }}" class="text-teal-400 hover:text-teal-300">Previous</a>
+            {% endif %}
+            
+            <span class="text-gray-400">
+                Page {{ messages.number }} of {{ messages.paginator.num_pages }}
+            </span>
+            
+            {% if messages.has_next %}
+                <a href="?page={{ messages.next_page_number }}" class="text-teal-400 hover:text-teal-300">Next</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Message Form -->
+    <form method="post" action="." class="mt-6">
+        {% csrf_token %}
+        <div class="space-y-4">
+            {{ form.content.errors }}
+            <textarea name="content" 
+                      class="w-full p-4 bg-slate-800 border border-slate-700 rounded-xl text-gray-100 placeholder-gray-400 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                      placeholder="Write your message..."
+                      rows="3"></textarea>
+            
+            <button type="submit" 
+                    class="px-6 py-3 bg-teal-500 text-white rounded-xl hover:bg-teal-600 transition duration-200">
+                Send Message
+            </button>
+        </div>
+    </form>
+</div>
 {% endblock %}
