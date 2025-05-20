@@ -13,4 +13,5 @@ urlpatterns=[
     path('logout/', auth_views.LogoutView.as_view(next_page='core:index'), name='logout'),
     path('privacy/', views.privacy, name='privacy'),
     path('termsofuse/', views.termsofuse, name='termsofuse'),
+    path('edit_profile/', views.edit_profile, name='edit_profile'),
 ]
