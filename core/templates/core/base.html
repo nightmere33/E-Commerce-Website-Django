@@ -177,7 +177,7 @@
             </div>
         </div>
 
-        
+
         <div class="space-x-8">
             <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-gray-200 transition duration-300">Browse</a>
             {% if request.user.is_authenticated %}
@@ -188,10 +188,33 @@
                     <a href="{% url 'item:new' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">New item</a>
                 {% endif %}
                 
-                <form method="POST" action="{% url 'core:logout' %}" class="inline-block">
-                    {% csrf_token %}
-                    <button type="submit" class="px-6 py-3 text-lg font-semibold bg-red-400 text-white rounded-xl hover:bg-orange-700">Log out</button>
-                </form>
+                <div class="relative group inline-block" tabindex="0">
+                    <!-- Bouton cercle -->
+                    <button class="w-10 h-10 rounded-full bg-teal-400 flex items-center justify-center hover:bg-teal-600 transition duration-300 focus:outline-none">
+                        <i class="fas fa-user-edit text-white"></i>
+                    </button>
+
+                    <!-- Menu déroulant -->
+                    <div class="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-700 rounded-xl shadow-lg z-50 
+                        opacity-0 invisible 
+                        group-hover:opacity-100 group-hover:visible 
+                        group-focus-within:opacity-100 group-focus-within:visible 
+                        transition-all duration-200">
+        
+                        <a href="{% url 'core:edit_profile' %}" class="block px-4 py-2 text-sm text-white hover:bg-slate-700 transition">Edit Profile</a>
+                        <a href="{% url 'dashboard:index' %}" class="block px-4 py-2 text-sm text-white hover:bg-slate-700 transition">Dashboard</a>
+        
+                        <form method="POST" action="{% url 'core:logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-slate-700 transition">
+                                 Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+
+
             {%else%}
                 <a href="{% url 'core:signup' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>
                 <a href="{%url 'core:login' %}" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Log in</a>
