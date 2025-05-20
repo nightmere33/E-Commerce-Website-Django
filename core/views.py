@@ -10,6 +10,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render
 from django.conf import settings  
 from item.models import Item, Category
+from django.shortcuts import render, get_object_or_404
 
 
 def index(request):
@@ -53,6 +54,19 @@ def privacy(request):
 
 def termsofuse(request):
     return render(request, 'core/termsofuse.html')
+
+from django.shortcuts import render, get_object_or_404
+from item.models import Item, Category
+
+def category_items(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    items = Item.objects.filter(category=category)
+
+    return render(request, 'category_items.html', {
+        'category': category,
+        'items': items,
+    })
+
 
 
 

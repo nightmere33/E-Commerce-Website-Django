@@ -16,6 +16,7 @@ urlpatterns=[
     path('privacy/', views.privacy, name='privacy'),
     path('termsofuse/', views.termsofuse, name='termsofuse'),
     path('edit-profile/', views.edit_profile, name='edit_profile'),
+    path('category/<int:category_id>/', views.category_items, name='category_items'),
 
 ]
 

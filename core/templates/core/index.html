@@ -98,15 +98,17 @@
         <div class="relative">
             <div id="category-carousel" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar px-2">
                 {% for category in categories %}
-                    <div class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border border-slate-700 hover:border-teal-500 transition">
+                    <a href="{% url 'core:category_items' category.id %}" class="carousel-item group relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden cursor-pointer border border-slate-700 hover:border-teal-500 transition">
+
                         <img src="{{ MEDIA_URL }}item_images/{{ category.name }}.jpg" 
-                             alt="{{ category.name }}"
+                            alt="{{ category.name }}"
                             class="absolute inset-0 w-full h-full object-cover blur-sm group-hover:scale-110 transition duration-300" />
                         <div class="absolute inset-0 bg-black/40"></div>
                         <div class="relative h-full flex items-center justify-center group-hover:items-end transition-all duration-300 p-4">
                             <span class="text-white font-semibold text-lg text-center transition-all duration-300">{{ category.name }}</span>
                         </div>
-                    </div>
+                    </a>
+   
                 {% endfor %}
             </div>
 
@@ -193,41 +195,42 @@ document.addEventListener('DOMContentLoaded', function() {
     
     nextButton.addEventListener('click', nextSlide);
 });
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById('category-carousel');
-    if (!container) return;
 
-    const originalItems = Array.from(container.querySelectorAll('.carousel-item'));
-    const itemCount = originalItems.length;
-    const itemWidth = originalItems[0].offsetWidth + 24; // 24 = space-x-6 approx
+    if (container) {
+        const originalItems = Array.from(container.children);
 
-    // Clone à gauche
-    originalItems.slice().reverse().forEach(item => {
-        const clone = item.cloneNode(true);
-        clone.classList.add('cloned');
-        container.insertBefore(clone, container.firstChild);
-    });
-
-    // Clone à droite
-    originalItems.forEach(item => {
-        const clone = item.cloneNode(true);
-        clone.classList.add('cloned');
-        container.appendChild(clone);
-    });
-
-    // Scroll initial vers les vrais items
-    container.scrollLeft = itemCount * itemWidth;
-
-    // Réajuster quand on approche des extrémités
-    container.addEventListener('scroll', () => {
-        const maxScroll = itemWidth * itemCount * 2;
-        if (container.scrollLeft < itemWidth) {
-            container.scrollLeft += itemCount * itemWidth;
-        } else if (container.scrollLeft > maxScroll - itemWidth) {
-            container.scrollLeft -= itemCount * itemWidth;
+        // Duplique les catégories 2 fois pour faire boucle
+        for (let i = 0; i < 2; i++) {
+            originalItems.forEach(item => {
+                const clone = item.cloneNode(true);
+                clone.classList.add('cloned');
+                container.appendChild(clone);
+            });
         }
-    });
+
+        // Scroll initial vers le "milieu"
+        const totalWidth = container.scrollWidth;
+        container.scrollLeft = totalWidth / 3;
+
+        // Si on atteint le bord, recentre vers le milieu
+        container.addEventListener('scroll', () => {
+            const scrollLeft = container.scrollLeft;
+            const scrollWidth = container.scrollWidth;
+            const containerWidth = container.clientWidth;
+
+            const third = scrollWidth / 3;
+
+            if (scrollLeft < third / 2) {
+                container.scrollLeft = scrollLeft + third;
+            } else if (scrollLeft + containerWidth > third * 2.5) {
+                container.scrollLeft = scrollLeft - third;
+            }
+        });
+    }
 });
+
 
 function scrollCategories(offset) {
     const container = document.getElementById('category-carousel');
