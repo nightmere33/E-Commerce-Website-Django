@@ -1,6 +1,6 @@
 from django import forms
 from .models import Item
-INPUT_CLASSES = 'w-full py-3 px-4 rounded-xl border border-gray-300 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 transition duration-200'
+INPUT_CLASSES = 'w-full py-3 px-4 rounded-xl border border-slate-600 bg-slate-700/50 text-gray-100 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition duration-200 placeholder-gray-400'
 class NewItemForm(forms.ModelForm):
     class Meta:
         model=Item

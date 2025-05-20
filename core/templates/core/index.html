@@ -20,7 +20,6 @@
         </div>
     </div>
 
-<<<<<<< HEAD
     <!-- Featured Games Carousel -->
     <div class="max-w-7xl mx-auto my-12">
         <h2 class="text-3xl font-bold text-center mb-8 text-gray-100">Featured Games</h2>
@@ -32,10 +31,11 @@
                     <div class="carousel-container">
                         <!-- Main Feature -->
                         <div class="main-feature">
-                            <img src="{{ main_item.image.url }}" alt="{{ main_item.name }}">
+                            <img src="{{ main_item.image.url }}" 
+                                 alt="{{ main_item.name }}">
                             <div class="feature-info">
-                                <h3 class="text-2xl font-bold text-white">{{ main_item.name }}</h3>
-                                <p class="text-teal-400 font-bold">${{ main_item.price }}</p>
+                                <h3 class="text-2xl font-bold text-white mb-2">{{ main_item.name }}</h3>
+                                <p class="text-teal-400 font-bold text-xl">${{ main_item.price }}</p>
                             </div>
                         </div>
                         
@@ -59,9 +59,6 @@
             </div>
         </div>
     </div>
-=======
-    
->>>>>>> cba063353e4f94fc1f586ebbba08911420855a08
 
     <!-- Newest Items Section -->
     <div class="max-w-7xl mx-auto">
@@ -118,8 +115,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const track = document.getElementById('carouselTrack');
     const slides = track.querySelectorAll('.carousel-slide');
     let currentSlide = 0;
+    let isTransitioning = false;
 
     function nextSlide() {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
         // Hide current slide
         slides[currentSlide].classList.remove('active');
         
@@ -128,6 +129,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show next slide
         slides[currentSlide].classList.add('active');
+
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 500);
     }
 
     // Set initial state
@@ -135,6 +140,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Start autoplay
     setInterval(nextSlide, 5000);
+
+    // Optional: Add navigation buttons
+    const carousel = track.parentElement;
+    
+    // Previous button
+    const prevButton = document.createElement('button');
+    prevButton.className = 'absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 transition z-10';
+    prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+    
+    // Next button
+    const nextButton = document.createElement('button');
+    nextButton.className = 'absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 transition z-10';
+    nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+    
+    carousel.appendChild(prevButton);
+    carousel.appendChild(nextButton);
+    
+    // Add click handlers
+    prevButton.addEventListener('click', () => {
+        if (isTransitioning) return;
+        isTransitioning = true;
+        
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        slides[currentSlide].classList.add('active');
+        
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 500);
+    });
+    
+    nextButton.addEventListener('click', nextSlide);
 });
 </script>
 {% endblock %}
