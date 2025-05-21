@@ -93,31 +93,32 @@
         <div class="absolute inset-0 bg-black bg-opacity-40"></div>
     </div>
 
-    <!-- Content container -->
-    <div class="relative z-10 px-4 py-12">
+          <!-- Newest Items Section -->
+    <div class="max-w-7xl mx-auto">
         <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 animate-zoom">Newest Games</h2>
-
-         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {% for item in items %}
-            <div class="game-card bg-white rounded-lg overflow-hidden relative group">
-                <a href="{% url 'item:detail' item.id %}" class="block">
-                    <div class="image-container relative">
-                        <img src="{{ item.image.url }}" class="game-image" alt="{{ item.name }}" />
-                    </div>
-                </a>
+                <div class="game-card bg-white rounded-lg overflow-hidden relative group">
+                    <a href="{% url 'item:detail' item.id %}" class="block">
+                        <div class="image-container relative">
+                            <img src="{{ item.image.url }}" 
+                                 class="game-image"
+                                 alt="{{ item.name }}">
+                         </div>
+                        </a>
+                    <!--Add to cart button-->
+                    <button title="Add to Cart" type="button" value="{{item.id}}" id="add-cart" class="absolute top-2 right-2 bg-teal-500 text-white rounded-full w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 shadow-lg hover:bg-teal-600 z-10">
+                        <i class="fas fa-plus"></i>
+                    </button>
 
-                <button title="Add to Cart" type="button" value="{{item.id}}" id="add-cart"
-                    class="absolute top-2 right-2 bg-teal-500 text-white rounded-full w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 shadow-lg hover:bg-teal-600 z-10">
-                    <i class="fas fa-plus"></i>
-                </button>
-
-                <div class="p-4">
-                    <h3 class="font-medium text-white truncate mb-2">{{ item.name }}</h3>
-                    <div class="price-tag mb-2 text-white">${{ item.price }}</div>
+                    <div class="p-4">
+                            <h3 class="font-medium text-gray-100 truncate mb-2">{{ item.name }}</h3>
+                            <div class="price-tag mb-2 text-teal-400">${{ item.price }}</div>
+                    </div>       
                 </div>
-            </div>
             {% endfor %}
         </div>
+    </div>
 
         {% if items|length >= 6 %}
         <div class="text-center mt-6">
@@ -141,10 +142,10 @@
                         class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border border-slate-700 hover:border-teal-500 transition block">
                         <img src="{{ MEDIA_URL }}item_images/{{ category.name }}.jpg" 
                              alt="{{ category.name }}"
-                            class="absolute inset-0 w-full h-full object-cover blur-sm group-hover:scale-110 transition duration-300" />
+                            class="absolute inset-0 w-full h-full object-cover  group-hover:scale-110 transition duration-300" />
                         <div class="absolute inset-0 bg-black/40"></div>
-                        <div class="relative h-full flex items-center justify-center group-hover:items-end transition-all duration-300 p-4">
-                            <span class="text-white font-semibold text-lg text-center transition-all duration-300">{{ category.name }}</span>
+                        <div class="relative h-full flex items-center justify-center group-hover:items-end transition-[justify-content] duration-[1500ms] ease-in-out p-4">
+                            <span class="text-white font-semibold text-lg text-center transition-[justify-content] duration-[1500ms] ease-in-out">{{ category.name }}</span>
                         </div>
                     </a>
                 {% endfor %}
