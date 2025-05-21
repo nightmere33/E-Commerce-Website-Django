@@ -4,9 +4,19 @@
 
 {% block content %}
 
-    <p>makach cart roh tel3ab b3id </p>
+    <h2 class="text-xl font-bold mb-4">Your Cart</h2>
 
-
+    {% if cart_products %}
+        <ul>
+            {% for product in cart_products %}
+                <li class="mb-2">
+                    <strong>{{ product.name }}</strong> — Quantity: {{ product.quantity }} — Price: {{ product.price }}
+                </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>Your cart is empty.</p>
+    {% endif %}
 
 
 {% endblock %}
