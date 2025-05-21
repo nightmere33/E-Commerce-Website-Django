@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}Welcome{% endblock %}
 
@@ -26,31 +27,32 @@
         
         <div class="featured-carousel">
             <div class="carousel-track" id="carouselTrack">
-                {% for main_item in items|slice:":6" %}
+                {% for main_item in items|slice:":10" %}  <!-- Changed from :6 to :10 -->
                 <div class="carousel-slide {% if forloop.first %}active{% endif %}">
                     <div class="carousel-container">
                         <!-- Main Feature -->
                         <div class="main-feature">
-                            <img src="{{ main_item.image.url }}" alt="{{ main_item.name }}">
+                            {% if main_item.carousel_image %}
+                                <img src="{{ main_item.carousel_image.url }}" alt="{{ main_item.name }}">
+                            {% else %}
+                                <img src="{{ main_item.image.url }}" alt="{{ main_item.name }}">
+                            {% endif %}
                             <div class="feature-info">
-                                <h3 class="text-2xl font-bold text-white">{{ main_item.name }}</h3>
-                                <p class="text-teal-400 font-bold">${{ main_item.price }}</p>
+                                <h3 class="text-2xl font-bold text-white mb-2">{{ main_item.name }}</h3>
+                                <p class="text-teal-400 font-bold text-xl">${{ main_item.price }}</p>
                             </div>
                         </div>
                         
                         <!-- Side Features -->
                         <div class="side-features">
-                            {% with remaining_items=items|slice:"1:6" %}
-                                {% for side_item in remaining_items %}
-                                    {% if side_item != main_item and forloop.counter <= 4 %}
+                            {% with next_items=items|get_next_items:forloop.counter0 %}
+                                {% for side_item in next_items %}
                                     <div class="side-feature">
                                         <img src="{{ side_item.image.url }}" alt="{{ side_item.name }}">
                                         <div class="feature-info">
                                             <h4 class="text-white">{{ side_item.name }}</h4>
-                                            <p class="text-teal-400">${{ side_item.price }}</p>
                                         </div>
                                     </div>
-                                    {% endif %}
                                 {% endfor %}
                             {% endwith %}
                         </div>
@@ -121,7 +123,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const track = document.getElementById('carouselTrack');
     const slides = track.querySelectorAll('.carousel-slide');
     let currentSlide = 0;
-    let autoplayInterval;
+    let autoplayInterval = null;
+    let isHovered = false;
 
     // Create indicators
     const indicators = document.createElement('div');
@@ -158,6 +161,19 @@ document.addEventListener('DOMContentLoaded', function() {
         goToSlide((currentSlide + 1) % slides.length);
     }
 
+    function startAutoplay() {
+        if (!isHovered && !autoplayInterval) {
+            autoplayInterval = setInterval(nextSlide, 5000);
+        }
+    }
+
+    function stopAutoplay() {
+        if (autoplayInterval) {
+            clearInterval(autoplayInterval);
+            autoplayInterval = null;
+        }
+    }
+
     // Navigation buttons
     const prevButton = document.createElement('button');
     prevButton.className = 'carousel-nav-button carousel-prev';
@@ -176,15 +192,37 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     nextButton.addEventListener('click', nextSlide);
 
-    // Set initial state and start autoplay
+    // Set initial state
     slides[0].classList.add('active');
-    updateIndicators(); // Add this
-    autoplayInterval = setInterval(nextSlide, 5000);
+    updateIndicators();
+    startAutoplay();
 
-    // Pause on hover
-    track.parentElement.addEventListener('mouseenter', () => clearInterval(autoplayInterval));
-    track.parentElement.addEventListener('mouseleave', () => {
-        autoplayInterval = setInterval(nextSlide, 5000);
+    // Pause on hover for entire carousel container
+    const carouselContainer = track.parentElement;
+    const navigationButtons = [prevButton, nextButton];
+
+    // Add hover listeners to carousel container
+    carouselContainer.addEventListener('mouseenter', () => {
+        isHovered = true;
+        stopAutoplay();
+    });
+
+    carouselContainer.addEventListener('mouseleave', () => {
+        isHovered = false;
+        startAutoplay();
+    });
+
+    // Add hover listeners to navigation buttons
+    navigationButtons.forEach(button => {
+        button.addEventListener('mouseenter', () => {
+            isHovered = true;
+            stopAutoplay();
+        });
+        
+        button.addEventListener('mouseleave', () => {
+            isHovered = false;
+            startAutoplay();
+        });
     });
 });
 </script>
