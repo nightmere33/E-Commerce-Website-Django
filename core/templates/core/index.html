@@ -127,6 +127,7 @@
                 {% endfor %}
             </div>
         </div>
+    </div>
 
         {% if items|length >= 6 %}
         <div class="text-center mt-12 mb-4">
@@ -150,12 +151,19 @@
                         class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border border-slate-700 hover:border-teal-500 transition block">
                         <img src="{{ MEDIA_URL }}item_images/{{ category.name }}.jpg" 
                              alt="{{ category.name }}"
+<<<<<<< HEAD
                             class="absolute inset-0 w-full h-full object-cover group-hover:blur-sm group-hover:scale-110 transition duration-500" />
                         <div class="absolute inset-0 bg-black/40"></div>
                         <div class="relative h-full flex items-center justify-center p-4">
                             <span class="text-white font-semibold text-lg text-center transform transition duration-[1500ms] ease-in-out group-hover:translate-y-16">
                                  {{ category.name }}
                             </span>
+=======
+                            class="absolute inset-0 w-full h-full object-cover  group-hover:scale-110 transition duration-300" />
+                        <div class="absolute inset-0 bg-black/40"></div>
+                        <div class="relative h-full flex items-center justify-center group-hover:items-end transition-[justify-content] duration-[1500ms] ease-in-out p-4">
+                            <span class="text-white font-semibold text-lg text-center transition-[justify-content] duration-[1500ms] ease-in-out">{{ category.name }}</span>
+>>>>>>> f31f81f (cat)
                         </div>
                     </a>
                 {% endfor %}
