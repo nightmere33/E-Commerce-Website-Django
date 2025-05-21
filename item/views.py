@@ -8,12 +8,13 @@ from .forms import NewItemForm,EditItemForm
 
 def browse(request):
     query = request.GET.get('query','')
-    category_id = request.GET.get('category',0)
+    category_id = request.GET.get('category')
     categories = Category.objects.all()
     items = Item.objects.filter(is_sold=False)
 
-    if category_id:
-        items=items.filter(Category__id=category_id)
+    if category_id and category_id.isdigit():
+        items = items.filter(Category__id=int(category_id))
+
     # if the query is not empty we filter the items by name or description
 
 
@@ -24,7 +25,8 @@ def browse(request):
         'items':items,
         'query':query,
         'categories':categories,
-        'category_id':int(category_id),
+        'category_id': int(category_id) if category_id and category_id.isdigit() else None,
+
     })
 
 

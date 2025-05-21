@@ -253,6 +253,7 @@
                 <i class="fas fa-chevron-down ml-2 text-sm"></i>
             </button>
             <div class="absolute left-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all z-50">
+                <a href="{% url 'item:browse' %}" class="block px-4 py-2 hover:bg-teal-100">All</a>
                 {% for category in categories %}
                     <a href="{% url 'item:browse' %}?category={{ category.id }}" class="block px-4 py-2 hover:bg-teal-100">
                         {{ category.name }}
