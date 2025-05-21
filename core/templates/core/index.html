@@ -7,17 +7,29 @@
 {% block content %}
 
     <!-- Hero Section with background image -->
-    <div class="relative bg-gradient-to-r from-teal-500 to-teal-700 text-white py-16 px-6 rounded-xl mb-12 overflow-hidden">
-        <div class="absolute inset-0 z-0">
+    <div class="relative text-white py-16 px-0 rounded-xl mb-12 overflow-hidden">
+
+        {% comment %} <div class="absolute inset-0 z-0">
             <img src="{% static 'images/hero-bg.jpg' %}" class="w-full h-full object-cover opacity-20" alt="background">
             <div class="absolute inset-0 bg-gradient-to-r from-teal-900/90 to-slate-900/90"></div>
+        </div> {% endcomment %}
+
+         <div class="absolute inset-0 z-0">
+            <!-- Video background -->
+            <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-40">
+                <source src="{{ MEDIA_URL }}video/vd.mp4" type="video/mp4">
+
+                Your browser does not support the video tag.
+            </video>
+            {% comment %} <div class="absolute inset-0 bg-gradient-to-r from-teal-900/90 to-slate-900/90"></div> {% endcomment %}
         </div>
-        <div class="max-w-4xl mx-auto text-center relative z-10">
+
+        <div class="max-w-4xl mx-auto text-center relative z-10 px-6">
             <h1 class="text-4xl md:text-5xl font-bold mb-6">Welcome to GameVerse</h1>
             <p class="text-xl mb-8">Discover the Ultimate Gaming Marketplace</p>
-            <a href="{% url 'item:browse' %}" class="bg-white text-teal-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300">
+            {% comment %} <a href="{% url 'item:browse' %}" class="bg-white text-teal-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300">
                 Explore Games
-            </a>
+            </a> {% endcomment %}
         </div>
     </div>
 
@@ -69,9 +81,21 @@
         </div>
     </div>
 
-    <!-- Newest Items Section -->
+    <div class="relative max-w-7xl mx-auto overflow-hidden rounded-xl">
+
+    <!-- Video background container -->
+    <div class="absolute inset-0 -z-10 w-full h-full">
+        <video autoplay muted loop playsinline class="w-full h-full object-cover">
+            <source src="{{ MEDIA_URL }}video/vd2.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
+        <!-- Optional overlay -->
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+    </div>
+
+          <!-- Newest Items Section -->
     <div class="max-w-7xl mx-auto">
-        <h2 class="text-3xl font-bold text-center mb-8 text-gray-100">Newest Games</h2>
+        <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 animate-zoom">Newest Games</h2>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {% for item in items %}
                 <div class="game-card bg-white rounded-lg overflow-hidden relative group">
@@ -80,13 +104,8 @@
                             <img src="{{ item.image.url }}" 
                                  class="game-image"
                                  alt="{{ item.name }}">
-
-                            
-                        </div>
-                        
-
-                        
-                    </a>
+                         </div>
+                        </a>
                     <!--Add to cart button-->
                     <button title="Add to Cart" type="button" value="{{item.id}}" id="add-cart" class="absolute top-2 right-2 bg-teal-500 text-white rounded-full w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 shadow-lg hover:bg-teal-600 z-10">
                         <i class="fas fa-plus"></i>
@@ -101,14 +120,16 @@
         </div>
     </div>
 
-    {% if items|length >= 6 %}
+        {% if items|length >= 6 %}
         <div class="text-center mt-6">
-            <a href="{% url 'item:browse' %}" 
-               class="inline-block px-8 py-4 bg-teal-500 text-white rounded-xl hover:bg-teal-600 transition duration-300">
+            <a href="{% url 'item:browse' %}"
+                 class="inline-block px-8 py-4 bg-white/10 backdrop-blur-md text-white rounded-xl hover:bg-white/20 transition duration-300">
                 View More Games
             </a>
         </div>
-    {% endif %}
+        {% endif %}
+        </div>
+    </div>
 
      <!-- Category Carousel -->
     <div class="mt-12 px-6 py-12 bg-slate-800/50 rounded-xl backdrop-blur-sm border border-slate-700 relative">
@@ -121,10 +142,10 @@
                         class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border border-slate-700 hover:border-teal-500 transition block">
                         <img src="{{ MEDIA_URL }}item_images/{{ category.name }}.jpg" 
                              alt="{{ category.name }}"
-                            class="absolute inset-0 w-full h-full object-cover blur-sm group-hover:scale-110 transition duration-300" />
+                            class="absolute inset-0 w-full h-full object-cover  group-hover:scale-110 transition duration-300" />
                         <div class="absolute inset-0 bg-black/40"></div>
-                        <div class="relative h-full flex items-center justify-center group-hover:items-end transition-all duration-300 p-4">
-                            <span class="text-white font-semibold text-lg text-center transition-all duration-300">{{ category.name }}</span>
+                        <div class="relative h-full flex items-center justify-center group-hover:items-end transition-[justify-content] duration-[1500ms] ease-in-out p-4">
+                            <span class="text-white font-semibold text-lg text-center transition-[justify-content] duration-[1500ms] ease-in-out">{{ category.name }}</span>
                         </div>
                     </a>
                 {% endfor %}
