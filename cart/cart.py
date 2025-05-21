@@ -52,3 +52,13 @@ class Cart():
             product.quantity = self.cart[str(product.id)]['quantity']
         #return the products
         return products
+
+    def delete(self, product):
+        print(f"Deleting product {product}")
+        product_id = str(product)
+        #delete the product from the cart
+        if product_id in self.cart:
+            del self.cart[product_id]
+            self.session.modified = True
+        else:
+            pass

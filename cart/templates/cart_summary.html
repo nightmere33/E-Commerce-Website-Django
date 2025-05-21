@@ -13,11 +13,21 @@
     <div class="lg:col-span-2">
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {% for product in cart_products %}
-                <div class="game-card bg-white rounded-lg">
-                    <a href="{% url 'item:detail' product.id %}" class="block">
-                        <div class="image-container">
-                            <img src="{{ product.image.url }}" class="game-image" alt="{{ product.name }}">
-                        </div>
+                <div class="game-card bg-white rounded-lg relative group">
+                        <!-- Delete Button - Positioned Top Right -->
+                        <button 
+                            type="button" 
+                            data-index="{{ product.id }}" 
+                            class="delete-product absolute top-2 right-2 z-10 bg-red-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 shadow-lg">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+
+                        <a href="{% url 'item:detail' product.id %}" class="block">
+                            <div class="image-container">
+                                <img src="{{ product.image.url }}" class="game-image" alt="{{ product.name }}">
+                            </div>
+                        </a>
+
                         <div class="p-4">
                             <h3 class="font-medium text-gray-100 truncate mb-2">{{ product.name }}</h3>
                             <div class="flex justify-between items-center mb-2">
@@ -25,8 +35,8 @@
                                 <span class="text-red-500 price-tag font-semibold">x{{ product.quantity }}</span>
                             </div>
                         </div>
-                    </a>
                 </div>
+
             {% endfor %}
         </div>
     </div>
@@ -67,5 +77,34 @@
 {% else %}
     <p>Your cart is empty.</p>
 {% endif %}
+<script>
+    // Delete Item From Cart
+$(document).on('click', '.delete-product', function(e){
+    e.preventDefault();
+    // grab the product id
+    //var productid = $(this).data('index');
 
+    $.ajax({
+    type: 'POST',
+    url: '{% url 'cart:cart_delete' %}',
+    data: {
+      product_id: $(this).data('index'),
+      csrfmiddlewaretoken: '{{ csrf_token }}',
+      action: 'post'
+    },
+    success: function(json){
+        //console.log(json)
+        //document.getElementById("cart_quantity").textContent = json.qty
+        location.reload();
+        
+    },
+
+   
+
+
+    });
+
+})
+
+</script>
 {% endblock %}
