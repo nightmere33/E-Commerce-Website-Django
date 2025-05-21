@@ -10,7 +10,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.conf import settings  
 
 def index(request):
-    items = Item.objects.filter(is_sold=False).order_by('-created_at')[:6]  # Retour à 6 items
+    items = Item.objects.filter(is_sold=False).order_by('name')[:10]  # Changed from [:6] to [:10]
     categories = Category.objects.all()
     
     return render(request, 'core/index.html', {

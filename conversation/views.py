@@ -110,3 +110,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'message': message
         }))
+
+def index(request):
+    all_items = Item.objects.filter(is_sold=False).order_by('name')
+    items = list(all_items)  # Convertir en liste pour pouvoir manipuler l'ordre
+    
+    return render(request, 'core/index.html', {
+        'categories': Category.objects.all(),
+        'items': items,
+    })
