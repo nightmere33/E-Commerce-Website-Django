@@ -111,7 +111,8 @@
         <div class="relative">
             <div id="category-carousel" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar px-2">
                 {% for category in categories %}
-                    <div class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border border-slate-700 hover:border-teal-500 transition">
+                    <a href="{% url 'item:browse' %}?category={{ category.id }}" 
+                        class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border border-slate-700 hover:border-teal-500 transition block">
                         <img src="{{ MEDIA_URL }}item_images/{{ category.name }}.jpg" 
                              alt="{{ category.name }}"
                             class="absolute inset-0 w-full h-full object-cover blur-sm group-hover:scale-110 transition duration-300" />
@@ -119,7 +120,7 @@
                         <div class="relative h-full flex items-center justify-center group-hover:items-end transition-all duration-300 p-4">
                             <span class="text-white font-semibold text-lg text-center transition-all duration-300">{{ category.name }}</span>
                         </div>
-                    </div>
+                    </a>
                 {% endfor %}
             </div>
 
