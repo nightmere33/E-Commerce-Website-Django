@@ -323,6 +323,21 @@
             }
         }
 
+        @keyframes zoomInOut {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .animate-zoom {
+            animation: zoomInOut 3s ease-in-out infinite;
+        }
+
+
+
 
     </style>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> <!-- Jquery cdn-->
@@ -330,6 +345,7 @@
 </head>
 
 <body>
+
     <nav class="nav-gradient py-4 px-6 flex justify-between items-center shadow-lg">
     <!-- Left section: logo + categories -->
     <div class="flex items-center space-x-6">
