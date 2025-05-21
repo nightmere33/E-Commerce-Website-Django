@@ -107,7 +107,7 @@
                          </div>
                         </a>
                     <!--Add to cart button-->
-                    <button title="Add to Cart" type="button" value="{{item.id}}" id="add-cart" class="absolute top-2 right-2 bg-teal-500 text-white rounded-full w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 shadow-lg hover:bg-teal-600 z-10">
+                    <button  type="button" value="{{item.id}}"   class="add-cart  absolute top-2 right-2 bg-teal-500 text-white rounded-full w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 shadow-lg hover:bg-teal-600 z-10">
                         <i class="fas fa-plus"></i>
                     </button>
 
@@ -310,22 +310,26 @@ document.addEventListener('DOMContentLoaded', function() {
     })();
 
     // ----------------- Add to Cart AJAX ------------------
-    $(document).on('click', '#add-cart', function(e) {
+    $(document).on('click', '.add-cart', function(e) {
         e.preventDefault();
+        const productId = $(this).val();
+
         $.ajax({
             type: 'POST',
             url: '{% url "cart:cart_add" %}',
             data: {
-                product_id: $('#add-cart').val(),
+                product_id: productId,
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 action: 'post'
             },
             success: function(json) {
                 console.log(json);
                 document.getElementById('cart_quantity').textContent = json.qty;
+                alert('Added to cart!');
             }
-        });
     });
+});
+
 });
 
 // Function for manual category scroll (optional button use)
