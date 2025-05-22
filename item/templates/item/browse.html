@@ -66,6 +66,7 @@
 
         <!-- Game Grid -->
         <div class="col-span-3">
+            <input type="hidden" id="csrf_token" value="{{ csrf_token }}"> <!-- CSRF token for AJAX requests -->
            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {% for item in items %}
                 <div class="game-card bg-white rounded-lg overflow-hidden relative group">
@@ -90,76 +91,32 @@
         </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js">
-                // Nav buttons
-                const prevButton = document.createElement('button');
-                prevButton.className = 'carousel-nav-button carousel-prev';
-                prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
 
-                const nextButton = document.createElement('button');
-                nextButton.className = 'carousel-nav-button carousel-next';
-                nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+    
 
-                track.parentElement.appendChild(prevButton);
-                track.parentElement.appendChild(nextButton);
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+              
+<script>
+    $(document).on('click', '.add-cart', function(e) {
+        e.preventDefault();
+        const productId = $(this).val();
+        const csrfToken = document.getElementById('csrf_token').value;
 
-                // Event listeners
-                prevButton.addEventListener('click', () => {
-                    goToSlide((currentSlide - 1 + slides.length) % slides.length);
-                });
-                nextButton.addEventListener('click', nextSlide);
-
-                slides[0].classList.add('active');
-                updateIndicators();
-                startAutoplay();
-
-                const carouselContainer = track.parentElement;
-                const navButtons = [prevButton, nextButton];
-
-                carouselContainer.addEventListener('mouseenter', () => {
-                    isHovered = true;
-                    stopAutoplay();
-                });
-
-                carouselContainer.addEventListener('mouseleave', () => {
-                    isHovered = false;
-                    startAutoplay();
-                });
-
-                navButtons.forEach(button => {
-                    button.addEventListener('mouseenter', () => {
-                        isHovered = true;
-                        stopAutoplay();
-                    });
-                    button.addEventListener('mouseleave', () => {
-                        isHovered = false;
-                        startAutoplay();
-                    });
-                });
-            
-            {% csrf_token %}
-
-            // ----------------- Add to Cart AJAX ------------------
-            $(document).on('click', '.add-cart', function(e) {
-                e.preventDefault();
-                const productId = $(this).val();
-
-                $.ajax({
-                    type: 'POST',
-                    url: '{% url "cart:cart_add" %}',
-                    data: {
-                        product_id: productId,
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        action: 'post'
-                    },
-                    success: function(json) {
-                        console.log(json);
-                        document.getElementById('cart_quantity').textContent = json.qty;
-                        alert('Added to cart!');
-                    }
-            });
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart:cart_add" %}',
+            data: {
+                product_id: productId,
+                csrfmiddlewaretoken: csrfToken,
+                action: 'post'
+            },
+            success: function(json) {
+                console.log(json);
+                document.getElementById('cart_quantity').textContent = json.qty;
+                alert('Added to cart!');
+            }
         });
+    });
+</script>
 
-
-    </script>
 {% endblock %}
