@@ -1,5 +1,5 @@
-from django.shortcuts import render,redirect
-from item.models import Category,Item
+from django.shortcuts import render, redirect
+from item.models import Category, Item
 from .forms import SignUpForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -9,15 +9,30 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.conf import settings  
 from django.core.mail import send_mail
+import random
 
 def index(request):
-    items = Item.objects.filter(is_sold=False).order_by('name')[:10]  # Changed from [:6] to [:10]
+    # Get all categories
     categories = Category.objects.all()
+    
+    # Get all items except gift cards - CORRECTED LINE
+    all_items = Item.objects.filter(is_sold=False).exclude(Category__name__icontains="gift")
+    
+    # Get newest items for the "Newest Games" section
+    newest_items = all_items.order_by('-created_at')[:15]
+    
+    # Get random items for the carousel (different from newest items)
+    # Convert QuerySet to list to use random.sample
+    all_items_list = list(all_items)
+    # Make sure we have enough items for the carousel
+    carousel_count = min(10, len(all_items_list))
+    # Select random items
+    random_carousel_items = random.sample(all_items_list, carousel_count)
     
     return render(request, 'core/index.html', {
         'categories': categories,
-        'items': items,
-        'MEDIA_URL': settings.MEDIA_URL, 
+        'items': newest_items,  # For "Newest Games" section
+        'carousel_items': random_carousel_items  # For the carousel
     })
 
 def contact(request):
