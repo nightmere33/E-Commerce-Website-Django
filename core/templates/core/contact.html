@@ -9,12 +9,12 @@
     <h1 class="text-4xl font-bold text-center luckiest-guy-regular text-gray-800 mb-8">Get in Touch</h1>
      <p class="text-center text-gray-600 mb-6">Have a question or feedback ? Fill out the form below and we'll get back to you as soon as possible.</p>
 
-    <form method="POST" action="." class="space-y-6">
+    <form method="POST" action="." class="space-y-6" onsubmit="return validateForm()">
         {% csrf_token %}
 
         <!-- Name -->
         <div>
-            <label for="{{ form.name.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-700">Name</label>
+            <label for="{{ form.name.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-700">Full Name</label>
             {{ form.name }}
             {% if form.name.errors %}
                 <p class="text-red-500 text-sm mt-1">{{ form.name.errors.0 }}</p>
@@ -38,6 +38,10 @@
                 <p class="text-red-500 text-sm mt-1">{{ form.message.errors.0 }}</p>
             {% endif %}
         </div>
+        <div class="text-sm text-right text-gray-500">
+            <span id="charCount">2000</span> Characters remaining
+        </div>
+
 
         <!-- Success message -->
         {% if messages %}
@@ -58,3 +62,43 @@
 </div>
 
 {% endblock %}
+
+
+{% block scripts %}
+<script>
+function updateCharCount(textarea) {
+    const max = 2000;
+    const currentLength = textarea.value.length;
+    const remaining = max - currentLength;
+    const charCountDisplay = document.getElementById("charCount");
+
+    charCountDisplay.textContent = remaining;
+
+    if (remaining < 0) {
+        charCountDisplay.classList.add("text-red-500");
+    } else {
+        charCountDisplay.classList.remove("text-red-500");
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const textarea = document.querySelector("textarea");
+    if (textarea) {
+        textarea.addEventListener("input", function() {
+            updateCharCount(textarea);
+        });
+        // Initialise compteur dès le chargement
+        updateCharCount(textarea);
+    }
+});
+
+function validateForm() {
+    const message = document.querySelector("textarea");
+    if (message.value.length > 2000) {
+        alert("Votre message est trop long. Merci de le raccourcir.");
+        return false; // bloque envoi formulaire
+    }
+    return true;
+}
+</script>
+{% endblock scripts %}

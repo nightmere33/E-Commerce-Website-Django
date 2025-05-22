@@ -345,6 +345,27 @@
         }
 
 
+        @keyframes gentleZoom {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.03);
+            }
+        }
+
+        .animate-gentle-zoom {
+            animation: gentleZoom 6s ease-in-out infinite;
+        }
+
+
+
+       
+
+        
+
+
+
     </style>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> <!-- Jquery cdn-->
     <title>{% block title %}{% endblock %} | GameVerse</title>
@@ -477,6 +498,11 @@
     
     {% block scripts %}{% endblock %}
 </body>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js">
+
+
+
+
+</script>
 
 </html>
