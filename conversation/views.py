@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.paginator import Paginator
+from core.models import Category
 
 @login_required
 def new_conversation(request,item_pk):
