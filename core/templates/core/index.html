@@ -101,7 +101,7 @@
         <!-- Video background container -->
         <div class="absolute left-0 right-0 top-[-10%] h-[120%] -z-10">
  
-            <video autoplay muted loop playsinline class="w-full h-full object-cover">
+            <video autoplay muted loop playsinline class="fixed top-0 left-0 w-full h-full object-cover z-0">
                 <source src="{{ MEDIA_URL }}video/vd2.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
@@ -114,11 +114,11 @@
             <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 animate-zoom">Newest Games</h2>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 ">
                 {% for item in items %}
-                    <div class="game-card bg-white/10 rounded-lg overflow-hidden relative group ">
+                    <div class="game-card bg-white/20 backdrop-blur-sm rounded-lg overflow-hidden relative group ">
                         <a href="{% url 'item:detail' item.id %}" class="block">
                             <div class="image-container relative">
                                 <img src="{{ item.image.url }}" 
-                                    class="game-image"
+                                    class="game-image opacity-200"
                                     alt="{{ item.name }}">
                             </div>
                         </a>
@@ -155,7 +155,8 @@
 
 
         <!-- Category Carousel -->
-    <div class="mt-12 px-6 py-12 bg-slate-800/50 rounded-xl backdrop-blur-sm border border-slate-700 relative">
+    <div class="mt-12 px-6 py-12 bg-black/40  rounded-xl border border-black relative">
+
         <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 ">Categories</h2>
 
         <div class="relative">
