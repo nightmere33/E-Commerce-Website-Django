@@ -48,8 +48,8 @@
         <ul class="mb-4 space-y-2 text-sm">
             {% for product in cart_products %}
                 <li class="flex justify-between">
-                    <span>{{ product.name }} x{{ product.quantity }}</span>
-                    <span>${{ product.line_total|floatformat:2 }}</span>
+                    <span class="font-medium text-black-100 truncate mb-2">{{ product.name }} <span class="text-red-500 price-tag">x{{ product.quantity }}</span></span>
+                    <span class="text-xl font-bold text-gray-900">${{ product.line_total|floatformat:2 }}</span>
                 </li>
             {% endfor %}
         </ul>
@@ -57,15 +57,15 @@
         <div class="border-t pt-4 text-sm space-y-2">
             <div class="flex justify-between">
                 <span class="font-medium">Subtotal</span>
-                <span>${{ total|floatformat:2 }}</span>
+                <span class="font-bold">${{ total|floatformat:2 }}</span>
             </div>
             <div class="flex justify-between">
                 <span class="text-gray-600">Our 5% cut</span>
-                <span>${{ platform_cut|floatformat:2 }}</span>
+                <span class="text-red-700">+ ${{ platform_cut|floatformat:2 }}</span>
             </div>
             <div class="flex justify-between font-bold text-lg border-t pt-2">
                 <span>Total</span>
-                <span>${{ grand_total|floatformat:2 }}</span>
+                <span class="price-tag">${{ grand_total|floatformat:2 }}</span>
             </div>
         </div>
 
