@@ -47,14 +47,13 @@ class LoginForm(AuthenticationForm):
                                                      {'class': INPUT_CLASSES, 
                                                       'placeholder': 'Enter your password'}))
     
+from django import forms
+
 class ContactForm(forms.Form):
-    name = forms.CharField(
-        max_length=100,
-        widget=forms.TextInput(attrs={
-            'class': 'w-full px-4 py-2 border rounded-lg',
-            'placeholder': 'Your name'
-        })
-    )
+    name = forms.CharField(label='Name', max_length=100)
+    email = forms.EmailField(label='Email')
+    message = forms.CharField(label='Message', widget=forms.Textarea)
+
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={
             'class': 'w-full px-4 py-2 border rounded-lg',
