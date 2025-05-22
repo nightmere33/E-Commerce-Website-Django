@@ -36,41 +36,34 @@
     <!-- Featured Games Carousel -->
     <div class="max-w-7xl mx-auto my-12">
         <h2 class="text-3xl font-bold text-center mb-8 text-gray-100">Featured Games</h2>
-        
-        <div class="featured-carousel ">
+        <div class="featured-carousel">
             <div class="carousel-track" id="carouselTrack">
-                {% for main_item in items|slice:":10" %}  <!-- Changed from :6 to :10 -->
+                {% for main_item in carousel_items %}
                 <div class="carousel-slide {% if forloop.first %}active{% endif %}">
                     <div class="carousel-container">
                         <!-- Main Feature -->
-                        <div class="main-feature">
+                        <a href="{% url 'item:detail' main_item.id %}" class="main-feature group hover:shadow-xl cursor-pointer transition-shadow duration-300">
                             {% if main_item.carousel_image %}
-                                <div class="image-wrapper">
-                                    <img src="{{ main_item.carousel_image.url }}" alt="{{ main_item.name }}">
-                                </div>
+                            <img src="{{ main_item.carousel_image.url }}" alt="{{ main_item.name }}">
                             {% else %}
-                                <div class="image-wrapper">
-                                    <img src="{{ main_item.image.url }}" alt="{{ main_item.name }}">
-                                </div> 
+                            <img src="{{ main_item.image.url }}" alt="{{ main_item.name }}">
                             {% endif %}
                             <div class="feature-info">
                                 <h3 class="text-2xl font-bold text-white mb-2">{{ main_item.name }}</h3>
                                 <p class="text-teal-400 font-bold text-xl">${{ main_item.price }}</p>
                             </div>
-                        </div>
+                        </a>
                         
                         <!-- Side Features -->
                         <div class="side-features">
-                            {% with next_items=items|get_next_items:forloop.counter0 %}
+                            {% with next_items=carousel_items|get_next_items:forloop.counter0 %}
                                 {% for side_item in next_items %}
-                                    <div class="side-feature">
-                                        <div class="image-wrapper">
-                                            <img src="{{ side_item.image.url }}" alt="{{ side_item.name }}">
-                                        </div>
+                                    <a href="{% url 'item:detail' side_item.id %}" class="side-feature group hover:shadow-md cursor-pointer transition-shadow duration-300">
+                                        <img src="{{ side_item.image.url }}" alt="{{ side_item.name }}">
                                         <div class="feature-info">
                                             <h4 class="text-white">{{ side_item.name }}</h4>
                                         </div>
-                                    </div>
+                                    </a>
                                 {% endfor %}
                             {% endwith %}
                         </div>
@@ -175,30 +168,262 @@
 {% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-   
-    
+    // ----------------- Massil's Category Carousel ------------------
+    (function initCategoryCarousel() {
+        const container = document.getElementById('category-carousel');
+        if (!container) return;
 
-    // ----------------- Add to Cart AJAX ------------------
-    $(document).on('click', '.add-cart', function(e) {
-        e.preventDefault();
-        const productId = $(this).val();
+        const originalItems = Array.from(container.querySelectorAll('.carousel-item'));
+        const itemCount = originalItems.length;
+        const itemWidth = originalItems[0].offsetWidth + 24; // 24 = space-x-6 approx
 
-        $.ajax({
-            type: 'POST',
-            url: '{% url "cart:cart_add" %}',
-            data: {
-                product_id: productId,
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-                action: 'post'
-            },
-            success: function(json) {
-                console.log(json);
-                document.getElementById('cart_quantity').textContent = json.qty;
-                alert('Added to cart!');
+        // Clone left
+        originalItems.slice().reverse().forEach(item => {
+            const clone = item.cloneNode(true);
+            clone.classList.add('cloned');
+            container.insertBefore(clone, container.firstChild);
+        });
+
+        // Clone right
+        originalItems.forEach(item => {
+            const clone = item.cloneNode(true);
+            clone.classList.add('cloned');
+            container.appendChild(clone);
+        });
+
+        // Initial scroll
+        container.scrollLeft = itemCount * itemWidth;
+
+        // Adjust scrolling at ends
+        container.addEventListener('scroll', () => {
+            const maxScroll = itemWidth * itemCount * 2;
+            if (container.scrollLeft < itemWidth) {
+                container.scrollLeft += itemCount * itemWidth;
+            } else if (container.scrollLeft > maxScroll - itemWidth) {
+                container.scrollLeft -= itemCount * itemWidth;
             }
+        });
+    })();
+
+    // ----------------- Main Image Carousel ------------------
+    (function initMainCarousel() {
+        const track = document.getElementById('carouselTrack');
+        if (!track) return;
+
+        const slides = track.querySelectorAll('.carousel-slide');
+        let currentSlide = 0;
+        let autoplayInterval = null;
+        let isHovered = false;
+
+        // Create indicators
+        const indicators = document.createElement('div');
+        indicators.className = 'carousel-indicators';
+
+        slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.className = `indicator ${index === 0 ? 'active' : ''}`;
+            dot.addEventListener('click', () => goToSlide(index));
+            indicators.appendChild(dot);
+        });
+        track.parentElement.appendChild(indicators);
+
+        function updateIndicators() {
+            const dots = document.querySelectorAll('.indicator');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            updateIndicators();
+        }
+
+        function nextSlide() {
+            goToSlide((currentSlide + 1) % slides.length);
+        }
+
+        function startAutoplay() {
+            if (!isHovered && !autoplayInterval) {
+                autoplayInterval = setInterval(nextSlide, 5000);
+            }
+        }
+
+        function stopAutoplay() {
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+                autoplayInterval = null;
+            }
+        }
+
+        // Nav buttons
+        const prevButton = document.createElement('button');
+        prevButton.className = 'carousel-nav-button carousel-prev';
+        prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+
+        const nextButton = document.createElement('button');
+        nextButton.className = 'carousel-nav-button carousel-next';
+        nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+
+        track.parentElement.appendChild(prevButton);
+        track.parentElement.appendChild(nextButton);
+
+        // Event listeners
+        prevButton.addEventListener('click', () => {
+            goToSlide((currentSlide - 1 + slides.length) % slides.length);
+        });
+        nextButton.addEventListener('click', nextSlide);
+
+        slides[0].classList.add('active');
+        updateIndicators();
+        startAutoplay();
+
+        const carouselContainer = track.parentElement;
+        const navButtons = [prevButton, nextButton];
+
+        carouselContainer.addEventListener('mouseenter', () => {
+            isHovered = true;
+            stopAutoplay();
+        });
+
+        carouselContainer.addEventListener('mouseleave', () => {
+            isHovered = false;
+            startAutoplay();
+        });
+
+        navButtons.forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                isHovered = true;
+                stopAutoplay();
+            });
+            button.addEventListener('mouseleave', () => {
+                isHovered = false;
+                startAutoplay();
+            });
+        });
+    })();
+
+    // Créer les indicateurs
+    const indicators = document.createElement('div');
+    indicators.className = 'carousel-indicators';
+    slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.className = `indicator ${index === 0 ? 'active' : ''}`;
+        dot.addEventListener('click', () => goToSlide(index));
+        indicators.appendChild(dot);
+    });
+    track.parentElement.appendChild(indicators);
+
+    function updateIndicators() {
+        const dots = document.querySelectorAll('.indicator');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlide);
+        });
+    }
+
+    function goToSlide(index) {
+        // Désactive le slide courant et réinitialise l'animation du texte
+        slides[currentSlide].classList.remove('active');
+        
+        // Réinitialise les transformations des textes de l'ancien slide
+        const oldTitles = slides[currentSlide].querySelectorAll('.feature-info h3, .feature-info p');
+        oldTitles.forEach(title => {
+            title.style.opacity = '0';
+            title.style.transform = 'translateY(20px)';
+        });
+        
+        // Active le nouveau slide
+        currentSlide = index;
+        slides[currentSlide].classList.add('active');
+        
+        // Force un reflow pour réinitialiser les animations
+        const featureInfo = slides[currentSlide].querySelector('.main-feature .feature-info');
+        if (featureInfo) {
+            // Force un reflow pour l'animation du conteneur
+            featureInfo.style.transition = 'none';
+            void featureInfo.offsetWidth;
+            featureInfo.style.transition = '';
+        }
+        
+        // Réinitialise l'animation de zoom pour le nouveau slide
+        const mainImg = slides[currentSlide].querySelector('.main-feature img');
+        if (mainImg) {
+            mainImg.style.animation = 'none';
+            void mainImg.offsetWidth;
+            mainImg.style.animation = '';
+        }
+        
+        // Met à jour les indicateurs
+        updateIndicators();
+    }
+
+    function nextSlide() {
+        goToSlide((currentSlide + 1) % slides.length);
+    }
+
+    function startAutoplay() {
+        if (!isHovered && !autoplayInterval) {
+            autoplayInterval = setInterval(nextSlide, 5000);
+        }
+    }
+
+    function stopAutoplay() {
+        if (autoplayInterval) {
+            clearInterval(autoplayInterval);
+            autoplayInterval = null;
+        }
+    }
+
+    const prevButton = document.createElement('button');
+    prevButton.className = 'carousel-nav-button carousel-prev';
+    prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+    const nextButton = document.createElement('button');
+    nextButton.className = 'carousel-nav-button carousel-next';
+    nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+    track.parentElement.appendChild(prevButton);
+    track.parentElement.appendChild(nextButton);
+
+    prevButton.addEventListener('click', () => {
+        goToSlide((currentSlide - 1 + slides.length) % slides.length);
+    });
+    nextButton.addEventListener('click', nextSlide);
+
+    slides[0].classList.add('active');
+    updateIndicators();
+    startAutoplay();
+
+    const carouselContainer = track.parentElement;
+    carouselContainer.addEventListener('mouseenter', () => {
+        isHovered = true;
+        stopAutoplay();
+    });
+    carouselContainer.addEventListener('mouseleave', () => {
+        isHovered = false;
+        startAutoplay();
     });
 });
 
+// ----------------- Add to Cart AJAX ------------------
+$(document).on('click', '.add-cart', function(e) {
+    e.preventDefault();
+    const productId = $(this).val();
+
+    $.ajax({
+        type: 'POST',
+        url: '{% url "cart:cart_add" %}',
+        data: {
+            product_id: productId,
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
+        },
+        success: function(json) {
+            console.log(json);
+            document.getElementById('cart_quantity').textContent = json.qty;
+            alert('Added to cart!');
+        }
+    });
 });
 
 // Function for manual category scroll (optional button use)
