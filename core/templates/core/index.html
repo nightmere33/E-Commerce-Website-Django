@@ -7,11 +7,11 @@
 {% block content %}
 
     <!-- Hero Section with background image -->
-    <div class="relative text-white h-[40vh] px-0 rounded-xl mb-12 overflow-hidden">
+    <div class="relative text-white h-[40vh] -mx-2 sm:-mx-3 lg:-mx-5 px-0 rounded-xl mb-12 overflow-hidden">
 
          <div class="absolute inset-0 z-0">
             <!-- Video background -->
-            <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-40">
+            <video autoplay muted loop playsinline class="w-full h-full object-cover">
                 <source src="{{ MEDIA_URL }}video/vd.mp4" type="video/mp4">
 
                 Your browser does not support the video tag.
@@ -155,7 +155,7 @@
 
 
         <!-- Category Carousel -->
-    <div class="mt-12 px-6 py-12 bg-black/40  rounded-xl border border-black relative">
+    <div class="mt-12 px-6 py-12 bg-black/40  rounded-xl border relative">
 
         <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 ">Categories</h2>
 
@@ -163,7 +163,8 @@
             <div id="category-carousel" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar px-2">
                 {% for category in categories %}
                     <a href="{% url 'item:browse' %}?category={{ category.id }}" 
-                        class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border border-slate-700 hover:border-teal-500 transition block animate-gentle-zoom">
+                        class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border-none transition block animate-gentle-zoom">
+
 
                         <!-- Image avec flou léger au repos, retiré au hover -->
                         <img src="{{ MEDIA_URL }}item_images/{{ category.name }}.jpg" 
