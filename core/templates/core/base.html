@@ -10,10 +10,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Ajout de FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        .cloned {
+            pointer-events: none;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+        display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: #0f172a; /* Dark blue background */
@@ -38,70 +58,370 @@
             border-color: #2dd4bf;
         }
         .game-image {
-            aspect-ratio: 3/4;
-            object-fit: cover; /* changed back to cover to remplir le conteneur */
-            width: 100%; /* L'image prend toute la largeur */
+            width: 100%;
+            height: 250px; /* Changed from 300px to 200px */
+            object-fit: fill;
             border-radius: 8px 8px 0 0;
             display: block;
-            padding: 0; /* Supprime le padding */
+            padding: 0;
         }
         .image-container {
             width: 100%;
             border-radius: 8px 8px 0 0;
             overflow: hidden;
-            position: relative;
+            background: transparent; /* Removed background color */
         }
         .image-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(0deg, #1e293b 0%, transparent 10%);
+            display: none; /* Removed gradient overlay */
         }
         .price-tag {
             font-weight: bold;
             color: #2dd4bf;
             font-size: 1.1rem;
         }
-        .retro-font {
-        font-family: 'Press Start 2P', cursive;
+        .featured-carousel {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid #2dd4bf33;
+            border-radius: 8px;
+            height: 400px; /* Changed back to fixed height */
         }
-        .luckiest-guy-regular {
-        font-family: "Luckiest Guy", cursive;
-        font-weight: 400;
-        font-style: normal;
+        
+        /* Indicateurs de slides */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
         }
+
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            width: 24px;
+            border-radius: 4px;
+            background: #2dd4bf;
+        }
+
+        /* Animation des slides */
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-out; /* Animation plus rapide et subtile */
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Boutons de navigation */
+        .carousel-nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(45, 212, 191, 0.1);
+            border: 1px solid rgba(45, 212, 191, 0.2);
+            color: #2dd4bf;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .carousel-nav-button:hover {
+            background: rgba(45, 212, 191, 0.2);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-prev {
+            left: 20px;
+        }
+
+        .carousel-next {
+            right: 20px;
+        }
+        
+        .carousel-track {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .carousel-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            height: 100%;
+        }
+        
+        .main-feature {
+            position: relative;
+            height: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .main-feature img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill; /* Changed from cover to fill */
+            border-radius: 8px;
+        }
+        
+        .side-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 0.8rem;
+            height: 100%;
+        }
+        
+        .side-feature {
+            position: relative;
+            height: auto;
+            aspect-ratio: 1;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .side-feature img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill; /* Changed from cover to fill */
+            border-radius: 4px;
+        }
+        
+        .main-feature img, .side-feature img {
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .feature-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(0deg, rgba(15, 23, 42, 0.95) 0%, transparent 100%);
+            z-index: 2;
+            border-radius: 0 0 8px 8px; /* Added border radius */
+        }
+
+        .carousel-slide img {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 1rem;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            /* Pour l'animation de brillance */
+            overflow: hidden;
+        }
+
+        .carousel-slide img:hover {
+            animation: shine 2s infinite;
+            transform: scale(1.05) translateY(-5px);
+            filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.6));
+            cursor: pointer;
+        }
+
+        @keyframes shine {
+            0% {
+                filter: brightness(1) drop-shadow(0 0 5px rgba(0, 255, 255, 0.4));
+            }
+            50% {
+                filter: brightness(1.3) drop-shadow(0 0 15px rgba(0, 255, 255, 0.8));
+            }
+            100% {
+                filter: brightness(1) drop-shadow(0 0 5px rgba(0, 255, 255, 0.4));
+            }
+        }
+
+        /* Effet de mouvement léger continu */
+        .carousel-slide.active img {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+             50% {
+                transform: translateY(-8px) scale(1.02);
+            }
+        }
+
+        /* Wrapper autour de l'image pour gérer le reflet */
+        .image-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem; /* même arrondi que tes images */
+            display: inline-block;
+        }
+
+        /* Reflet lumineux glissant */
+        .image-wrapper::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                120deg, 
+                rgba(255,255,255,0) 0%, 
+                rgba(255,255,255,0.4) 50%, 
+                rgba(255,255,255,0) 100%
+            );
+            transform: skewX(-25deg);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 1rem;
+        }
+
+        /* Au survol, le reflet apparaît et glisse */
+        .image-wrapper:hover::after {
+            opacity: 1;
+            animation: shine-move 1.5s ease-in-out infinite;
+        }
+
+        /* Animation du reflet */
+        @keyframes shine-move {
+            0% {
+                left: -75%;
+            }
+            100% {
+                left: 125%;
+            }
+        }
+
+        @keyframes zoomInOut {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .animate-zoom {
+            animation: zoomInOut 3s ease-in-out infinite;
+        }
+
+
+
+
     </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> <!-- Jquery cdn-->
     <title>{% block title %}{% endblock %} | GameVerse</title>
 </head>
 
 <body>
+
     <nav class="nav-gradient py-4 px-6 flex justify-between items-center shadow-lg">
+    <!-- Left section: logo + categories -->
+    <div class="flex items-center space-x-6">
         <a href="/" class="text-2xl font-bold text-white hover:text-gray-200 transition duration-300">
             <i class="fas fa-gamepad mr-2"></i>GameVerse
         </a>
-        <div class="space-x-8">
-            <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-gray-200 transition duration-300">Browse</a>
-            {% if request.user.is_authenticated %}
-                <a href="{% url 'conversation:inbox' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
-                <a href="{% url 'dashboard:index' %}" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
-                
-                {% if request.user.is_superuser %}
-                    <a href="{% url 'item:new' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">New item</a>
-                {% endif %}
-                
-                <form method="POST" action="{% url 'core:logout' %}" class="inline-block">
-                    {% csrf_token %}
-                    <button type="submit" class="px-6 py-3 text-lg font-semibold bg-red-400 text-white rounded-xl hover:bg-orange-700">Log out</button>
-                </form>
-            {%else%}
-                <a href="{% url 'core:signup' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>
-                <a href="{%url 'core:login' %}" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Log in</a>
-            {% endif %}
+
+        <!-- Dropdown: Categories -->
+        <div class="relative group">
+            <button class="text-white font-semibold hover:text-teal-300 transition duration-300 flex items-center">
+                Categories
+                <i class="fas fa-chevron-down ml-2 text-sm"></i>
+            </button>
+            <div class="absolute left-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all z-50">
+                <a href="{% url 'item:browse' %}" class="block px-4 py-2 hover:bg-teal-100">All</a>
+                {% for category in categories %}
+                    <a href="{% url 'item:browse' %}?category={{ category.id }}" class="block px-4 py-2 hover:bg-teal-100">
+                        {{ category.name }}
+                    </a>
+                {% endfor %}
+            </div>
         </div>
-    </nav>
+    </div>
+
+    <!-- Right section: nav links + user -->
+    <div class="flex items-center space-x-4">
+        <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-gray-200 transition duration-300">Browse</a>
+
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
+            <a href="{% url 'dashboard:index' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
+
+            {% if request.user.is_superuser %}
+                <a href="{% url 'item:new' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">New item</a>
+            {% endif %}
+
+            <!--  Shopping Cart Button -->
+            <a href="{% url 'cart:cart_summary' %}" class="flex items-center px-4 py-2 text-sm font-semibold bg-white text-gray-800 rounded-xl hover:bg-gray-100 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6h13l-1.5-6M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
+                </svg>
+                <span>Cart</span>
+                <span id="cart_quantity" class="ml-2 bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded-full">{{ cart|length}}</span>
+            </a>
+
+            <!--  User dropdown -->
+            <div class="relative group inline-block" tabindex="0">
+                <button class="w-10 h-10 rounded-full bg-teal-400 flex items-center justify-center hover:bg-teal-600 transition duration-300 focus:outline-none">
+                    <i class="fas fa-user-edit text-white"></i>
+                </button>
+
+                <div class="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-700 rounded-xl shadow-lg z-50 
+                    opacity-0 invisible 
+                    group-hover:opacity-100 group-hover:visible 
+                    group-focus-within:opacity-100 group-focus-within:visible 
+                    transition-all duration-200">
+
+                    <a href="{% url 'core:edit_profile' %}" class="block px-4 py-2 text-sm text-white hover:bg-slate-700 transition">Edit Profile</a>
+                     {% if request.user.is_superuser %}
+                        <a href="{% url 'dashboard:index' %}" class="block px-4 py-2 text-sm text-white hover:bg-slate-700 transition">Dashboard</a>
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'core:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-slate-700 transition">Logout</button>
+                    </form>
+                </div>
+            </div>
+
+        {% else %}
+            <a href="{% url 'core:signup' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>
+            <a href="{% url 'core:login' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Log in</a>
+        {% endif %}
+    </div>
+</nav>
+
 
     <div class="px-6 py-6 min-h-[calc(100vh-80px)]">
         {% block content %}
@@ -136,10 +456,10 @@
         <div>
             <h3 class="text-xl font-semibold text-white mb-4 luckiest-guy-regular">Follow Us</h3>
             <div class="flex space-x-4">
-                <a href="#" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="GitHub"><i class="fab fa-github"></i></a>
             </div>
         </div>
       </div>
@@ -148,38 +468,7 @@
       </div>
         
     </footer>
-    <!-- Particles.js -->
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-<script>
-    particlesJS("particles-js", {
-    "particles": {
-    "number": { "value": 80 },
-    "size": { "value": 3 },
-    "color": { "value": "#a78bfa" },
-    "line_linked": {
-      "enable": true,
-      "distance": 150,
-      "color": "#f472b6",
-      "opacity": 0.4,
-      "width": 1
-    },
-    "move": {
-      "enable": true,
-      "speed": 2
-    }
-  },
-  "interactivity": {
-    "events": {
-      "onhover": { "enable": true, "mode": "grab" },
-      "onclick": { "enable": true, "mode": "push" }
-    },
-    "modes": {
-      "grab": { "distance": 200, "line_linked": { "opacity": 0.5 } },
-      "push": { "particles_nb": 4 }
-    }
-  }
-});
-</script>
-
+    
+    {% block scripts %}{% endblock %}
 </body>
 </html>

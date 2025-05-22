@@ -4,50 +4,57 @@
 
 {% block content %}
 
-<div class="w-full max-w-md mx-auto my-10 p-8 bg-white shadow-lg rounded-xl"> 
-    <h1 class="text-3xl font-semibold text-center mb-6 "> Create an Account </h1>
+<div class="max-w-lg my-6 mx-auto p-8 bg-gradient-to-b from-slate-800 to-slate-900 rounded-xl border border-slate-700 shadow-lg"> 
+    <h1 class="mb-8 text-3xl font-bold text-gray-100 text-center">Create Account</h1>
 
-    <form method="POST" action="." class="space-y-5">
+    <form method="POST" action="." class="space-y-6">
         {% csrf_token %}
-
-        <!--username-->
-        <div class="mb-3">
-            <label class="inline-block mb-2"> Username</label><br>
-            {{form.username}}
-
-        </div>   
-
-        <!--Email-->
-        <div class="mb-3">
-            <label class="inline-block mb-2"> Email</label><br>
-            {{form.email}}
-
-        </div>   
-        <div class="mb-3">
-            <label class="inline-block mb-2"> Password</label><br>
-            {{form.password1}}
-
-        </div>   
-        <div class="mb-3">
-            <label class="inline-block mb-2">Repeat Password</label><br>
-            {{form.password2}}
-
-        </div> 
         
-        {% if form.errors or form.non_field_errors%}
-            <div class="bg-red-100 p-4 rounded-lg text-red-700 text-sm">
-                {% for field in form%}
-                    {{field.errors}}
-                {% endfor%}
+        <div class="space-y-4">
+            <div class="space-y-2">
+                <label class="text-gray-300 font-semibold">Username</label>
+                {{form.username}}
+            </div>   
+
+            <div class="space-y-2">
+                <label class="text-gray-300 font-semibold">Email</label>
+                {{form.email}}
+            </div>   
+
+            <div class="space-y-2">
+                <label class="text-gray-300 font-semibold">Password</label>
+                {{form.password1}}
+            </div>   
+
+            <div class="space-y-2">
+                <label class="text-gray-300 font-semibold">Confirm Password</label>
+                {{form.password2}}
+            </div>
+        </div>
+
+        {% if form.errors or form.non_field_errors %}
+            <div class="p-4 bg-red-900/50 border border-red-500 rounded-lg">
+                <p class="text-red-400 font-medium">Please correct the following errors:</p>
+                <ul class="list-disc pl-5 text-red-400">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
                 {{ form.non_field_errors }}
+                </ul>
             </div>
         {% endif %}
-        <button class="py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">Submit </button>
 
+        <button class="w-full py-4 px-8 text-lg bg-teal-500 hover:bg-teal-600 rounded-xl text-white font-semibold transition duration-200">
+            <i class="fas fa-user-plus mr-2"></i> Create Account
+        </button>
 
+        <p class="text-center text-gray-400 mt-4">
+            Already have an account? 
+            <a href="{% url 'core:login' %}" class="text-teal-400 hover:text-teal-300">Login here</a>
+        </p>
     </form>   
-
 </div>    
 
-
-{%endblock%}
+{% endblock %}

@@ -20,7 +20,7 @@
 
             <hr class="my-6 border-slate-700">
 
-            <p class="font-semibold text-gray-100 mb-4">Categories</p>
+            {% comment %} <p class="font-semibold text-gray-100 mb-4">Categories</p>
 
             <ul class="space-y-2">
                 {% for category in categories %}
@@ -31,7 +31,29 @@
                         </a>
                     </li>
                 {% endfor %}
+            </ul> {% endcomment %}
+
+            <p class="font-semibold text-gray-100 mb-4">Categories</p>
+
+            <ul class="space-y-2">
+                <!-- Lien "All" -->
+                <li class="py-2 px-4 rounded-xl {% if not category_id %} bg-slate-700 {% endif %} hover:bg-slate-700 transition duration-200">
+                    <a href="{% url 'item:browse' %}?query={{ query }}" class="text-gray-300 hover:text-teal-400">
+                        All
+                    </a>
+                </li>
+
+                <!-- Catégories dynamiques -->
+                {% for category in categories %}
+                    <li class="py-2 px-4 rounded-xl {% if category.id == category_id %} bg-slate-700 {% endif %} hover:bg-slate-700 transition duration-200">
+                         <a href="{% url 'item:browse' %}?query={{ query }}&category={{ category.id }}" 
+                            class="text-gray-300 hover:text-teal-400">
+                            {{ category.name }}
+                        </a>
+                    </li>
+                {% endfor %}
             </ul>
+
 
             <hr class="my-6 border-slate-700">
 
@@ -44,7 +66,7 @@
 
         <!-- Game Grid -->
         <div class="col-span-3">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
                 {% for item in items %}
                     <div class="game-card">
                         <a href="{% url 'item:detail' item.id %}" class="block">
