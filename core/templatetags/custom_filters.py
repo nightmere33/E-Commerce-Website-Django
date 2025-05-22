@@ -19,7 +19,7 @@ def get_attr(obj, attr):
 @register.filter
 def get_next_items(items, current_index):
     """
-    Retourne les 4 prochains items après l'index actuel
+    Returns the next 4 items from the current index.
     """
     total = len(items)
     next_items = []
