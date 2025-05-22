@@ -85,7 +85,7 @@
             background: linear-gradient(145deg, #1e293b, #0f172a);
             border: 1px solid #2dd4bf33;
             border-radius: 8px;
-            height: 400px; /* Changed back to fixed height */
+            height: 400px;
         }
         
         /* Indicateurs de slides */
@@ -111,7 +111,7 @@
         .indicator.active {
             width: 24px;
             border-radius: 4px;
-            background: #2dd4bf;
+            background: #2dd4bf; /* Couleur du prix */
         }
 
         /* Animation des slides */
@@ -123,7 +123,7 @@
             height: 100%;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease-out; /* Animation plus rapide et subtile */
+            transition: opacity 0.6s ease-out;
         }
 
         .carousel-slide.active {
@@ -136,31 +136,49 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(45, 212, 191, 0.1);
-            border: 1px solid rgba(45, 212, 191, 0.2);
-            color: #2dd4bf;
-            width: 40px;
-            height: 40px;
+            background: rgba(45, 212, 191, 0.25); /* Fond plus visible */
+            border: 2px solid rgba(45, 212, 191, 0.5); /* Bordure plus visible */
+            color: #ffffff; /* Couleur du texte plus claire */
+            width: 50px; /* Plus grand */
+            height: 50px; /* Plus grand */
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .carousel-nav-button:hover {
-            background: rgba(45, 212, 191, 0.2);
-            transform: translateY(-50%) scale(1.1);
+            z-index: 20; /* S'assurer qu'ils sont au-dessus des autres éléments */
+            font-size: 1.2rem; /* Icônes plus grandes */
+            box-shadow: 0 0 15px rgba(45, 212, 191, 0.3); /* Ajouter une lueur */
         }
 
         .carousel-prev {
-            left: 20px;
+            left: 15px; /* Plus éloigné du bord */
         }
 
         .carousel-next {
-            right: 20px;
+            right: 15px; /* Plus éloigné du bord */
+        }
+
+        /* Animation au survol */
+        .carousel-nav-button:hover {
+            background: rgba(45, 212, 191, 0.5); /* Fond encore plus visible au survol */
+            transform: translateY(-50%) scale(1.1); /* Effet de zoom au survol */
+            box-shadow: 0 0 20px rgba(45, 212, 191, 0.6); /* Intensifier la lueur */
+        }
+        
+        /* Animation lors du clic */
+        .carousel-nav-button:active {
+            transform: translateY(-50%) scale(0.95); /* Effet de pression */
+        }
+        
+        /* S'assurer que les boutons sont visibles sur tous les appareils */
+        @media (max-width: 768px) {
+            .carousel-nav-button {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
         }
         
         .carousel-track {
@@ -172,42 +190,133 @@
         .carousel-container {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 1rem;
-            padding: 1rem;
+            gap: 0.5rem;
+            padding: 0;
             height: 100%;
         }
         
         .main-feature {
             position: relative;
             height: 100%;
-            border-radius: 8px;
+            border-radius: 0;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             background: rgba(0, 0, 0, 0.2);
         }
-        
+
         .main-feature img {
-            width: 100%;
-            height: 100%;
-            object-fit: fill; /* Changed from cover to fill */
-            border-radius: 8px;
+            transform-origin: center;
+            transition: transform 8s ease;
+        }
+
+        .carousel-slide.active .main-feature img {
+            transform: scale(1.1);
+        }
+
+        .carousel-slide:not(.active) .main-feature img {
+            transform: scale(1);
+            transition: none;
+        }
+
+        .main-feature:hover::before {
+            content: '';
+            position: absolute;
+            top: -150%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(45deg);
+            opacity: 0;
+            z-index: 2;
+            pointer-events: none;
+            transition: none;
+            animation: glass-effect 1.5s ease-in-out;
+        }
+
+        @keyframes glass-effect {
+            0% {
+                top: -150%;
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                top: 150%;
+                opacity: 0;
+            }
+        }
+
+        .main-feature:hover img {
+            transform: none;
+        }
+
+        .main-feature .feature-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 1rem 1rem;
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.8) 0%, 
+                rgba(0, 0, 0, 0.5) 40%, 
+                rgba(0, 0, 0, 0.2) 70%,
+                rgba(0, 0, 0, 0) 100% 
+            );
+            z-index: 2;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .main-feature .feature-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            opacity: 1;
+        }
+
+        .main-feature .feature-info p {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2dd4bf;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            opacity: 1;
+        }
+
+        .main-feature:hover .feature-info,
+        .side-feature:hover .feature-info {
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.8) 0%, /* Ombre légèrement plus marquée en bas */
+                rgba(0, 0, 0, 0.4) 50%, /* Dégradé légèrement plus visible au milieu */
+                rgba(0, 0, 0, 0) 100% /* Transparent en haut */
+            );
         }
         
         .side-features {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             grid-template-rows: repeat(2, 1fr);
-            gap: 0.8rem;
+            gap: 0.5rem;
             height: 100%;
+            padding-right: 0;
         }
         
         .side-feature {
             position: relative;
             height: auto;
             aspect-ratio: 1;
-            border-radius: 4px;
+            border-radius: 0;
             background: rgba(0, 0, 0, 0.2);
             overflow: hidden;
         }
@@ -215,10 +324,50 @@
         .side-feature img {
             width: 100%;
             height: 100%;
-            object-fit: fill; /* Changed from cover to fill */
-            border-radius: 4px;
+            object-fit: cover;
+            border-radius: 0;
         }
         
+        .side-feature .feature-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.5rem;
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.85) 0%, 
+                rgba(0, 0, 0, 0.6) 40%, 
+                rgba(0, 0, 0, 0.3) 70%,
+                rgba(0, 0, 0, 0) 100%
+            );
+            z-index: 2;
+            opacity: 0 !important;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 
+                        0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .side-feature:hover .feature-info {
+            opacity: 1 !important;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        
+        .side-feature .feature-info h4 {
+            font-size: 0.75rem !important;
+            font-weight: 500;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 
+                         0 0 10px rgba(0, 0, 0, 0.7);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 90%;
+        }
+
         .main-feature img, .side-feature img {
             transition: transform 0.5s ease-in-out;
         }
@@ -228,10 +377,9 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 1.5rem;
-            background: linear-gradient(0deg, rgba(15, 23, 42, 0.95) 0%, transparent 100%);
+            padding: 1rem;
+            background: linear-gradient(0deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.8) 50%, transparent 100%);
             z-index: 2;
-            border-radius: 0 0 8px 8px; /* Added border radius */
         }
 
         .carousel-slide img {
@@ -240,35 +388,16 @@
             width: 100%;
             height: auto;
             border-radius: 1rem;
-            transition: transform 0.3s ease, filter 0.3s ease;
-            /* Pour l'animation de brillance */
+            transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1), filter 0.5s cubic-bezier(0.33, 1, 0.68, 1);
             overflow: hidden;
         }
 
         .carousel-slide img:hover {
-            animation: shine 2s infinite;
-            transform: scale(1.05) translateY(-5px);
-            filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.6));
-            cursor: pointer;
-        }
-
-        @keyframes shine {
-            0% {
-                filter: brightness(1) drop-shadow(0 0 5px rgba(0, 255, 255, 0.4));
-            }
-            50% {
-                filter: brightness(1.3) drop-shadow(0 0 15px rgba(0, 255, 255, 0.8));
-            }
-            100% {
-                filter: brightness(1) drop-shadow(0 0 5px rgba(0, 255, 255, 0.4));
-            }
+            transform: scale(1.1) translateY(-5px);
+            filter: brightness(1.2) drop-shadow(0 0 10px rgba(0, 255, 255, 0.6));
         }
 
         /* Effet de mouvement léger continu */
-        .carousel-slide.active img {
-            animation: float 6s ease-in-out infinite;
-        }
-
         @keyframes float {
             0%, 100% {
                 transform: translateY(0) scale(1);
@@ -323,6 +452,7 @@
             }
         }
 
+        /* Supprimer l'animation de zoom constant */
         @keyframes zoomInOut {
             0%, 100% {
                 transform: scale(1);
@@ -333,9 +463,9 @@
         }
 
         .animate-zoom {
-            animation: zoomInOut 3s ease-in-out infinite;
+            /* Supprimer l'animation */
+            animation: none;
         }
-
 
         .view-more-btn {
             width: auto; /* largeur automatique selon contenu */
@@ -501,11 +631,32 @@
     
     {% block scripts %}{% endblock %}
 </body>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js">
+<!-- Chargement de jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<!-- Script pour la fonctionnalité du panier -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // ----------------- Add to Cart AJAX ------------------
+    $(document).on('click', '.add-cart', function(e) {
+        e.preventDefault();
+        const productId = $(this).val();
 
-
-
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart:cart_add" %}',
+            data: {
+                product_id: productId,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function(json) {
+                console.log(json);
+                document.getElementById('cart_quantity').textContent = json.qty;
+                alert('Added to cart!');
+            }
+        }); // Cette accolade fermante manquait
+    });
+});
 </script>
-
 </html>
