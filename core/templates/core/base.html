@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Ajout de FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -761,6 +761,32 @@
     
     {% block scripts %}{% endblock %}
 </body>
+<!-- Chargement de jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<!-- Script pour la fonctionnalité du panier -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // ----------------- Add to Cart AJAX ------------------
+    $(document).on('click', '.add-cart', function(e) {
+        e.preventDefault();
+        const productId = $(this).val();
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart:cart_add" %}',
+            data: {
+                product_id: productId,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function(json) {
+                console.log(json);
+                document.getElementById('cart_quantity').textContent = json.qty;
+                alert('Added to cart!');
+            }
+        }); // Cette accolade fermante manquait
+    });
+});
+</script>
 </html>
