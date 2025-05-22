@@ -7,12 +7,7 @@
 {% block content %}
 
     <!-- Hero Section with background image -->
-    <div class="relative text-white py-16 px-0 rounded-xl mb-12 overflow-hidden">
-
-        {% comment %} <div class="absolute inset-0 z-0">
-            <img src="{% static 'images/hero-bg.jpg' %}" class="w-full h-full object-cover opacity-20" alt="background">
-            <div class="absolute inset-0 bg-gradient-to-r from-teal-900/90 to-slate-900/90"></div>
-        </div> {% endcomment %}
+    <div class="relative text-white h-[40vh] px-0 rounded-xl mb-12 overflow-hidden">
 
          <div class="absolute inset-0 z-0">
             <!-- Video background -->
@@ -21,65 +16,84 @@
 
                 Your browser does not support the video tag.
             </video>
-            {% comment %} <div class="absolute inset-0 bg-gradient-to-r from-teal-900/90 to-slate-900/90"></div> {% endcomment %}
+    
         </div>
 
-        <div class="max-w-4xl mx-auto text-center relative z-10 px-6">
+        <div class="max-w-4xl mx-auto text-center relative z-10 px-6 h-full flex flex-col justify-center items-center">
             <h1 class="text-4xl md:text-5xl font-bold mb-6">Welcome to GameVerse</h1>
             <p class="text-xl mb-8">Discover the Ultimate Gaming Marketplace</p>
-            {% comment %} <a href="{% url 'item:browse' %}" class="bg-white text-teal-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300">
-                Explore Games
-            </a> {% endcomment %}
+        
         </div>
     </div>
+
+
+
+
+
 
     <!-- Featured Games Carousel -->
     <div class="max-w-7xl mx-auto my-12">
         <h2 class="text-3xl font-bold text-center mb-8 text-gray-100">Featured Games</h2>
         
         <div class="featured-carousel ">
+            
             <div class="carousel-track" id="carouselTrack">
                 {% for main_item in items|slice:":10" %}  <!-- Changed from :6 to :10 -->
-                <div class="carousel-slide {% if forloop.first %}active{% endif %}">
-                    <div class="carousel-container">
-                        <!-- Main Feature -->
-                        <div class="main-feature">
-                            {% if main_item.carousel_image %}
-                                <div class="image-wrapper">
-                                    <img src="{{ main_item.carousel_image.url }}" alt="{{ main_item.name }}">
+                    <div class="carousel-slide {% if forloop.first %}active{% endif %}">
+                        <div class="carousel-container">
+                            <!-- Main Feature -->
+                            <div class="main-feature relative">
+                                
+                                {% if main_item.carousel_image %}
+                                    <div class="image-wrapper">
+                                        <img src="{{ main_item.carousel_image.url }}" alt="{{ main_item.name }}">
+                                    </div>
+                                {% else %}
+                                    <div class="image-wrapper">
+                                        <img src="{{ main_item.image.url }}" alt="{{ main_item.name }}">
+                                    </div> 
+                                {% endif %}
+
+                                
+
+                                <div class="feature-info">
+                                    <h3 class="text-2xl font-bold text-white mb-2">{{ main_item.name }}</h3>
+                                    <p class="text-teal-400 font-bold text-xl">${{ main_item.price }}</p>
                                 </div>
-                            {% else %}
-                                <div class="image-wrapper">
-                                    <img src="{{ main_item.image.url }}" alt="{{ main_item.name }}">
-                                </div> 
-                            {% endif %}
-                            <div class="feature-info">
-                                <h3 class="text-2xl font-bold text-white mb-2">{{ main_item.name }}</h3>
-                                <p class="text-teal-400 font-bold text-xl">${{ main_item.price }}</p>
+                            </div>
+                        
+                            <!-- Side Features -->
+                            <div class="side-features">
+                                {% with next_items=items|get_next_items:forloop.counter0 %}
+                                    {% for side_item in next_items %}
+                                        <div class="side-feature">
+                                            <div class="image-wrapper">
+                                                <img src="{{ side_item.image.url }}" alt="{{ side_item.name }}">
+                                            </div>
+                                            <div class="feature-info">
+                                                <h4 class="text-white">{{ side_item.name }}</h4>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endwith %}
                             </div>
                         </div>
-                        
-                        <!-- Side Features -->
-                        <div class="side-features">
-                            {% with next_items=items|get_next_items:forloop.counter0 %}
-                                {% for side_item in next_items %}
-                                    <div class="side-feature">
-                                        <div class="image-wrapper">
-                                            <img src="{{ side_item.image.url }}" alt="{{ side_item.name }}">
-                                        </div>
-                                        <div class="feature-info">
-                                            <h4 class="text-white">{{ side_item.name }}</h4>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            {% endwith %}
-                        </div>
                     </div>
-                </div>
                 {% endfor %}
             </div>
+
+            
         </div>
     </div>
+
+
+
+
+
+
+
+
+    {% comment %} new items {% endcomment %}
 
     <div class="relative w-full overflow-hidden rounded-xl">
 
@@ -121,7 +135,7 @@
                 {% endfor %}
             </div>
         </div>
-    </div>
+
 
         {% if items|length >= 6 %}
         <div class="text-center mt-12 mb-4">
@@ -134,36 +148,54 @@
     </div>
 
 
-     <!-- Category Carousel -->
+
+
+
+
+
+
+        <!-- Category Carousel -->
     <div class="mt-12 px-6 py-12 bg-slate-800/50 rounded-xl backdrop-blur-sm border border-slate-700 relative">
-        <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 animate-zoom">Categories</h2>
+        <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 ">Categories</h2>
 
         <div class="relative">
             <div id="category-carousel" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar px-2">
                 {% for category in categories %}
                     <a href="{% url 'item:browse' %}?category={{ category.id }}" 
-                        class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border border-slate-700 hover:border-teal-500 transition block">
+                        class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border border-slate-700 hover:border-teal-500 transition block animate-gentle-zoom">
+
+                        <!-- Image avec flou léger au repos, retiré au hover -->
                         <img src="{{ MEDIA_URL }}item_images/{{ category.name }}.jpg" 
-                             alt="{{ category.name }}"
-                            class="absolute inset-0 w-full h-full object-cover  group-hover:scale-110 transition duration-300" />
-                        <div class="absolute inset-0 bg-black/40"></div>
-                        <div class="relative h-full flex items-center justify-center group-hover:items-end transition-[justify-content] duration-[1500ms] ease-in-out p-4">
-                            <span class="text-white font-semibold text-lg text-center transition-[justify-content] duration-[1500ms] ease-in-out">{{ category.name }}</span>
+                            alt="{{ category.name }}"
+                            class="absolute inset-0 w-full h-full object-cover 
+                                    blur-sm group-hover:blur-0 transition duration-700 ease-in-out" />
+
+                        <!-- Overlay sombre -->
+                        <div class="absolute inset-0 bg-black/30 transition duration-700 ease-in-out group-hover:bg-black/10"></div>
+
+                        <!-- Texte centré qui descend doucement au hover -->
+                        <div class="relative h-full flex items-center justify-center p-4">
+                            <span class="text-white font-semibold text-lg text-center 
+                                        transform transition duration-700 ease-in-out 
+                                        group-hover:translate-y-16 drop-shadow-md">
+                                {{ category.name }}
+                            </span>
                         </div>
                     </a>
+    
                 {% endfor %}
             </div>
 
 
-            <!-- Scroll buttons -->
-            <button onclick="scrollCategories(-300)"
-                    class="absolute left-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <button onclick="scrollCategories(300)"
-                    class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
-                <i class="fas fa-chevron-right"></i>
-            </button>
+                <!-- Scroll buttons -->
+                <button onclick="scrollCategories(-300)"
+                        class="absolute left-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button onclick="scrollCategories(300)"
+                        class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
         </div>
     </div>
 
@@ -172,7 +204,14 @@
     
 {% endblock %}
 
+
+
+
+
+
+{% comment %} les scripts js {% endcomment %}
 {% block scripts %}
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
    
@@ -207,6 +246,12 @@ function scrollCategories(offset) {
     if (!container) return;
     container.scrollBy({ left: offset, behavior: 'smooth' });
 }
+
+
+
+
+
+
 </script>
 
 {% endblock %}
