@@ -7,7 +7,13 @@
 {% block content %}
 
     <!-- Hero Section with background image -->
+<<<<<<< HEAD
+    <div class="relative text-white w-full overflow-hidden min-h-[300px] flex items-center mb-12">
+
+
+=======
     <div class="relative text-white py-16 px-0 rounded-xl mb-12 overflow-hidden">
+>>>>>>> d823a57 (video)
 
         {% comment %} <div class="absolute inset-0 z-0">
             <img src="{% static 'images/hero-bg.jpg' %}" class="w-full h-full object-cover opacity-20" alt="background">
@@ -81,59 +87,69 @@
         </div>
     </div>
 
-    <div class="relative max-w-7xl mx-auto overflow-hidden rounded-xl">
+    <div class="relative w-full overflow-hidden rounded-xl">
 
-    <!-- Video background container -->
-    <div class="absolute inset-0 -z-10 w-full h-full">
-        <video autoplay muted loop playsinline class="w-full h-full object-cover">
-            <source src="{{ MEDIA_URL }}video/vd2.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-        </video>
-        <!-- Optional overlay -->
-        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-    </div>
 
-          <!-- Newest Items Section -->
-    <div class="max-w-7xl mx-auto">
-        <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 animate-zoom">Newest Games</h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {% for item in items %}
-                <div class="game-card bg-white rounded-lg overflow-hidden relative group">
-                    <a href="{% url 'item:detail' item.id %}" class="block">
-                        <div class="image-container relative">
-                            <img src="{{ item.image.url }}" 
-                                 class="game-image"
-                                 alt="{{ item.name }}">
-                         </div>
+        <!-- Video background container -->
+        <div class="absolute left-0 right-0 top-[-10%] h-[120%] -z-10">
+ 
+            <video autoplay muted loop playsinline class="w-full h-full object-cover">
+                <source src="{{ MEDIA_URL }}video/vd2.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+            <!-- Optional overlay -->
+            <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+        </div>
+
+        <!-- Newest Items Section -->
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 animate-zoom">Newest Games</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 ">
+                {% for item in items %}
+                    <div class="game-card bg-white/10 rounded-lg overflow-hidden relative group ">
+                        <a href="{% url 'item:detail' item.id %}" class="block">
+                            <div class="image-container relative">
+                                <img src="{{ item.image.url }}" 
+                                    class="game-image"
+                                    alt="{{ item.name }}">
+                            </div>
                         </a>
+<<<<<<< HEAD
                     <!--Add to cart button-->
                     <button  type="button" value="{{item.id}}"   class="add-cart  absolute top-2 right-2 bg-teal-500 text-white rounded-full w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 shadow-lg hover:bg-teal-600 z-10">
                         <i class="fas fa-plus"></i>
                     </button>
+=======
+                        <!--Add to cart button-->
+                        <button title="Add to Cart" type="button" value="{{item.id}}" id="add-cart" class="absolute top-2 right-2 bg-teal-500 text-white rounded-full w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 shadow-lg hover:bg-teal-600 z-10">
+                            <i class="fas fa-plus"></i>
+                        </button>
+>>>>>>> 8484a1a71203a0bca717fa4921f98f8d6d6ff67d
 
-                    <div class="p-4">
+                        <div class="p-4">
                             <h3 class="font-medium text-gray-100 truncate mb-2">{{ item.name }}</h3>
                             <div class="price-tag mb-2 text-teal-400">${{ item.price }}</div>
-                    </div>       
-                </div>
-            {% endfor %}
+                        </div>       
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
         {% if items|length >= 6 %}
-        <div class="text-center mt-6">
+        <div class="text-center mt-12 mb-4">
             <a href="{% url 'item:browse' %}"
-                 class="inline-block px-8 py-4 bg-white/10 backdrop-blur-md text-white rounded-xl hover:bg-white/20 transition duration-300">
+                class="game-card view-more-btn inline-block px-8 py-4 bg-[#0f172a] text-gray-100 rounded-xl hover:bg-slate-800 transition duration-300 shadow-lg animate-zoom">
                 View More Games
             </a>
         </div>
         {% endif %}
-        </div>
     </div>
+
 
      <!-- Category Carousel -->
     <div class="mt-12 px-6 py-12 bg-slate-800/50 rounded-xl backdrop-blur-sm border border-slate-700 relative">
-        <h2 class="mb-8 text-2xl text-center text-gray-100">Categories</h2>
+        <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 animate-zoom">Categories</h2>
 
         <div class="relative">
             <div id="category-carousel" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar px-2">
@@ -142,10 +158,19 @@
                         class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border border-slate-700 hover:border-teal-500 transition block">
                         <img src="{{ MEDIA_URL }}item_images/{{ category.name }}.jpg" 
                              alt="{{ category.name }}"
+<<<<<<< HEAD
+                            class="absolute inset-0 w-full h-full object-cover group-hover:blur-sm group-hover:scale-110 transition duration-500" />
+                        <div class="absolute inset-0 bg-black/40"></div>
+                        <div class="relative h-full flex items-center justify-center p-4">
+                            <span class="text-white font-semibold text-lg text-center transform transition duration-[1500ms] ease-in-out group-hover:translate-y-16">
+                                 {{ category.name }}
+                            </span>
+=======
                             class="absolute inset-0 w-full h-full object-cover  group-hover:scale-110 transition duration-300" />
                         <div class="absolute inset-0 bg-black/40"></div>
                         <div class="relative h-full flex items-center justify-center group-hover:items-end transition-[justify-content] duration-[1500ms] ease-in-out p-4">
                             <span class="text-white font-semibold text-lg text-center transition-[justify-content] duration-[1500ms] ease-in-out">{{ category.name }}</span>
+>>>>>>> f31f81f (cat)
                         </div>
                     </a>
                 {% endfor %}
@@ -177,37 +202,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('category-carousel');
         if (!container) return;
 
-        const originalItems = Array.from(container.querySelectorAll('.carousel-item'));
-        const itemCount = originalItems.length;
-        const itemWidth = originalItems[0].offsetWidth + 24; // 24 = space-x-6 approx
+        let isAdjusting = false;
+        const threshold = 10;
 
-        // Clone left
-        originalItems.slice().reverse().forEach(item => {
-            const clone = item.cloneNode(true);
-            clone.classList.add('cloned');
-            container.insertBefore(clone, container.firstChild);
-        });
-
-        // Clone right
-        originalItems.forEach(item => {
-            const clone = item.cloneNode(true);
-            clone.classList.add('cloned');
-            container.appendChild(clone);
-        });
-
-        // Initial scroll
-        container.scrollLeft = itemCount * itemWidth;
-
-        // Adjust scrolling at ends
-        container.addEventListener('scroll', () => {
-            const maxScroll = itemWidth * itemCount * 2;
-            if (container.scrollLeft < itemWidth) {
-                container.scrollLeft += itemCount * itemWidth;
-            } else if (container.scrollLeft > maxScroll - itemWidth) {
-                container.scrollLeft -= itemCount * itemWidth;
-            }
-        });
+        
     })();
+
+
+
 
     // ----------------- Main Image Carousel ------------------
     (function initMainCarousel() {
