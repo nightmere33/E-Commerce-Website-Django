@@ -8,6 +8,7 @@ from .forms import ContactForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.conf import settings  
+from django.core.mail import send_mail
 
 def index(request):
     items = Item.objects.filter(is_sold=False).order_by('name')[:10]  # Changed from [:6] to [:10]
@@ -23,11 +24,27 @@ def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            messages.success(request, "Your message has been sent!")
-            return redirect('/contact/')
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+
+            # Contenu de l’e-mail
+            subject = f"New Contact Message from {name}"
+            message_body = f"From: {name} <{email}>\n\nMessage:\n{message}"
+
+            # Envoi de l’e-mail
+            send_mail(
+                subject,
+                message_body,
+                'gameversesuppdz@gmail.com',       
+                ['gameversesuppdz@gmail.com'],  
+                fail_silently=False,
+            )
+
+            messages.success(request, 'Message sent successfully!')
     else:
         form = ContactForm()
-    
+
     return render(request, 'core/contact.html', {'form': form})
 
 def signup(request):
