@@ -2,20 +2,21 @@
 
 {% block title %}Contact{% endblock %}
 
-
-
 {% block content %}
-<div class="max-w-3xl mx-auto mt-12 p-8 bg-white shadow-xl rounded-2xl">
-    <h1 class="text-4xl font-bold text-center luckiest-guy-regular text-gray-800 mb-8">Get in Touch</h1>
-     <p class="text-center text-gray-600 mb-6">Have a question or feedback ? Fill out the form below and we'll get back to you as soon as possible.</p>
+<div class="max-w-3xl mx-auto mt-12 p-8 bg-gradient-to-b from-slate-800 to-slate-900 shadow-xl rounded-2xl border border-slate-700">
+    <h1 class="text-4xl font-bold text-center text-gray-100 mb-8">Get in Touch</h1>
+    <p class="text-center text-gray-400 mb-6">
+        Have a question or feedback? Fill out the form below and we'll get back to you as soon as possible.
+    </p>
 
     <form method="POST" action="." class="space-y-6">
         {% csrf_token %}
 
         <!-- Name -->
         <div>
-            <label for="{{ form.name.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-700">Name</label>
-            {{ form.name }}
+            <label for="{{ form.name.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-300">Name</label>
+            <input type="text" name="name" id="id_name" placeholder="Enter your full name"
+                class="w-full rounded-md border border-slate-700 bg-slate-800 text-gray-100 p-3 focus:outline-none focus:ring-2 focus:ring-teal-400" required>
             {% if form.name.errors %}
                 <p class="text-red-500 text-sm mt-1">{{ form.name.errors.0 }}</p>
             {% endif %}
@@ -23,8 +24,9 @@
 
         <!-- Email -->
         <div>
-            <label for="{{ form.email.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-700">Email Address</label>
-            {{ form.email }}
+            <label for="{{ form.email.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-300">Email Address</label>
+            <input type="email" name="email" id="id_email" placeholder="you@example.com"
+                class="w-full rounded-md border border-slate-700 bg-slate-800 text-gray-100 p-3 focus:outline-none focus:ring-2 focus:ring-teal-400" required>
             {% if form.email.errors %}
                 <p class="text-red-500 text-sm mt-1">{{ form.email.errors.0 }}</p>
             {% endif %}
@@ -32,8 +34,9 @@
 
         <!-- Message -->
         <div>
-            <label for="{{ form.message.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-700">Message</label>
-            {{ form.message }}
+            <label for="{{ form.message.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-300">Message</label>
+            <textarea name="message" id="id_message" rows="5" placeholder="Write your message here..."
+                class="w-full rounded-md border border-slate-700 bg-slate-800 text-gray-100 p-3 focus:outline-none focus:ring-2 focus:ring-teal-400" required></textarea>
             {% if form.message.errors %}
                 <p class="text-red-500 text-sm mt-1">{{ form.message.errors.0 }}</p>
             {% endif %}
@@ -50,11 +53,12 @@
 
         <!-- Submit Button -->
         <div>
-            <button type="submit" class="w-full bg-teal-600 text-white py-3 px-6 rounded-lg hover:bg-teal-700 transition">
+            <button type="submit"
+                class="w-full bg-teal-500 hover:bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold transition duration-200">
+                <i class="fas fa-paper-plane mr-2"></i>
                 Send Message
             </button>
         </div>
     </form>
 </div>
-
 {% endblock %}
