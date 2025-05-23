@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'conversation',
     'cart',
     'widget_tweaks',
+    'ckeditor',
 
 ]
 
