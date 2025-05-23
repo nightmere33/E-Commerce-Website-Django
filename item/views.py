@@ -34,9 +34,11 @@ def browse(request):
 def detail(request, pk):
     item = get_object_or_404(Item, pk=pk )
     related_items = Item.objects.filter(Category=item.Category,is_sold=False).exclude(pk=pk)[0:5]
+    categories = Category.objects.all()
     return render(request ,'item/detail.html', {
         'item':item,
         'related_items':related_items,
+        'categories': categories
     })
 
 @staff_member_required

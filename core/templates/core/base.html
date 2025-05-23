@@ -513,7 +513,7 @@
         
 
 
-
+        
 
     </style>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> <!-- Jquery cdn-->
@@ -524,7 +524,7 @@
 
     <nav class="nav-gradient py-4 px-6 flex justify-between items-center shadow-lg">
     <!-- Left section: logo + categories -->
-    <div class="flex items-center space-x-6">
+    <div class="flex items-center space-x-6 relative">
         <a href="/" class="text-2xl font-bold text-white hover:text-gray-200 transition duration-300">
             <i class="fas fa-gamepad mr-2"></i>GameVerse
         </a>
@@ -544,7 +544,13 @@
                 {% endfor %}
             </div>
         </div>
+
+        
+
+
     </div>
+    {% block left_nav_extras %}{% endblock %}
+
 
     <!-- Right section: nav links + user -->
     <div class="flex items-center space-x-4">
@@ -649,30 +655,4 @@
 </body>
 <!-- Chargement de jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Script pour la fonctionnalité du panier -->
-<script>
-/*document.addEventListener('DOMContentLoaded', function() {
-    // ----------------- Add to Cart AJAX ------------------
-    $(document).on('click', '.add-cart', function(e) {
-        e.preventDefault();
-        const productId = $(this).val();
-
-        $.ajax({
-            type: 'POST',
-            url: '{% url "cart:cart_add" %}',
-            data: {
-                product_id: productId,
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-                action: 'post'
-            },
-            success: function(json) {
-                console.log(json);
-                document.getElementById('cart_quantity').textContent = json.qty;
-                alert('Added to cart!');
-            }
-        }); // Cette accolade fermante manquait
-    });
-});*/
-</script>
 </html>

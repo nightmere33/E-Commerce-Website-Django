@@ -2,6 +2,18 @@
 
 {% block title %}Dashboard{% endblock %}
 
+
+{% block left_nav_extras %}
+    <form method="GET" action="{% url 'item:browse' %}" class="flex items-center space-x-2 ml-0">
+        <input type="text" name="query" placeholder="Search games..."
+               class="px-3 py-1.5 rounded-md text-sm bg-white text-black focus:outline-none focus:ring-2 focus:ring-teal-400 placeholder-gray-500" />
+        <button type="submit"
+                class="px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-600 transition">
+            Search
+        </button>
+    </form>
+{% endblock %}
+
 {% block content %}
     <div class="mt-6 px-6 py-12 bg-gradient-to-b from-slate-800 to-slate-900 rounded-xl border border-slate-700">
         <h2 class="mb-12 text-2xl text-center text-gray-100 font-bold">My Items</h2>

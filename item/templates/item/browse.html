@@ -20,18 +20,7 @@
 
             <hr class="my-6 border-slate-700">
 
-            {% comment %} <p class="font-semibold text-gray-100 mb-4">Categories</p>
-
-            <ul class="space-y-2">
-                {% for category in categories %}
-                    <li class="py-2 px-4 rounded-xl {% if category.id == category_id %} bg-slate-700 {% endif %} hover:bg-slate-700 transition duration-200">
-                        <a href="{% url 'item:browse' %}?query={{query}}&category={{ category.id }}" 
-                           class="text-gray-300 hover:text-teal-400">
-                            {{ category.name }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul> {% endcomment %}
+            
 
             <p class="font-semibold text-gray-100 mb-4">Categories</p>
 
