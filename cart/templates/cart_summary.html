@@ -86,7 +86,7 @@ $(document).on('click', '.delete-product', function(e){
 
     $.ajax({
     type: 'POST',
-    url: '{% url 'cart:cart_delete' %}',
+    url: '{% url "cart:cart_delete" %}',
     data: {
       product_id: $(this).data('index'),
       csrfmiddlewaretoken: '{{ csrf_token }}',
