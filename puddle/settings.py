@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'theme',
     'conversation',
     'cart',
+    'widget_tweaks',
+
 ]
 
 INSTALLED_APPS += [

@@ -1,4 +1,6 @@
 {% extends 'core/base.html' %}
+{% load widget_tweaks %}
+
 
 {% block title %}Contact{% endblock %}
 
@@ -9,14 +11,14 @@
         Have a question or feedback? Fill out the form below and we'll get back to you as soon as possible.
     </p>
 
-    <form method="POST" action="." class="space-y-6">
+    <form method="POST" action="." class="space-y-6" onsubmit="return validateForm()">
         {% csrf_token %}
 
         <!-- Name -->
         <div>
-            <label for="{{ form.name.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-300">Name</label>
-            <input type="text" name="name" id="id_name" placeholder="Enter your full name"
-                class="w-full rounded-md border border-slate-700 bg-slate-800 text-gray-100 p-3 focus:outline-none focus:ring-2 focus:ring-teal-400" required>
+            <label for="{{ form.name.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-300">Full Name</label>
+            {{ form.name|add_class:"w-full rounded-md border border-slate-700 bg-slate-800 text-gray-100 p-3 focus:outline-none focus:ring-2 focus:ring-teal-400" }}
+
             {% if form.name.errors %}
                 <p class="text-red-500 text-sm mt-1">{{ form.name.errors.0 }}</p>
             {% endif %}
@@ -41,6 +43,10 @@
                 <p class="text-red-500 text-sm mt-1">{{ form.message.errors.0 }}</p>
             {% endif %}
         </div>
+        <div class="text-sm text-right text-gray-500">
+            <span id="charCount">2000</span> Characters remaining
+        </div>
+
 
         <!-- Success message -->
         {% if messages %}
@@ -61,4 +67,45 @@
         </div>
     </form>
 </div>
+
 {% endblock %}
+
+
+{% block scripts %}
+<script>
+function updateCharCount(textarea) {
+    const max = 2000;
+    const currentLength = textarea.value.length;
+    const remaining = max - currentLength;
+    const charCountDisplay = document.getElementById("charCount");
+
+    charCountDisplay.textContent = remaining;
+
+    if (remaining < 0) {
+        charCountDisplay.classList.add("text-red-500");
+    } else {
+        charCountDisplay.classList.remove("text-red-500");
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const textarea = document.querySelector("textarea");
+    if (textarea) {
+        textarea.addEventListener("input", function() {
+            updateCharCount(textarea);
+        });
+        // Initialise compteur dès le chargement
+        updateCharCount(textarea);
+    }
+});
+
+function validateForm() {
+    const message = document.querySelector("textarea");
+    if (message.value.length > 2000) {
+        alert("Votre message est trop long. Merci de le raccourcir.");
+        return false; // bloque envoi formulaire
+    }
+    return true;
+}
+</script>
+{% endblock scripts %}
