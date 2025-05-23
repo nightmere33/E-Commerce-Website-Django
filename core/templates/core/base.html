@@ -474,161 +474,47 @@
             /* Par exemple, si .game-card a une largeur fixée, on la surchargera ici */
         }
 
-        /* Fond ombré subtil et professionnel pour les textes */
-        .main-feature .feature-info,
-        .side-feature .feature-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 1.5rem 1rem 1rem;
-            background: linear-gradient(
-                to top,
-                rgba(0, 0, 0, 0.8) 0%, 
-                rgba(0, 0, 0, 0.5) 40%, 
-                rgba(0, 0, 0, 0.2) 70%,
-                rgba(0, 0, 0, 0) 100% 
-            );
-            z-index: 2;
-            border-radius: 0 0 8px 8px;
-        }
 
-        /* Texte du titre et du prix */
-        .main-feature .feature-info h3,
-        .side-feature .feature-info h4 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-            opacity: 1;
-        }
-
-        .main-feature .feature-info p {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #2dd4bf;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-            opacity: 1;
-        }
-
-        /* Animation à l'apparition des slides */
-        .carousel-slide .feature-info {
-            transform: translateY(5px);
-            opacity: 0.8;
-            transition: transform 0.5s ease, opacity 0.5s ease;
-        }
-
-        .carousel-slide.active .feature-info {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        /* Cette règle doit être placée APRÈS toutes les autres définitions pour .side-feature .feature-info */
-        /* pour s'assurer qu'elle surcharge les autres styles */
-        
-        .side-feature .feature-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 0.5rem;
-            background: linear-gradient(
-                to top,
-                rgba(0, 0, 0, 0.85) 0%, 
-                rgba(0, 0, 0, 0.6) 40%, 
-                rgba(0, 0, 0, 0.3) 70%,
-                rgba(0, 0, 0, 0) 100%
-            );
-            z-index: 2;
-            opacity: 0 !important; /* Forcer à être caché par défaut */
-            transform: translateY(10px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            pointer-events: none; /* Évite les problèmes d'interaction */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 
-                        0 2px 4px -2px rgba(0, 0, 0, 0.1);
-        }
-        
-        .side-feature:hover .feature-info {
-            opacity: 1 !important; /* Forcer à être visible au survol */
-            transform: translateY(0);
-            pointer-events: auto; /* Restaure les interactions */
-        }
-        
-        /* Assurez-vous que d'autres règles ne remplacent pas celle-ci */
-        /* en particulier, vérifiez s'il y a des règles avec .carousel-slide.active */
-        
-        /* Annuler tout effet qui pourrait montrer les titres automatiquement */
-        .carousel-slide.active .side-feature .feature-info {
-            opacity: 0 !important;
-        }
-        
-        .carousel-slide.active .side-feature:hover .feature-info {
-            opacity: 1 !important;
-        }
-
-        /* Assurez-vous que cette section est placée à la fin de votre CSS */
-        
-        /* Reset des animations précédentes qui pourraient interférer */
-        .carousel-slide .main-feature img,
-        .carousel-slide.active .main-feature img {
-            animation: none !important;
-            transform: scale(1);
-            transition: none;
-        }
-        
-        /* Définir la nouvelle animation de zoom */
-        .carousel-slide.active .main-feature img {
-            animation: zoomInEffect 8s ease forwards !important;
-        }
-        
-        @keyframes zoomInEffect {
-            0% {
+        @keyframes gentleZoom {
+            0%, 100% {
                 transform: scale(1);
             }
-            100% {
-                transform: scale(1.1);
+            50% {
+                transform: scale(1.03);
             }
         }
 
-        /* Cette section doit être ajoutée après les autres styles de .feature-info */
-        
-        /* Initialisation de l'état des textes du slide */
-        .carousel-slide .main-feature .feature-info {
-            transform: translateY(100%);
-            background: linear-gradient(
-                to top,
-                rgba(0, 0, 0, 0.8) 0%,
-                rgba(0, 0, 0, 0.6) 50%,
-                rgba(0, 0, 0, 0.3) 80%,
-                rgba(0, 0, 0, 0) 100%
-            );
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        .animate-gentle-zoom {
+            animation: gentleZoom 6s ease-in-out infinite;
         }
+
+
+
+       
+
         
-        .carousel-slide .main-feature .feature-info h3,
-        .carousel-slide .main-feature .feature-info p {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
+        * {
+            border: none !important;
         }
+
+
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 1s ease-out;
+        }
+
+
+
         
-        /* Animation pour le slide actif */
-        .carousel-slide.active .main-feature .feature-info {
-            transform: translateY(0);
-        }
-        
-        .carousel-slide.active .main-feature .feature-info h3 {
-            opacity: 1;
-            transform: translateY(0);
-            transition-delay: 0.3s;
-        }
-        
-        .carousel-slide.active .main-feature .feature-info p {
-            opacity: 1;
-            transform: translateY(0);
-            transition-delay: 0.5s;
-        }
+
+
+
+
     </style>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> <!-- Jquery cdn-->
     <title>{% block title %}{% endblock %} | GameVerse</title>
@@ -666,9 +552,9 @@
 
         {% if request.user.is_authenticated %}
             <a href="{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
-            <a href="{% url 'dashboard:index' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
-
             {% if request.user.is_superuser %}
+                <a href="{% url 'dashboard:index' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
+            
                 <a href="{% url 'item:new' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">New item</a>
             {% endif %}
 
@@ -722,7 +608,7 @@
       <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
         <!--what is GameVerse-->
         <div>
-            <h3 class="text-xl font-semibold text-white luckiest-guy-regular mb-4">What is GameVerse?</h3>
+            <h3 class="text-xl font-semibold text-teal-400 luckiest-guy-regular mb-4">What is GameVerse?</h3>
             <p class="text-sm leading-relaxedtext-lg text-gray-400">GameVerse is a digital space for gamers <br> to exchange, 
                 connect, and grow their <br> 
                 gaming experience.
@@ -730,7 +616,7 @@
         </div>
         <!--useful links-->
         <div>
-            <h3 class="text-xl font-semibold text-white luckiest-guy-regular mb-4">Useful Links</h3>
+            <h3 class="text-xl font-semibold text-teal-400 luckiest-guy-regular mb-4">Useful Links</h3>
             <ul class="space-y-3">
                 <li>
                     <a href="{% url 'core:contact' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Contact</a>                   
@@ -744,7 +630,7 @@
             </ul>
         </div>
         <div>
-            <h3 class="text-xl font-semibold text-white mb-4 luckiest-guy-regular">Follow Us</h3>
+            <h3 class="text-xl font-semibold text-teal-400 mb-4 luckiest-guy-regular">Follow Us</h3>
             <div class="flex space-x-4">
                 <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                 <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
@@ -766,7 +652,7 @@
 
 <!-- Script pour la fonctionnalité du panier -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+/*document.addEventListener('DOMContentLoaded', function() {
     // ----------------- Add to Cart AJAX ------------------
     $(document).on('click', '.add-cart', function(e) {
         e.preventDefault();
@@ -787,6 +673,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }); // Cette accolade fermante manquait
     });
-});
+});*/
 </script>
 </html>

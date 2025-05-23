@@ -7,36 +7,44 @@
 {% block content %}
 
     <!-- Hero Section with background image -->
-    <div class="relative text-white py-16 px-0 rounded-xl mb-12 overflow-hidden">
-
-        {% comment %} <div class="absolute inset-0 z-0">
-            <img src="{% static 'images/hero-bg.jpg' %}" class="w-full h-full object-cover opacity-20" alt="background">
-            <div class="absolute inset-0 bg-gradient-to-r from-teal-900/90 to-slate-900/90"></div>
-        </div> {% endcomment %}
+    <div class="relative text-white h-[40vh] -mx-2 sm:-mx-3 lg:-mx-5 px-0 rounded-xl mb-12 overflow-hidden">
 
          <div class="absolute inset-0 z-0">
             <!-- Video background -->
-            <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-40">
+            <video autoplay muted loop playsinline class="w-full h-full object-cover">
                 <source src="{{ MEDIA_URL }}video/vd.mp4" type="video/mp4">
 
                 Your browser does not support the video tag.
             </video>
-            {% comment %} <div class="absolute inset-0 bg-gradient-to-r from-teal-900/90 to-slate-900/90"></div> {% endcomment %}
+    
         </div>
 
-        <div class="max-w-4xl mx-auto text-center relative z-10 px-6">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6">Welcome to GameVerse</h1>
-            <p class="text-xl mb-8">Discover the Ultimate Gaming Marketplace</p>
-            {% comment %} <a href="{% url 'item:browse' %}" class="bg-white text-teal-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300">
-                Explore Games
-            </a> {% endcomment %}
+        <div class="max-w-4xl mx-auto text-center mb-4 -mt-4 relative z-10 px-6 h-full flex flex-col justify-center items-center">
+           <h1 class="text-5xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-white via-gray-300 to-white text-transparent bg-clip-text tracking-wide animate-fade-in drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]"
+                style="-webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);">
+                Welcome to GameVerse
+            </h1>
+ 
+
+
+            <p class="text-xl mb-4 -mt-6 text-white text-opacity-100">Discover the Ultimate Gaming Marketplace</p>
+
+        
         </div>
     </div>
 
+
+
+
+
+
     <!-- Featured Games Carousel -->
     <div class="max-w-7xl mx-auto my-12">
+
         <h2 class="text-3xl font-bold text-center mb-8 text-gray-100">Featured Games</h2>
-        <div class="featured-carousel">
+       
+        <div class="featured-carousel h-[450px]">
+
             <div class="carousel-track" id="carouselTrack">
                 {% for main_item in carousel_items %}
                 <div class="carousel-slide {% if forloop.first %}active{% endif %}">
@@ -71,8 +79,19 @@
                 </div>
                 {% endfor %}
             </div>
+
+            
         </div>
     </div>
+
+
+
+
+
+
+
+
+    {% comment %} new items {% endcomment %}
 
     <div class="relative w-full overflow-hidden rounded-xl">
 
@@ -80,7 +99,7 @@
         <!-- Video background container -->
         <div class="absolute left-0 right-0 top-[-10%] h-[120%] -z-10">
  
-            <video autoplay muted loop playsinline class="w-full h-full object-cover">
+            <video autoplay muted loop playsinline class="fixed top-0 left-0 w-full h-full object-cover z-0">
                 <source src="{{ MEDIA_URL }}video/vd2.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
@@ -93,11 +112,11 @@
             <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 animate-zoom">Newest Games</h2>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 ">
                 {% for item in items %}
-                    <div class="game-card bg-white/10 rounded-lg overflow-hidden relative group ">
+                    <div class="game-card bg-white/20 backdrop-blur-sm rounded-lg overflow-hidden relative group ">
                         <a href="{% url 'item:detail' item.id %}" class="block">
                             <div class="image-container relative">
                                 <img src="{{ item.image.url }}" 
-                                    class="game-image"
+                                    class="game-image opacity-200"
                                     alt="{{ item.name }}">
                             </div>
                         </a>
@@ -114,7 +133,7 @@
                 {% endfor %}
             </div>
         </div>
-    </div>
+
 
         {% if items|length >= 6 %}
         <div class="text-center mt-12 mb-4">
@@ -127,36 +146,56 @@
     </div>
 
 
-     <!-- Category Carousel -->
-    <div class="mt-12 px-6 py-12 bg-slate-800/50 rounded-xl backdrop-blur-sm border border-slate-700 relative">
-        <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 animate-zoom">Categories</h2>
+
+
+
+
+
+
+        <!-- Category Carousel -->
+    <div class="mt-12 px-6 py-12 bg-black/40  rounded-xl border relative">
+
+        <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 ">Categories</h2>
 
         <div class="relative">
             <div id="category-carousel" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar px-2">
                 {% for category in categories %}
                     <a href="{% url 'item:browse' %}?category={{ category.id }}" 
-                        class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border border-slate-700 hover:border-teal-500 transition block">
+                        class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border-none transition block animate-gentle-zoom">
+
+
+                        <!-- Image avec flou léger au repos, retiré au hover -->
                         <img src="{{ MEDIA_URL }}item_images/{{ category.name }}.jpg" 
-                             alt="{{ category.name }}"
-                            class="absolute inset-0 w-full h-full object-cover  group-hover:scale-110 transition duration-300" />
-                        <div class="absolute inset-0 bg-black/40"></div>
-                        <div class="relative h-full flex items-center justify-center group-hover:items-end transition-[justify-content] duration-[1500ms] ease-in-out p-4">
-                            <span class="text-white font-semibold text-lg text-center transition-[justify-content] duration-[1500ms] ease-in-out">{{ category.name }}</span>
+                            alt="{{ category.name }}"
+                            class="absolute inset-0 w-full h-full object-cover 
+                                    blur-sm group-hover:blur-0 transition duration-700 ease-in-out" />
+
+                        <!-- Overlay sombre -->
+                        <div class="absolute inset-0 bg-black/30 transition duration-700 ease-in-out group-hover:bg-black/10"></div>
+
+                        <!-- Texte centré qui descend doucement au hover -->
+                        <div class="relative h-full flex items-center justify-center p-4">
+                            <span class="text-white font-semibold text-lg text-center 
+                                        transform transition duration-700 ease-in-out 
+                                        group-hover:translate-y-16 drop-shadow-md">
+                                {{ category.name }}
+                            </span>
                         </div>
                     </a>
+    
                 {% endfor %}
             </div>
 
 
-            <!-- Scroll buttons -->
-            <button onclick="scrollCategories(-300)"
-                    class="absolute left-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <button onclick="scrollCategories(300)"
-                    class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
-                <i class="fas fa-chevron-right"></i>
-            </button>
+                <!-- Scroll buttons -->
+                <button onclick="scrollCategories(-300)"
+                        class="absolute left-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button onclick="scrollCategories(300)"
+                        class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
         </div>
     </div>
 
@@ -165,7 +204,14 @@
     
 {% endblock %}
 
+
+
+
+
+
+{% comment %} les scripts js {% endcomment %}
 {% block scripts %}
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // ----------------- Massil's Category Carousel ------------------
@@ -432,6 +478,12 @@ function scrollCategories(offset) {
     if (!container) return;
     container.scrollBy({ left: offset, behavior: 'smooth' });
 }
+
+
+
+
+
+
 </script>
 
 {% endblock %}
