@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
 
+
 INPUT_CLASSES = (
     'w-full py-4 px-6 rounded-xl '
     'bg-slate-800 border border-slate-700 '
@@ -47,24 +48,25 @@ class LoginForm(AuthenticationForm):
                                                      {'class': INPUT_CLASSES, 
                                                       'placeholder': 'Enter your password'}))
     
-class ContactForm(forms.Form):
-    name = forms.CharField(label='Name', max_length=100)
-    email = forms.EmailField(label='Email')
-    message = forms.CharField(label='Message', widget=forms.Textarea)
+from django import forms
 
-    email = forms.EmailField(
-        widget=forms.EmailInput(attrs={
-            'class': 'w-full px-4 py-2 border rounded-lg',
-            'placeholder': 'Your email'
-        })
-    )
-    message = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'class': 'w-full px-4 py-2 border rounded-lg',
-            'placeholder': 'Your message',
-            'rows': 6
-        })
-    )
+class ContactForm(forms.Form):
+    name = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'w-full border border-gray-300 rounded-lg p-2 text-black',
+        'placeholder': 'Your name'
+    }))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={
+        'class': 'w-full border border-gray-300 rounded-lg p-2 text-black',
+        'placeholder': 'Your email'
+    }))
+    message = forms.CharField(widget=forms.Textarea(attrs={
+        'class': 'w-full border border-gray-300 rounded-lg p-2 text-black resize-none',
+        'placeholder': 'Your message',
+        'rows': 4,
+        'maxlength': 2000,
+        'oninput': 'updateCharCount(this)'
+    }))
+
 
 class EditProfileForm(forms.ModelForm):
     new_password = forms.CharField(
