@@ -552,9 +552,9 @@
 
         {% if request.user.is_authenticated %}
             <a href="{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
-            <a href="{% url 'dashboard:index' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
-
             {% if request.user.is_superuser %}
+                <a href="{% url 'dashboard:index' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
+            
                 <a href="{% url 'item:new' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">New item</a>
             {% endif %}
 
@@ -608,7 +608,7 @@
       <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
         <!--what is GameVerse-->
         <div>
-            <h3 class="text-xl font-semibold text-white luckiest-guy-regular mb-4">What is GameVerse?</h3>
+            <h3 class="text-xl font-semibold text-teal-400 luckiest-guy-regular mb-4">What is GameVerse?</h3>
             <p class="text-sm leading-relaxedtext-lg text-gray-400">GameVerse is a digital space for gamers <br> to exchange, 
                 connect, and grow their <br> 
                 gaming experience.
@@ -616,7 +616,7 @@
         </div>
         <!--useful links-->
         <div>
-            <h3 class="text-xl font-semibold text-white luckiest-guy-regular mb-4">Useful Links</h3>
+            <h3 class="text-xl font-semibold text-teal-400 luckiest-guy-regular mb-4">Useful Links</h3>
             <ul class="space-y-3">
                 <li>
                     <a href="{% url 'core:contact' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Contact</a>                   
@@ -630,7 +630,7 @@
             </ul>
         </div>
         <div>
-            <h3 class="text-xl font-semibold text-white mb-4 luckiest-guy-regular">Follow Us</h3>
+            <h3 class="text-xl font-semibold text-teal-400 mb-4 luckiest-guy-regular">Follow Us</h3>
             <div class="flex space-x-4">
                 <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                 <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
@@ -652,7 +652,7 @@
 
 <!-- Script pour la fonctionnalité du panier -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+/*document.addEventListener('DOMContentLoaded', function() {
     // ----------------- Add to Cart AJAX ------------------
     $(document).on('click', '.add-cart', function(e) {
         e.preventDefault();
@@ -673,6 +673,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }); // Cette accolade fermante manquait
     });
-});
+});*/
 </script>
 </html>
