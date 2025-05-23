@@ -17,7 +17,7 @@
         <!-- Name -->
         <div>
             <label for="{{ form.name.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-300">Full Name</label>
-            {{ form.name|add_class:"w-full rounded-md border border-slate-700 bg-slate-800 text-gray-100 p-3 focus:outline-none focus:ring-2 focus:ring-teal-400" }}
+            {{ form.name|add_class:"w-full rounded-md border border-slate-700  ring-2 ring-teal-400  bg-slate-800 text-gray-100 p-3 focus:outline-none focus:ring-2 focus:ring-teal-400 " }}
 
             {% if form.name.errors %}
                 <p class="text-red-500 text-sm mt-1">{{ form.name.errors.0 }}</p>

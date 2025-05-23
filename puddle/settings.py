@@ -82,6 +82,7 @@ TEMPLATES = [
                 'core.context_processors.categories',
                 'cart.context_processors.cart',
                 'core.context_processors.media_url',
+
             ],
         },
     },
