@@ -1,12 +1,13 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from item.models import Category, Item
 from .forms import SignUpForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .forms import EditProfileForm
-from .forms import ContactForm
+from .forms import EditProfileForm, ContactForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import logout
 from django.conf import settings  
 from django.core.mail import send_mail
 import random
@@ -86,21 +87,22 @@ def termsofuse(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
+        # Traitement normal du formulaire de profil
         form = EditProfileForm(request.POST, instance=request.user)
+        
         if form.is_valid():
             user = form.save(commit=False)
             new_password = form.cleaned_data.get('new_password')
             confirm_password = form.cleaned_data.get('confirm_password')
-
+            
             if new_password:
                 if new_password == confirm_password:
                     user.set_password(new_password)
                     update_session_auth_hash(request, user)  # évite la déconnexion
-                    messages.success(request, 'Password updated successfully.')
                 else:
                     messages.error(request, 'Passwords do not match.')
                     return redirect('core:edit_profile')
-
+            
             user.save()
             messages.success(request, 'Profile updated successfully.')
             return redirect('core:edit_profile')
@@ -108,7 +110,24 @@ def edit_profile(request):
             messages.error(request, 'Please correct the error below.')
     else:
         form = EditProfileForm(instance=request.user)
-
+    
     return render(request, 'core/edit_profile.html', {
         'form': form,
     })
+
+@login_required
+def debug_upload(request):
+    if request.method == 'POST':
+        if 'debug_image' in request.FILES:
+            # Tenter de sauvegarder une image dans le dossier média
+            img = request.FILES['debug_image']
+            with open(f'media/debug_{img.name}', 'wb+') as destination:
+                for chunk in img.chunks():
+                    destination.write(chunk)
+            return render(request, 'core/debug.html', {'success': True, 'filename': img.name})
+    return render(request, 'core/debug.html', {'success': False})
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, "You have been successfully logged out.")
+    return redirect('core:index')

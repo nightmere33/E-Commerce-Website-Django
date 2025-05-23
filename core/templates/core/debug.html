@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Debug Upload{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-12">
+    <h1 class="text-3xl font-bold text-white mb-8">Debug Upload</h1>
+    
+    {% if success %}
+        <div class="bg-teal-500/20 p-4 rounded-lg mb-6">
+            <p class="text-teal-400">Upload successful: {{ filename }}</p>
+            {% if filename %}
+                <img src="/media/debug_{{ filename }}" alt="Uploaded image" class="mt-4 max-w-full h-auto">
+            {% endif %}
+        </div>
+    {% endif %}
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-4">
+            <input type="file" name="debug_image" accept="image/*">
+        </div>
+        <button type="submit" class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded">
+            Upload Test
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -1,15 +1,11 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserChangeForm
-
 
 INPUT_CLASSES = (
-    'w-full py-4 px-6 rounded-xl '
-    'bg-slate-800 border border-slate-700 '
-    'text-gray-100 placeholder-gray-400 '
-    'focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 '
-    'transition duration-200'
+    'w-full p-2 border rounded-lg '
+    'bg-slate-800 text-gray-100 border-slate-700 '
+    'focus:outline-none focus:ring-2 focus:ring-teal-400'
 )
 
 class SignUpForm(UserCreationForm):
@@ -69,20 +65,8 @@ class ContactForm(forms.Form):
 
 
 class EditProfileForm(forms.ModelForm):
-    new_password = forms.CharField(
-        required=False,
-        widget=forms.PasswordInput(attrs={
-            'class': INPUT_CLASSES,
-            'placeholder': 'New password'
-        })
-    )
-    confirm_password = forms.CharField(
-        required=False,
-        widget=forms.PasswordInput(attrs={
-            'class': INPUT_CLASSES,
-            'placeholder': 'Confirm password'
-        })
-    )
+    new_password = forms.CharField(widget=forms.PasswordInput(), required=False)
+    confirm_password = forms.CharField(widget=forms.PasswordInput(), required=False)
 
     class Meta:
         model = User
