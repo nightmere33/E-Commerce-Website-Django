@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
+
+
 class Category(models.Model):
     name = models.CharField(max_length=255)
 
@@ -13,7 +16,8 @@ class Category(models.Model):
 class Item(models.Model):
     Category = models.ForeignKey(Category, related_name='items', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
+    description = RichTextField(blank=True, null=True)
+
     price = models.FloatField()
     image = models.ImageField(upload_to='item_images', null=True, blank=True)  # Made nullable again
     carousel_image = models.ImageField(upload_to='carousel_images', null=True, blank=True)
