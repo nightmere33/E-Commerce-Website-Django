@@ -16,6 +16,28 @@
     <!-- Ajout de FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* Ajoutez ces styles */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        .content-wrapper {
+            flex: 1 0 auto;
+            padding-bottom: 60px; /* Espace en bas du contenu */
+        }
+        
+        footer {
+            flex-shrink: 0;
+            margin-top: auto;
+        }
+
         .cloned {
             pointer-events: none;
         }
@@ -633,11 +655,15 @@
     </nav>
 
 
-    <div class="px-6 py-6 min-h-[calc(100vh-80px)]">
-        {% block content %}
-        {% endblock %}
+    <!-- Wrapper autour du contenu principal -->
+    <div class="content-wrapper">
+        <div class="px-6 py-6">
+            {% block content %}
+            {% endblock %}
+        </div>
     </div>
-
+    
+    <!-- Footer existant -->
     <footer class="bg-gray-900 text-gray-400 py-12 px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
             <!--what is GameVerse-->
