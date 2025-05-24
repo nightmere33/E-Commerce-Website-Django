@@ -529,7 +529,7 @@
         
 
 
-
+        
 
     </style>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> <!-- Jquery cdn-->
@@ -539,12 +539,13 @@
 <body>
 
     <nav class="nav-gradient py-4 px-6 flex justify-between items-center shadow-lg">
-    <!-- Left section: logo + categories -->
-    <div class="flex items-center space-x-6">
-        <a href="/" class="text-2xl font-bold text-white hover:text-gray-200 transition duration-300">
-            <i class="fas fa-gamepad mr-2"></i>GameVerse
-        </a>
+            <!-- Left section: logo + categories -->
+            <div class="flex items-center space-x-6 relative">
+                <a href="/" class="text-2xl font-bold text-white hover:text-gray-200 transition duration-300">
+                    <i class="fas fa-gamepad mr-2"></i>GameVerse
+                </a>
 
+<<<<<<< HEAD
         <!-- Dropdown: Categories -->
         <div class="relative group">
             <button class="text-white font-semibold hover:text-teal-300 transition duration-300 flex items-center">
@@ -636,16 +637,94 @@
                                 <span>Sign In</span>
                             </a>
                         {% endif %}
+=======
+                <!-- Dropdown: Categories -->
+                <div class="relative group">
+                    <button class="text-white font-semibold hover:text-teal-300 transition duration-300 flex items-center">
+                        Categories
+                        <i class="fas fa-chevron-down ml-2 text-sm"></i>
+                    </button>
+                    <div class="absolute left-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all z-50">
+                        <a href="{% url 'item:browse' %}" class="block px-4 py-2 hover:bg-teal-100">All</a>
+                        {% for category in categories %}
+                            <a href="{% url 'item:browse' %}?category={{ category.id }}" class="block px-4 py-2 hover:bg-teal-100">
+                                {{ category.name }}
+                            </a>
+                        {% endfor %}
+>>>>>>> 968bb8faca3aa66953bf6e64cbc853d336801f31
                     </div>
                 </div>
             </div>
+        
 
-        {% else %}
-            <a href="{% url 'core:signup' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>
-            <a href="{% url 'core:login' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Log in</a>
-        {% endif %}
-    </div>
-</nav>
+
+
+            {% block left_nav_extras %}
+                {% block search_bar %}
+                    <form method="GET" action="{% url 'item:browse' %}" class="flex items-center space-x-2 ml-0 pl-0">
+                        <input type="text" name="query" placeholder="Search games..."
+                            class="px-3 py-1.5 rounded-md text-sm bg-white text-black focus:outline-none focus:ring-2 focus:ring-teal-400 placeholder-gray-500" />
+                        <button type="submit"
+                                class="px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-600 transition">
+                                    Search
+                        </button>
+                    </form>
+                {% endblock %}
+            {% endblock %}
+
+
+
+            <!-- Right section: nav links + user -->
+            <div class="flex items-center space-x-4">
+                <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-gray-200 transition duration-300">Browse</a>
+
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
+                    {% if request.user.is_superuser %}
+                        <a href="{% url 'dashboard:index' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
+                    
+                        <a href="{% url 'item:new' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">New item</a>
+                    {% endif %}
+
+                    <!--  Shopping Cart Button -->
+                    <a href="{% url 'cart:cart_summary' %}" class="flex items-center px-4 py-2 text-sm font-semibold bg-white text-gray-800 rounded-xl hover:bg-gray-100 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6h13l-1.5-6M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
+                        </svg>
+                        <span>Cart</span>
+                        <span id="cart_quantity" class="ml-2 bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded-full">{{ cart|length}}</span>
+                    </a>
+
+                    <!--  User dropdown -->
+                    <div class="relative group inline-block" tabindex="0">
+                        <button class="w-10 h-10 rounded-full bg-teal-400 flex items-center justify-center hover:bg-teal-600 transition duration-300 focus:outline-none">
+                            <i class="fas fa-user-edit text-white"></i>
+                        </button>
+
+                        <div class="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-700 rounded-xl shadow-lg z-50 
+                            opacity-0 invisible 
+                            group-hover:opacity-100 group-hover:visible 
+                            group-focus-within:opacity-100 group-focus-within:visible 
+                            transition-all duration-200">
+
+                            <a href="{% url 'core:edit_profile' %}" class="block px-4 py-2 text-sm text-white hover:bg-slate-700 transition">Edit Profile</a>
+                            {% if request.user.is_superuser %}
+                                <a href="{% url 'dashboard:index' %}" class="block px-4 py-2 text-sm text-white hover:bg-slate-700 transition">Dashboard</a>
+                            {% endif %}
+
+                            <form method="POST" action="{% url 'core:logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-slate-700 transition">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+
+                {% else %}
+                    <a href="{% url 'core:signup' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>
+                    <a href="{% url 'core:login' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Log in</a>
+                {% endif %}
+            </div>
+    </nav>
 
 
     <div class="px-6 py-6 min-h-[calc(100vh-80px)]">
@@ -654,43 +733,43 @@
     </div>
 
     <footer class="bg-gray-900 text-gray-400 py-12 px-6">
-      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-        <!--what is GameVerse-->
-        <div>
-            <h3 class="text-xl font-semibold text-teal-400 luckiest-guy-regular mb-4">What is GameVerse?</h3>
-            <p class="text-sm leading-relaxedtext-lg text-gray-400">GameVerse is a digital space for gamers <br> to exchange, 
-                connect, and grow their <br> 
-                gaming experience.
-            </p>
-        </div>
-        <!--useful links-->
-        <div>
-            <h3 class="text-xl font-semibold text-teal-400 luckiest-guy-regular mb-4">Useful Links</h3>
-            <ul class="space-y-3">
-                <li>
-                    <a href="{% url 'core:contact' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Contact</a>                   
-                </li>
-                <li>
-                    <a href="{% url 'core:privacy' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Privacy Policy</a>                 
-                </li>
-                <li>
-                    <a href="{% url 'core:termsofuse' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Terms Of Use</a>                   
-                </li>
-            </ul>
-        </div>
-        <div>
-            <h3 class="text-xl font-semibold text-teal-400 mb-4 luckiest-guy-regular">Follow Us</h3>
-            <div class="flex space-x-4">
-                <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+            <!--what is GameVerse-->
+            <div>
+                <h3 class="text-xl font-semibold text-teal-400 luckiest-guy-regular mb-4">What is GameVerse?</h3>
+                <p class="text-sm leading-relaxedtext-lg text-gray-400">GameVerse is a digital space for gamers <br> to exchange, 
+                    connect, and grow their <br> 
+                    gaming experience.
+                </p>
+            </div>
+            <!--useful links-->
+            <div>
+                <h3 class="text-xl font-semibold text-teal-400 luckiest-guy-regular mb-4">Useful Links</h3>
+                <ul class="space-y-3">
+                    <li>
+                        <a href="{% url 'core:contact' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Contact</a>                   
+                    </li>
+                    <li>
+                        <a href="{% url 'core:privacy' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Privacy Policy</a>                 
+                    </li>
+                    <li>
+                        <a href="{% url 'core:termsofuse' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Terms Of Use</a>                   
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold text-teal-400 mb-4 luckiest-guy-regular">Follow Us</h3>
+                <div class="flex space-x-4">
+                    <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                </div>
             </div>
         </div>
-      </div>
-      <div class="mt-12 border-t border-gray-700 pt-6 text-center text-sm text-gray-500 select-none">
-        © 2025 GameVerse. All rights reserved.
-      </div>
+        <div class="mt-12 border-t border-gray-700 pt-6 text-center text-sm text-gray-500 select-none">
+            © 2025 GameVerse. All rights reserved.
+        </div>
         
     </footer>
     
@@ -698,30 +777,4 @@
 </body>
 <!-- Chargement de jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Script pour la fonctionnalité du panier -->
-<script>
-/*document.addEventListener('DOMContentLoaded', function() {
-    // ----------------- Add to Cart AJAX ------------------
-    $(document).on('click', '.add-cart', function(e) {
-        e.preventDefault();
-        const productId = $(this).val();
-
-        $.ajax({
-            type: 'POST',
-            url: '{% url "cart:cart_add" %}',
-            data: {
-                product_id: productId,
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-                action: 'post'
-            },
-            success: function(json) {
-                console.log(json);
-                document.getElementById('cart_quantity').textContent = json.qty;
-                alert('Added to cart!');
-            }
-        }); // Cette accolade fermante manquait
-    });
-});*/
-</script>
 </html>
