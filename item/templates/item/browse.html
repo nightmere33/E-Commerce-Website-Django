@@ -2,7 +2,18 @@
 
 {% block title%} Key Market {% endblock %}
 
-{% block search_bar %}{% endblock %}
+{% block search_input %}{% endblock %}
+
+{% block chatbot_button %}
+    <button onclick="toggleChatbot()" type="button"
+            title="Need help? VerseBot is here to assist you!"
+            class="px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-600 transition chatbot-button flex items-center">
+            <i class="fas fa-robot mr-2"></i>
+            VerseBot
+    </button>
+{% endblock %}
+
+
 
 
 {% block content%}

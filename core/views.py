@@ -10,6 +10,10 @@ from django.contrib.auth import update_session_auth_hash
 from django.conf import settings  
 from django.core.mail import send_mail
 import random
+import requests
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 def index(request):
     # Get all categories
@@ -112,3 +116,50 @@ def edit_profile(request):
     return render(request, 'core/edit_profile.html', {
         'form': form,
     })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+API_KEY = "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"  # remplace par ta clé OpenRouter
+
+@csrf_exempt
+def chatbot(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user_input = data.get("message")
+
+        headers = {
+            "Authorization": f"Bearer {API_KEY}",
+            "Content-Type": "application/json"
+        }
+
+        payload = {
+            "model": "mistralai/mistral-7b-instruct",  # ou un autre modèle OpenRouter
+            "messages": [
+                {"role": "system", "content": "Tu es un assistant utile."},
+                {"role": "user", "content": user_input}
+            ]
+        }
+
+        response = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers=headers,
+            json=payload
+        )
+
+        result = response.json()
+        reply = result["choices"][0]["message"]["content"]
+        return JsonResponse({"reply": reply})

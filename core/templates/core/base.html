@@ -16,6 +16,96 @@
     <!-- Ajout de FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+
+        #chat-container {
+            display: none;
+            flex-direction: column;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 320px;
+            max-height: 400px;
+            background: white;
+            border: 2px solid #38b2ac; /* teal-500 */
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            font-family: Arial, sans-serif;
+            color: #333;
+            z-index: 1000;
+        }
+
+        #chat-messages {
+            padding: 12px;
+            overflow-y: auto;
+            flex-grow: 1;
+            max-height: 300px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        #chat-input-container {
+            display: flex;
+            padding: 8px;
+            gap: 8px;
+        }
+
+        #chat-input {
+            flex-grow: 1;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        #chat-input:focus {
+            border-color: #38b2ac;
+            box-shadow: 0 0 5px #38b2ac;
+        }
+
+        button.chat-btn {
+            background-color: #38b2ac;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        button.chat-btn:hover {
+            background-color: #2c7a7b;
+        }
+
+        #chat-header {
+            background-color: #38b2ac;
+            color: white;
+            padding: 10px 14px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #chat-header button {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+
+
+
+
+
+
+
+
         .cloned {
             pointer-events: none;
         }
@@ -507,15 +597,15 @@
         .animate-fade-in {
             animation: fade-in 1s ease-out;
         }
-
-
-
-        
-
-
-        
-
     </style>
+
+
+
+
+
+
+
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> <!-- Jquery cdn-->
     <title>{% block title %}{% endblock %} | GameVerse</title>
 </head>
@@ -523,8 +613,12 @@
 <body>
 
     <nav class="nav-gradient py-4 px-6 flex justify-between items-center shadow-lg">
+
+
             <!-- Left section: logo + categories -->
             <div class="flex items-center space-x-6 relative">
+
+                <!-- logo-->
                 <a href="/" class="text-2xl font-bold text-white hover:text-gray-200 transition duration-300">
                     <i class="fas fa-gamepad mr-2"></i>GameVerse
                 </a>
@@ -544,24 +638,30 @@
                         {% endfor %}
                     </div>
                 </div>
-            </div>
-        
 
-
-
-            {% block left_nav_extras %}
-                {% block search_bar %}
-                    <form method="GET" action="{% url 'item:browse' %}" class="flex items-center space-x-2 ml-0 pl-0">
-                        <input type="text" name="query" placeholder="Search games..."
-                            class="px-3 py-1.5 rounded-md text-sm bg-white text-black focus:outline-none focus:ring-2 focus:ring-teal-400 placeholder-gray-500" />
-                        <button type="submit"
-                                class="px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-600 transition">
+                    
+                    <!-- Search + Chatbot -->
+                    <form method="GET" action="{% url 'item:browse' %}" class="flex items-center space-x-2 ml-4">
+                        {% block search_input %}
+                            <input type="text" name="query" placeholder="Search games..."
+                                    class="px-3 py-1.5 rounded-md text-sm bg-white text-black focus:outline-none focus:ring-2 focus:ring-teal-400 placeholder-gray-500" />
+                            <button type="submit"
+                                    class="px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-600 transition">
                                     Search
-                        </button>
-                    </form>
-                {% endblock %}
-            {% endblock %}
+                            </button>
+                        {% endblock %}
 
+                        {% block chatbot_button %}
+                            <button onclick="toggleChatbot()" type="button"
+                                title="Need help? VerseBot is here to assist you!"
+                                class="px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-600 transition chatbot-button flex items-center">
+                                <i class="fas fa-robot mr-2"></i>
+
+                                 VerseBot
+                            </button>
+                        {% endblock %}
+                    </form>
+            </div>   
 
 
             <!-- Right section: nav links + user -->
@@ -571,7 +671,7 @@
                 {% if request.user.is_authenticated %}
                     <a href="{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
                     {% if request.user.is_superuser %}
-                        <a href="{% url 'dashboard:index' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
+                        <a href= "{% url 'dashboard:index' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
                     
                         <a href="{% url 'item:new' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">New item</a>
                     {% endif %}
@@ -664,7 +764,112 @@
     </footer>
     
     {% block scripts %}{% endblock %}
+
+
+
+
+
+    <div id="chat-container" class="flex flex-col">
+        <div id="chat-header" class="flex justify-between items-center px-4 py-2 bg-teal-600 text-white rounded-t-lg">
+            <span class="font-semibold">
+                <i class="fas fa-robot mr-2"></i>
+                VerseBot</span>
+            <div class="flex gap-2 items-center">
+                <!-- Reset Button -->
+                <button id="reset-chat" title="Reset conversation" class="hover:text-yellow-300 text-lg">↻</button>
+                <!-- Close Button -->
+                <button id="stop-chat" title="Stop conversation & close" class="hover:text-red-300 text-lg">✖</button>
+            </div>
+        </div>
+
+    <div id="chat-messages" class="bg-white text-black p-3 h-64 overflow-y-auto"></div>
+
+    <div id="chat-input-container" class="flex border-t border-gray-300">
+        <input id="chat-input" type="text" placeholder="Ask Your Question..."
+               class="flex-grow px-3 py-2 text-sm focus:outline-none">
+        <button id="send-chat" class="chat-btn bg-teal-500 text-white px-4 py-2 hover:bg-teal-600 transition">Send</button>
+    </div>
+</div>
+
+
+
+
+
+
+<script>
+  function toggleChatbot() {
+    const container = document.getElementById("chat-container");
+    container.style.display = container.style.display === "flex" ? "none" : "flex";
+  }
+
+  const chatInput = document.getElementById("chat-input");
+  const chatMessages = document.getElementById("chat-messages");
+  const sendBtn = document.getElementById("send-chat");
+  const stopBtn = document.getElementById("stop-chat");
+
+  async function sendMessage() {
+    const input = chatInput.value.trim();
+    if (!input) return;
+
+    chatMessages.innerHTML += `<div><strong>You:</strong> ${input}</div>`;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    chatInput.value = "";
+
+    try {
+      const response = await fetch("/chatbot/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input })
+      });
+      const data = await response.json();
+      chatMessages.innerHTML += `<div><strong>VerseBot:</strong> ${data.reply}</div>`;
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    } catch (error) {
+      chatMessages.innerHTML += `<div style="color:red;"><strong>Error:</strong> Le serveur ne répond pas.</div>`;
+    }
+  }
+
+  sendBtn.addEventListener("click", sendMessage);
+
+  chatInput.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  });
+
+  stopBtn.addEventListener("click", () => {
+    chatMessages.innerHTML = ""; // vide la conversation
+    toggleChatbot();             // ferme la fenêtre
+  });
+
+  // Reset chat only
+    document.getElementById("reset-chat").addEventListener("click", () => {
+        const chatBox = document.getElementById("chat-messages");
+        chatBox.innerHTML = "<div  id='reset-msg' style='color:gray;'>💬 Conversation reset.</div>";
+        setTimeout(() => {
+            const resetMsg = document.getElementById("reset-msg");
+            if (resetMsg) resetMsg.remove();
+        }, 3000); // 3000 ms = 3 second
+    });
+</script>
+
+
+
+
+
 </body>
 <!-- Chargement de jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
 </html>
