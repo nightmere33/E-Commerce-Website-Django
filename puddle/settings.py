@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'payment.apps.PaymentConfig',
     'ckeditor',
+    'myGames',
 ]
 
 INSTALLED_APPS += [
