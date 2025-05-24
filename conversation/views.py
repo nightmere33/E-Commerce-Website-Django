@@ -47,7 +47,6 @@ def inbox(request):
     
     return render(request, 'conversation/inbox.html', {
         'conversations': conversations,
-        'categories': Category.objects.all(),
     } )
 
 
