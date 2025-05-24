@@ -6,6 +6,8 @@ from cart.cart import Cart
 from .models import Order, OrderItem
 from .forms import CheckoutForm
 from decimal import Decimal
+import random
+import string
 
 @login_required
 def checkout(request):
@@ -75,6 +77,9 @@ def payment_process(request, order_id):
     return render(request, 'payment/payment.html', {
         'order': order
     })
+
+def generate_key():
+    return '-'.join(''.join(random.choices(string.ascii_uppercase + string.digits, k=4)) for _ in range(6))
 
 @login_required
 def payment_success(request):
@@ -147,8 +152,9 @@ YOUR GAME KEYS
                         product_name = item.name
                     except AttributeError:
                         product_name = f"Game Item {item.id}"
-            
-            game_key = "XXXX-XXXX-XXXX-XXXX"  # Générer une vraie clé
+
+            key = generate_key()  #generate la cle
+            game_key = f"{key}"  # Générer une vraie clé
             
             # Ajouter au message HTML
             html_message += f'<li><strong>{product_name}:</strong> <span class="game-key">{game_key}</span></li>\n'
@@ -209,7 +215,7 @@ To ensure our emails reach your inbox, please add gameversesuppdz@gmail.com to y
             send_mail(
                 subject,
                 text_message,  # Version texte
-                'GameVerse <gameversesuppdz@gmail.com>',  # Format avec nom d'expéditeur
+                'GameVerse <gameversesuppdz@gmail.com',  # Format avec nom d'expéditeur
                 [order.email],
                 fail_silently=False,
                 html_message=html_message  # Version HTML

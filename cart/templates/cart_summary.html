@@ -58,13 +58,10 @@
             <span class="font-medium text-white">Subtotal</span>
             <span class="font-bold text-white">${{ total|floatformat:2 }}</span>
         </div>
-        <div class="flex justify-between">
-            <span class="text-slate-400">Our 5% cut</span>
-            <span class="text-red-400">+ ${{ platform_cut|floatformat:2 }}</span>
-        </div>
+        
         <div class="flex justify-between font-bold text-lg border-t border-slate-600 pt-2">
             <span>Total</span>
-            <span class="price-tag ">${{ grand_total|floatformat:2 }}</span>
+            <span class="price-tag ">${{ total|floatformat:2 }}</span>
         </div>
     </div>
 
