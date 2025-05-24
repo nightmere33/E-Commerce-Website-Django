@@ -38,15 +38,19 @@ def new_conversation(request,item_pk):
 
     return   render(request, 'conversation/new.html',{
         'form': form,
-    } )     
+    } )   
+
 
 @login_required
 def inbox(request):
     conversations = Conversation.objects.filter(members__in = [request.user.id]) # Get the conversations for the item
-
+    
     return render(request, 'conversation/inbox.html', {
         'conversations': conversations,
+        'categories': Category.objects.all(),
     } )
+
+
 
 @login_required
 def detail(request, pk):

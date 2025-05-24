@@ -1,38 +1,288 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}Edit Profile{% endblock %}
+{% block title %}Edit Profile - GameVerse{% endblock %}
 
 {% block content %}
-<div class="max-w-xl mx-auto mt-10 bg-slate-800 p-6 rounded-xl shadow-md relative">
+<div class="max-w-4xl mx-auto px-4 py-12">
+    <!-- Page Header with Animation -->
+    <div class="text-center mb-10">
+        <h1 class="text-4xl font-bold text-white mb-2 relative inline-block">
+            <span class="relative z-10">Account Settings</span>
+            <span class="absolute bottom-0 left-0 w-full h-1 bg-teal-500 transform -skew-x-12"></span>
+        </h1>
+        <p class="text-slate-400 text-lg">Update your personal information and password</p>
+    </div>
 
-    <!-- Popup messages -->
+    <!-- Notification System -->
     {% if messages %}
-        <div id="popup-message" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg z-50 transition-opacity duration-500">
+        <div id="notifications" class="fixed top-6 right-6 z-50 space-y-4">
             {% for message in messages %}
-                {{ message }}
+                <div class="notification {{ message.tags }} opacity-0 translate-x-full transition-all duration-500 flex items-center p-4 rounded-lg shadow-lg">
+                    <div class="mr-3 text-xl">
+                        {% if message.tags == 'success' %}
+                            <i class="fas fa-check-circle text-green-500"></i>
+                        {% elif message.tags == 'error' %}
+                            <i class="fas fa-times-circle text-red-500"></i>
+                        {% else %}
+                            <i class="fas fa-info-circle text-blue-500"></i>
+                        {% endif %}
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm text-white">{{ message }}</p>
+                    </div>
+                    <button class="text-slate-400 hover:text-white ml-4 close-notification">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             {% endfor %}
         </div>
+
         <script>
-            setTimeout(() => {
-                const popup = document.getElementById('popup-message');
-                if (popup) {
-                    popup.style.opacity = '0';
-                    setTimeout(() => popup.remove(), 500);
+            document.addEventListener('DOMContentLoaded', function() {
+                const notifications = document.querySelectorAll('.notification');
+                
+                function closeNotification(notification) {
+                    notification.classList.add('opacity-0', 'translate-x-full');
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 500);
                 }
-            }, 3000);
+                
+                // Show notifications with delay
+                notifications.forEach((notification, index) => {
+                    setTimeout(() => {
+                        notification.classList.remove('opacity-0', 'translate-x-full');
+                    }, index * 150);
+                    
+                    // Auto close after 5 seconds
+                    setTimeout(() => {
+                        closeNotification(notification);
+                    }, 5000 + (index * 150));
+                    
+                    // Add close button event
+                    notification.querySelector('.close-notification').addEventListener('click', () => {
+                        closeNotification(notification);
+                    });
+                });
+            });
         </script>
     {% endif %}
 
-    <h1 class="text-2xl font-semibold text-white mb-4">Edit Your Profile</h1>
+    <!-- Main Content -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Side Navigation -->
+        <div class="lg:col-span-1">
+            <div class="bg-gradient-to-b from-slate-800 to-slate-900 rounded-xl shadow-lg border border-slate-700 overflow-hidden">
+                <div class="p-6 bg-gradient-to-r from-teal-500/20 to-transparent border-b border-slate-700">
+                    <h3 class="text-lg font-semibold text-white flex items-center">
+                        <i class="fas fa-user-circle mr-2 text-teal-400"></i>
+                        Account
+                    </h3>
+                </div>
+                <div class="p-0">
+                    <nav aria-label="Account navigation">
+                        <ul class="divide-y divide-slate-700/50">
+                            <li>
+                                <a href="{% url 'core:edit_profile' %}" class="flex items-center p-4 bg-teal-500/10 text-teal-400 hover:bg-teal-500/20 transition-colors">
+                                    <i class="fas fa-user-edit w-6 text-center mr-3"></i>
+                                    <span class="font-medium">Profile Information</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'dashboard:index' %}" class="flex items-center p-4 hover:bg-slate-800/50 text-slate-300 hover:text-white transition-colors">
+                                    <i class="fas fa-box w-6 text-center mr-3"></i>
+                                    <span class="font-medium">My Items</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'conversation:inbox' %}" class="flex items-center p-4 hover:bg-slate-800/50 text-slate-300 hover:text-white transition-colors">
+                                    <i class="fas fa-envelope w-6 text-center mr-3"></i>
+                                    <span class="font-medium">Messages</span>
+                                    <!-- You can add a badge here if there are unread messages -->
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'cart:cart_summary' %}" class="flex items-center p-4 hover:bg-slate-800/50 text-slate-300 hover:text-white transition-colors">
+                                    <i class="fas fa-shopping-cart w-6 text-center mr-3"></i>
+                                    <span class="font-medium">Cart</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
 
-    <form method="post" class="space-y-4">
-        {% csrf_token %}
-        {{ form.as_p }}
+        <!-- Form Content -->
+        <div class="lg:col-span-2">
+            <!-- Personal Information -->
+            <div class="bg-gradient-to-b from-slate-800 to-slate-900 rounded-xl shadow-lg border border-slate-700 mb-8 overflow-hidden">
+                <div class="p-6 bg-gradient-to-r from-teal-500/20 to-transparent border-b border-slate-700">
+                    <h3 class="text-lg font-semibold text-white flex items-center">
+                        <i class="fas fa-id-card mr-2 text-teal-400"></i>
+                        Personal Information
+                    </h3>
+                </div>
+                <form method="post" class="p-6" id="profile-form">
+                    {% csrf_token %}
 
-        <button type="submit" class="bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-xl transition duration-300">
-            Save Changes
-        </button>
-    </form>
+                    <!-- Supprimer la section d'upload de photo de profil -->
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-300">Username</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-user text-gray-500"></i>
+                                </div>
+                                <input type="text" name="username" value="{{ form.username.value }}" id="{{ form.username.id_for_label }}" 
+                                    class="w-full pl-10 p-3 border rounded-lg bg-slate-800 text-gray-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-400 transition-all">
+                            </div>
+                            {% if form.username.errors %}
+                                <p class="text-red-500 text-sm mt-1">{{ form.username.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="space-y-2">
+                            <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-300">Email Address</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-envelope text-gray-500"></i>
+                                </div>
+                                <input type="email" name="email" value="{{ form.email.value }}" id="{{ form.email.id_for_label }}" 
+                                    class="w-full pl-10 p-3 border rounded-lg bg-slate-800 text-gray-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-400 transition-all">
+                            </div>
+                            {% if form.email.errors %}
+                                <p class="text-red-500 text-sm mt-1">{{ form.email.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <div class="space-y-2">
+                            <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-300">First Name</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-id-badge text-gray-500"></i>
+                                </div>
+                                <input type="text" name="first_name" value="{{ form.first_name.value }}" id="{{ form.first_name.id_for_label }}" 
+                                    class="w-full pl-10 p-3 border rounded-lg bg-slate-800 text-gray-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-400 transition-all">
+                            </div>
+                            {% if form.first_name.errors %}
+                                <p class="text-red-500 text-sm mt-1">{{ form.first_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="space-y-2">
+                            <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-300">Last Name</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-id-badge text-gray-500"></i>
+                                </div>
+                                <input type="text" name="last_name" value="{{ form.last_name.value }}" id="{{ form.last_name.id_for_label }}" 
+                                    class="w-full pl-10 p-3 border rounded-lg bg-slate-800 text-gray-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-400 transition-all">
+                            </div>
+                            {% if form.last_name.errors %}
+                                <p class="text-red-500 text-sm mt-1">{{ form.last_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Password Change -->
+            <div class="bg-gradient-to-b from-slate-800 to-slate-900 rounded-xl shadow-lg border border-slate-700 overflow-hidden">
+                <div class="p-6 bg-gradient-to-r from-teal-500/20 to-transparent border-b border-slate-700">
+                    <h3 class="text-lg font-semibold text-white flex items-center">
+                        <i class="fas fa-lock mr-2 text-teal-400"></i>
+                        Password
+                    </h3>
+                    <p class="text-gray-400 text-sm mt-1">Leave fields blank if you don't want to change your password</p>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <label for="{{ form.new_password.id_for_label }}" class="block text-sm font-medium text-gray-300">New Password</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-key text-gray-500"></i>
+                                </div>
+                                <input type="password" name="new_password" id="{{ form.new_password.id_for_label }}" 
+                                    class="w-full pl-10 p-3 border rounded-lg bg-slate-800 text-gray-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-400 transition-all">
+                            </div>
+                            {% if form.new_password.errors %}
+                                <p class="text-red-500 text-sm mt-1">{{ form.new_password.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="space-y-2">
+                            <label for="{{ form.confirm_password.id_for_label }}" class="block text-sm font-medium text-gray-300">Confirm Password</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-check-circle text-gray-500"></i>
+                                </div>
+                                <input type="password" name="confirm_password" id="{{ form.confirm_password.id_for_label }}" 
+                                    class="w-full pl-10 p-3 border rounded-lg bg-slate-800 text-gray-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-400 transition-all">
+                            </div>
+                            {% if form.confirm_password.errors %}
+                                <p class="text-red-500 text-sm mt-1">{{ form.confirm_password.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Submit Buttons -->
+                    <div class="flex items-center justify-between mt-8">
+                        <button type="submit" form="profile-form" class="px-6 py-3 flex items-center justify-center rounded-lg bg-teal-500 hover:bg-teal-600 transition-colors text-white font-semibold">
+                            <i class="fas fa-save mr-2"></i>
+                            Save Changes
+                        </button>
+                        <a href="{% url 'dashboard:index' %}" class="px-6 py-3 flex items-center justify-center rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors text-white font-semibold">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tips for Account Security -->
+            <div class="mt-8 bg-gradient-to-r from-blue-900/30 to-slate-900/30 rounded-xl p-4 border border-blue-800/30">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 pt-0.5">
+                        <i class="fas fa-shield-alt text-blue-400 text-xl"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h4 class="text-sm font-medium text-blue-400">Security Tips</h4>
+                        <ul class="mt-1 text-xs text-gray-400 list-disc pl-4 space-y-1">
+                            <li>Use a strong password with letters, numbers, and special characters</li>
+                            <li>Don't reuse passwords from other websites</li>
+                            <li>Update your password regularly for optimal security</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Custom styles for notifications -->
+<style>
+    .notification {
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid;
+    }
+    
+    .notification.success {
+        border-color: rgba(16, 185, 129, 0.5);
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    }
+    
+    .notification.error {
+        border-color: rgba(239, 68, 68, 0.5);
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+    }
+    
+    .notification.info {
+        border-color: rgba(59, 130, 246, 0.5);
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+    }
+</style>
 {% endblock %}

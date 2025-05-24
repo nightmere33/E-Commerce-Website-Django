@@ -4,6 +4,21 @@
 
 {% block title %}Welcome{% endblock %}
 
+
+
+{% block left_nav_extras %}
+<form method="GET" action="{% url 'item:browse' %}" class="flex items-center space-x-2 ml-0">
+    <input type="text" name="query" placeholder="Search games..."
+           class="px-3 py-1.5 rounded-md text-sm bg-white text-black focus:outline-none focus:ring-2 focus:ring-teal-400 placeholder-gray-500" />
+    <button type="submit"
+            class="px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-600 transition">
+        Search
+    </button>
+</form>
+{% endblock %}
+
+
+
 {% block content %}
 
     <!-- Hero Section with background image -->
@@ -94,7 +109,6 @@
 
 
 
-
     {% comment %} new items {% endcomment %}
 
     <div class="relative w-full overflow-hidden rounded-xl">
@@ -155,62 +169,52 @@
 
 
 
-
         <!-- Category Carousel -->
-    <div class="mt-12 px-6 py-12 bg-black/40  rounded-xl border relative">
+    <div class="mt-12 px-6 py-12 bg-black/40 rounded-xl border relative">
+    <h2 class="text-3xl font-bold text-center mb-8 text-gray-100">Categories</h2>
 
-        <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 ">Categories</h2>
+    <div class="relative">
+        <div id="category-carousel" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar px-2">
+            {% for category in categories %}
+                <a href="{% url 'item:browse' %}?category={{ category.id }}" 
+                    class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border-none transition block animate-gentle-zoom">
+                    <!-- Image avec flou léger au repos, retiré au hover -->
+                    <img src="{{ MEDIA_URL }}item_images/{{ category.name }}.jpg" 
+                        alt="{{ category.name }}"
+                        class="absolute inset-0 w-full h-full object-cover 
+                                blur-sm group-hover:blur-0 transition duration-700 ease-in-out" />
 
-        <div class="relative">
-            <div id="category-carousel" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar px-2">
-                {% for category in categories %}
-                    <a href="{% url 'item:browse' %}?category={{ category.id }}" 
-                        class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border-none transition block animate-gentle-zoom">
+                    <!-- Overlay sombre -->
+                    <div class="absolute inset-0 bg-black/30 transition duration-700 ease-in-out group-hover:bg-black/10"></div>
 
-
-                        <!-- Image avec flou léger au repos, retiré au hover -->
-                        <img src="{{ MEDIA_URL }}item_images/{{ category.name }}.jpg" 
-                            alt="{{ category.name }}"
-                            class="absolute inset-0 w-full h-full object-cover 
-                                    blur-sm group-hover:blur-0 transition duration-700 ease-in-out" />
-
-                        <!-- Overlay sombre -->
-                        <div class="absolute inset-0 bg-black/30 transition duration-700 ease-in-out group-hover:bg-black/10"></div>
-
-                        <!-- Texte centré qui descend doucement au hover -->
-                        <div class="relative h-full flex items-center justify-center p-4">
-                            <span class="text-white font-semibold text-lg text-center 
-                                        transform transition duration-700 ease-in-out 
-                                        group-hover:translate-y-16 drop-shadow-md">
-                                {{ category.name }}
-                            </span>
-                        </div>
-                    </a>
-    
-                {% endfor %}
-            </div>
-
-
-                <!-- Scroll buttons -->
-                <button onclick="scrollCategories(-300)"
-                        class="absolute left-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button onclick="scrollCategories(300)"
-                        class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
+                    <!-- Texte centré qui descend doucement au hover -->
+                    <div class="relative h-full flex items-center justify-center p-4">
+                        <span class="text-white font-semibold text-lg text-center 
+                                    transform transition duration-700 ease-in-out 
+                                    group-hover:translate-y-16 drop-shadow-md">
+                            {{ category.name }}
+                        </span>
+                    </div>
+                </a>
+            {% endfor %}
         </div>
+
+        <!-- Scroll buttons -->
+        <button onclick="scrollCategories(-300)"
+                class="absolute left-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button onclick="scrollCategories(300)"
+                class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
+            <i class="fas fa-chevron-right"></i>
+        </button>
     </div>
+</div>
 
 
 
     
 {% endblock %}
-
-
-
-
 
 
 {% comment %} les scripts js {% endcomment %}

@@ -1,0 +1,92 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Payment{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-12">
+    <h1 class="text-3xl font-bold text-white mb-8">Payment</h1>
+
+    <div class="bg-gradient-to-b from-slate-800 to-slate-900 rounded-lg p-6 shadow-lg border border-slate-700">
+        <h2 class="text-xl font-semibold text-white mb-6">Order #{{ order.id }}</h2>
+        
+        <div class="mb-8">
+            <div class="bg-gray-700 rounded-lg p-4 mb-6">
+                <h3 class="text-lg font-semibold text-white mb-2">Order Summary</h3>
+                <p class="text-gray-300">Total Amount: <span class="text-teal-400 font-bold">${{ order.total_paid }}</span></p>
+            </div>
+            
+            <!-- Payment Method Selection -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-semibold text-white mb-2">Select Payment Method</h3>
+                
+                <!-- Credit Card Option -->
+                <div class="bg-gray-700 rounded-lg p-4 border-2 border-teal-500">
+                    <div class="flex items-center">
+                        <input type="radio" id="credit-card" name="payment_method" class="mr-3" checked>
+                        <label for="credit-card" class="flex items-center">
+                            <span class="text-white">Credit Card</span>
+                            <div class="flex ml-4 space-x-2">
+                                <i class="fab fa-cc-visa text-blue-400 text-2xl"></i>
+                                <i class="fab fa-cc-mastercard text-red-400 text-2xl"></i>
+                                <i class="fab fa-cc-amex text-blue-300 text-2xl"></i>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <!-- Credit Card Form -->
+                    <div class="mt-4 space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Card Number</label>
+                            <input type="text" class="w-full p-2 border rounded-lg bg-slate-800 text-gray-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-400" placeholder="1234 5678 9012 3456">
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Expiration Date</label>
+                                <input type="text" class="w-full p-2 border rounded-lg bg-slate-800 text-gray-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-400" placeholder="MM/YY">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">CVV</label>
+                                <input type="text" class="w-full p-2 border rounded-lg bg-slate-800 text-gray-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-400" placeholder="123">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Cardholder Name</label>
+                            <input type="text" class="w-full p-2 border rounded-lg bg-slate-800 text-gray-100 border-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-400" placeholder="John Doe">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- PayPal Option -->
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <div class="flex items-center">
+                        <input type="radio" id="paypal" name="payment_method" class="mr-3">
+                        <label for="paypal" class="flex items-center">
+                            <span class="text-white">PayPal</span>
+                            <i class="fab fa-paypal text-blue-400 text-2xl ml-4"></i>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex space-x-4">
+            <button id="pay-button" class="bg-teal-500 hover:bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold transition duration-200 flex-1">
+                Pay ${{ order.total_paid }}
+            </button>
+            <a href="{% url 'cart:cart_summary' %}" class="bg-gray-600 hover:bg-gray-700 text-white py-3 px-6 rounded-lg font-semibold transition duration-200">
+                Back to Cart
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('pay-button').addEventListener('click', function() {
+        // In a real implementation, you would process payment here
+        // For demo purposes, we'll just redirect to success page
+        window.location.href = "{% url 'payment:payment_success' %}";
+    });
+</script>
+{% endblock %}

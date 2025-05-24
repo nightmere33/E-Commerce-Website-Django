@@ -1,0 +1,83 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-6 py-12">
+    <h1 class="text-3xl font-bold text-white mb-8">Checkout</h1>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <!-- Checkout form -->
+        <div class="lg:col-span-2 bg-gradient-to-b from-slate-800 to-slate-900 rounded-lg p-6 shadow-lg border border-slate-700">
+            <h2 class="text-xl font-semibold text-white mb-6">Contact Details</h2>
+            
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">First Name</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.first_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">Last Name</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.last_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.email.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                
+                <button type="submit" class="mt-6 w-full bg-teal-500 hover:bg-teal-600 text-white py-3 px-4 rounded-lg font-semibold transition duration-200">
+                    Continue to Payment
+                </button>
+            </form>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="bg-gradient-to-b from-slate-800 to-slate-900 rounded-lg p-6 shadow-lg h-fit border border-slate-700">
+            <h2 class="text-xl font-semibold text-white mb-6">Order Summary</h2>
+            
+            <div class="space-y-4">
+                {% for product in cart_products %}
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <span class="text-gray-300">{{ product.name }} x {{ product.quantity }}</span>
+                    </div>
+                    <span class="text-teal-400">${{ product.line_total }}</span>
+                </div>
+                {% endfor %}
+                
+                <div class="border-t border-gray-700 my-4"></div>
+                
+                <div class="flex justify-between">
+                    <span class="text-gray-300">Subtotal</span>
+                    <span class="text-teal-400">${{ total }}</span>
+                </div>
+                
+                <div class="flex justify-between">
+                    <span class="text-gray-300">Platform fee (5%)</span>
+                    <span class="text-red-400">+ ${{ platform_cut }}</span>
+                </div>
+                
+                <div class="flex justify-between font-bold">
+                    <span class="text-white">Total</span>
+                    <span class="text-teal-400">${{ grand_total }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
