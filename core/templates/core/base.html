@@ -545,99 +545,6 @@
                     <i class="fas fa-gamepad mr-2"></i>GameVerse
                 </a>
 
-<<<<<<< HEAD
-        <!-- Dropdown: Categories -->
-        <div class="relative group">
-            <button class="text-white font-semibold hover:text-teal-300 transition duration-300 flex items-center">
-                Categories
-                <i class="fas fa-chevron-down ml-2 text-sm"></i>
-            </button>
-            <div class="absolute left-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all z-50">
-                <a href="{% url 'item:browse' %}" class="block px-4 py-2 hover:bg-teal-100">All</a>
-                {% for category in categories %}
-                    <a href="{% url 'item:browse' %}?category={{ category.id }}" class="block px-4 py-2 hover:bg-teal-100">
-                        {{ category.name }}
-                    </a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-
-    <!-- Right section: nav links + user -->
-    <div class="flex items-center space-x-4">
-        <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-gray-200 transition duration-300">Browse</a>
-
-        {% if request.user.is_authenticated %}
-            <a href="{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
-            {% if request.user.is_superuser %}
-                <a href="{% url 'dashboard:index' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
-            
-                <a href="{% url 'item:new' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">New item</a>
-            {% endif %}
-
-            <!--  Shopping Cart Button -->
-            <a href="{% url 'cart:cart_summary' %}" class="flex items-center px-4 py-2 text-sm font-semibold bg-white text-gray-800 rounded-xl hover:bg-gray-100 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6h13l-1.5-6M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
-                </svg>
-                <span>Cart</span>
-                <span id="cart_quantity" class="ml-2 bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded-full">{{ cart|length}}</span>
-            </a>
-
-            <!--  User dropdown -->
-            <div class="relative group inline-block" tabindex="0">
-                <button class="w-10 h-10 rounded-full bg-teal-400 flex items-center justify-center hover:bg-teal-600 transition duration-300 focus:outline-none">
-                    <i class="fas fa-user-edit text-white"></i>
-                </button>
-
-                <div class="absolute right-0 mt-2 w-56 bg-slate-900 border border-slate-700 rounded-xl shadow-lg z-50 
-                    opacity-0 invisible 
-                    group-hover:opacity-100 group-hover:visible 
-                    group-focus-within:opacity-100 group-focus-within:visible 
-                    transition-all duration-200">
-                    
-                    <!-- Navigation menu items -->
-                    <div class="py-2">
-                        <a href="{% url 'core:edit_profile' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
-                            <i class="fas fa-user-edit w-6 text-center mr-3 text-teal-400"></i>
-                            <span>My Profile</span>
-                        </a>
-                        
-                        <a href="{% url 'dashboard:index' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
-                            <i class="fas fa-box w-6 text-center mr-3 text-teal-400"></i>
-                            <span>My Items</span>
-                        </a>
-                        
-                        <a href="{% url 'conversation:inbox' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
-                            <i class="fas fa-envelope w-6 text-center mr-3 text-teal-400"></i>
-                            <span>Messages</span>
-                            <!-- Uncomment to add unread count badge -->
-                            <!-- <span class="ml-auto bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">2</span> -->
-                        </a>
-                        
-                        <a href="{% url 'cart:cart_summary' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
-                            <i class="fas fa-shopping-cart w-6 text-center mr-3 text-teal-400"></i>
-                            <span>My Cart</span>
-                        </a>
-                    </div>
-                    
-                    <!-- Divider -->
-                    <div class="border-t border-slate-700"></div>
-                    
-                    <!-- Account actions -->
-                    <div class="py-2">
-                        {% if request.user.is_authenticated %}
-                            <a href="{% url 'core:logout' %}" class="flex items-center w-full px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-red-400 transition-colors text-left">
-                                <i class="fas fa-sign-out-alt w-6 text-center mr-3 text-red-400"></i>
-                                <span>Sign Out</span>
-                            </a>
-                        {% else %}
-                            <a href="{% url 'core:login' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
-                                <i class="fas fa-sign-in-alt w-6 text-center mr-3 text-teal-400"></i>
-                                <span>Sign In</span>
-                            </a>
-                        {% endif %}
-=======
                 <!-- Dropdown: Categories -->
                 <div class="relative group">
                     <button class="text-white font-semibold hover:text-teal-300 transition duration-300 flex items-center">
@@ -651,7 +558,6 @@
                                 {{ category.name }}
                             </a>
                         {% endfor %}
->>>>>>> 968bb8faca3aa66953bf6e64cbc853d336801f31
                     </div>
                 </div>
             </div>

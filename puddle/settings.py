@@ -38,12 +38,8 @@ INSTALLED_APPS = [
     'conversation',
     'cart',
     'widget_tweaks',
-<<<<<<< HEAD
     'payment.apps.PaymentConfig',
-=======
     'ckeditor',
-
->>>>>>> 968bb8faca3aa66953bf6e64cbc853d336801f31
 ]
 
 INSTALLED_APPS += [
