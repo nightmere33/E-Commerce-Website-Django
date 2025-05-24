@@ -9,6 +9,9 @@ from decimal import Decimal
 
 @login_required
 def checkout(request):
+    # Récupérer la méthode de paiement choisie
+    payment_method = request.GET.get('payment_method', 'credit_card')
+    
     cart = Cart(request)
     cart_products = cart.get_prods()
     
@@ -27,6 +30,12 @@ def checkout(request):
             order = form.save(commit=False)
             order.user = request.user
             order.total_paid = Decimal(grand_total)
+            
+            # Définir des valeurs par défaut pour les champs retirés
+            order.address = "Digital Purchase - No Address Required"
+            order.postal_code = "00000"
+            order.city = "Digital"
+            
             order.save()
             
             # Create order items
@@ -37,9 +46,6 @@ def checkout(request):
                     price=product.price,
                     quantity=product.quantity
                 )
-            
-            # Clear the cart
-            cart.clear()
             
             # Redirect to payment page
             return redirect('payment:payment_process', order_id=order.id)
@@ -60,7 +66,8 @@ def checkout(request):
         'cart_products': cart_products,
         'total': total,
         'platform_cut': platform_cut,
-        'grand_total': grand_total
+        'grand_total': grand_total,
+        'payment_method': payment_method  # Passer la méthode de paiement au template
     })
 
 def payment_process(request, order_id):
@@ -211,7 +218,7 @@ To ensure our emails reach your inbox, please add gameversesuppdz@gmail.com to y
         except Exception as e:
             messages.error(request, f"Your payment was successful, but we couldn't send the confirmation email. Please contact support.")
     
-    # Vider le panier
+    # Vider le panier ici, après le paiement réussi
     cart = Cart(request)
     cart.clear()
     

@@ -131,6 +131,28 @@
             visibility: visible;
         }
 
+        /* Définir une animation de zoom progressif pour les slides du carousel */
+        @keyframes zoomIn {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.15);  /* Zoom légèrement plus prononcé */
+            }
+        }
+
+        /* Appliquer cette animation à l'image principale du carousel quand le slide est actif */
+        .carousel-slide.active .main-feature img {
+            animation: zoomIn 8s ease-out forwards;  /* Animation plus longue (8s) pour un effet plus progressif */
+        }
+
+        /* Réinitialiser l'image quand le slide n'est pas actif */
+        .carousel-slide:not(.active) .main-feature img {
+            transform: scale(1);
+            transition: none;
+            animation: none;
+        }
+
         /* Boutons de navigation */
         .carousel-nav-button {
             position: absolute;
@@ -204,20 +226,6 @@
             align-items: center;
             justify-content: center;
             background: rgba(0, 0, 0, 0.2);
-        }
-
-        .main-feature img {
-            transform-origin: center;
-            transition: transform 8s ease;
-        }
-
-        .carousel-slide.active .main-feature img {
-            transform: scale(1.1);
-        }
-
-        .carousel-slide:not(.active) .main-feature img {
-            transform: scale(1);
-            transition: none;
         }
 
         .main-feature:hover::before {
@@ -305,27 +313,35 @@
         
         .side-features {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            gap: 0.5rem;
-            height: 100%;
-            padding-right: 0;
+            grid-template-columns: 1fr 1fr; /* Deux colonnes égales */
+            grid-template-rows: 1fr 1fr;    /* Deux rangées égales */
+            gap: 0.5rem;                    /* Espacement uniforme et minimal */
+            height: 100%;                   /* Hauteur complète */
+            width: 100%;                    /* Largeur complète */
+            margin: 0;                      /* Pas de marges */
+            padding: 0;                     /* Pas de padding */
         }
         
         .side-feature {
             position: relative;
-            height: auto;
-            aspect-ratio: 1;
-            border-radius: 0;
-            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0.75rem;
             overflow: hidden;
+            height: 100%;                   /* Prend toute la hauteur disponible */
+            width: 100%;                    /* Prend toute la largeur disponible */
+            aspect-ratio: 1/1;              /* Force un rapport hauteur/largeur carré */
+            max-height: none;               /* Supprime toute hauteur maximale */
+            min-height: 0;                  /* Réinitialise la hauteur minimale */
+            margin: 0;                      /* Supprime les marges */
+            padding: 0;                     /* Supprime les paddings */
         }
         
         .side-feature img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 0;
+            object-position: center;
+            margin: 0;
+            padding: 0;
         }
         
         .side-feature .feature-info {

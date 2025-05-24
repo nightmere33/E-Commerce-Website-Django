@@ -9,7 +9,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <!-- Checkout form -->
         <div class="lg:col-span-2 bg-gradient-to-b from-slate-800 to-slate-900 rounded-lg p-6 shadow-lg border border-slate-700">
-            <h2 class="text-xl font-semibold text-white mb-6">Shipping Details</h2>
+            <h2 class="text-xl font-semibold text-white mb-6">Contact Details</h2>
             
             <form method="post" class="space-y-4">
                 {% csrf_token %}
@@ -38,31 +38,6 @@
                     {% if form.email.errors %}
                         <p class="text-red-500 text-sm mt-1">{{ form.email.errors.0 }}</p>
                     {% endif %}
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-1">Address</label>
-                    {{ form.address }}
-                    {% if form.address.errors %}
-                        <p class="text-red-500 text-sm mt-1">{{ form.address.errors.0 }}</p>
-                    {% endif %}
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1">City</label>
-                        {{ form.city }}
-                        {% if form.city.errors %}
-                            <p class="text-red-500 text-sm mt-1">{{ form.city.errors.0 }}</p>
-                        {% endif %}
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1">Postal Code</label>
-                        {{ form.postal_code }}
-                        {% if form.postal_code.errors %}
-                            <p class="text-red-500 text-sm mt-1">{{ form.postal_code.errors.0 }}</p>
-                        {% endif %}
-                    </div>
                 </div>
                 
                 <button type="submit" class="mt-6 w-full bg-teal-500 hover:bg-teal-600 text-white py-3 px-4 rounded-lg font-semibold transition duration-200">

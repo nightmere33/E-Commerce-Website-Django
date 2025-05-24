@@ -90,7 +90,6 @@
 
 
 
-
     {% comment %} new items {% endcomment %}
 
     <div class="relative w-full overflow-hidden rounded-xl">
@@ -151,12 +150,13 @@
 
 
 
-
         <!-- Category Carousel -->
     <div class="mt-12 px-6 py-12 bg-black/40  rounded-xl border relative">
 
         <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 ">Categories</h2>
 
+        <div class="relative">
+            <div id="category-carousel" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar px-2">
         <div class="relative">
             <div id="category-carousel" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar px-2">
                 {% for category in categories %}
@@ -203,10 +203,6 @@
 
     
 {% endblock %}
-
-
-
-
 
 
 {% comment %} les scripts js {% endcomment %}

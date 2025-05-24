@@ -68,9 +68,14 @@
         </div>
     </div>
 
-    <a href="{% url 'payment:checkout' %}" class="mt-6 block w-full bg-teal-500 hover:bg-teal-600 text-white py-3 rounded-xl font-semibold transition duration-200 text-center">
-    <i class="fas fa-credit-card mr-2"></i> Purchase
-</a>
+    <div class="mt-6 grid grid-cols-2 gap-4">
+        <a href="{% url 'payment:checkout' %}?payment_method=credit_card" class="block w-full bg-teal-500 hover:bg-teal-600 text-white py-3 rounded-xl font-semibold transition duration-200 text-center">
+            <i class="fas fa-credit-card mr-2"></i> Purchase with Credit Card
+        </a>
+        <button id="baridimob-purchase" class="block w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-semibold transition duration-200 text-center">
+            <i class="fas fa-mobile-alt mr-2"></i> Purchase with BaridiMob
+        </button>
+    </div>
 </div>
 
 </div>
@@ -79,20 +84,31 @@
 {% endif %}
 
 <script>
-    // Delete Item From Cart
-    $(document).on('click', '.delete-product', function(e){
-        e.preventDefault();
-        $.ajax({
-            type: 'POST',
-            url: '{% url "cart:cart_delete" %}',
-            data: {
-                product_id: $(this).data('index'),
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-                action: 'post'
-            },
-            success: function(json){
-                location.reload();
-            },
+    document.addEventListener('DOMContentLoaded', function() {
+        // Script pour le bouton BaridiMob
+        document.getElementById('baridimob-purchase').addEventListener('click', function() {
+            // Montrer une boîte de dialogue modale expliquant le processus
+            if (confirm('To complete your purchase via BaridiMob, you will be redirected to a private conversation with the seller to finalize the payment. Do you wish to continue?')) {
+                // Rediriger vers une nouvelle URL qui traitera la redirection vers le message privé
+                window.location.href = "{% url 'cart:baridimob_redirect' %}";
+            }
+        });
+        
+        // Script existant pour suppression d'articles
+        $(document).on('click', '.delete-product', function(e){
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "cart:cart_delete" %}',
+                data: {
+                    product_id: $(this).data('index'),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    action: 'post'
+                },
+                success: function(json){
+                    location.reload();
+                },
+            });
         });
     });
 </script>
