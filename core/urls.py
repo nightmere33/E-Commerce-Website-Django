@@ -2,6 +2,8 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
 from .forms import LoginForm  # Assurez-vous d'importer votre formulaire personnalisé
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'core'
 
@@ -18,4 +20,8 @@ urlpatterns = [
     ), name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('edit-profile/', views.edit_profile, name='edit_profile'),
+    path("chatbot/", views.chatbot, name="chatbot"),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

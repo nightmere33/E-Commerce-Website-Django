@@ -8,6 +8,8 @@ from .forms import CheckoutForm
 from decimal import Decimal
 import random
 import string
+from item.models import Item
+from myGames.models import MyGame
 
 @login_required
 def checkout(request):
@@ -141,6 +143,25 @@ YOUR GAME KEYS
         # Ajoute les clés de jeu pour chaque produit acheté
         order_items = OrderItem.objects.filter(order=order)
         for item in order_items:
+            generated_key = generate_key()
+           
+             # Try to fetch the actual product
+           
+            try:
+                product = item.product
+            except:
+                product = None
+
+            if product:
+                MyGame.objects.create(
+                    user=request.user,
+                    product=product,
+                    order=order,
+                    key=generated_key
+                )
+
+
+
             # Trouver le nom du produit de façon sécurisée
             try:
                 product_name = item.product.name
@@ -153,7 +174,7 @@ YOUR GAME KEYS
                     except AttributeError:
                         product_name = f"Game Item {item.id}"
 
-            key = generate_key()  #generate la cle
+            key = generated_key  #generate la cle
             game_key = f"{key}"  # Générer une vraie clé
             
             # Ajouter au message HTML
