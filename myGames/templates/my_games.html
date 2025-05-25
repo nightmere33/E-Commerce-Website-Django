@@ -16,7 +16,18 @@
 
     <h1> your games</h1>
 
-
+    {% if owned_games %}
+    <ul>
+        {% for owned in owned_games %}
+            <li>
+                <strong>{{ owned.game.name }}</strong><br>
+                Key: <code>{{ owned.key }}</code>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>You don't own any games yet.</p>
+    {% endif %}
 
 
 

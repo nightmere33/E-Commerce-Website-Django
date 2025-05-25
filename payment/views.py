@@ -143,7 +143,10 @@ YOUR GAME KEYS
         # Ajoute les clés de jeu pour chaque produit acheté
         order_items = OrderItem.objects.filter(order=order)
         for item in order_items:
+            generated_key = generate_key()
+           
              # Try to fetch the actual product
+           
             try:
                 product = item.product
             except:
@@ -154,7 +157,7 @@ YOUR GAME KEYS
                     user=request.user,
                     product=product,
                     order=order,
-                    key=generate_key()
+                    key=generated_key
                 )
 
 
@@ -171,7 +174,7 @@ YOUR GAME KEYS
                     except AttributeError:
                         product_name = f"Game Item {item.id}"
 
-            key = generate_key()  #generate la cle
+            key = generated_key  #generate la cle
             game_key = f"{key}"  # Générer une vraie clé
             
             # Ajouter au message HTML
