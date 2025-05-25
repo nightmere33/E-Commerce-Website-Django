@@ -6,6 +6,7 @@
 
 
 
+<<<<<<< HEAD
 {% block left_nav_extras %}
 <form method="GET" action="{% url 'item:browse' %}" class="flex items-center space-x-2 ml-0">
     <input type="text" name="query" placeholder="Search games..."
@@ -16,6 +17,9 @@
     </button>
 </form>
 {% endblock %}
+=======
+
+>>>>>>> 73ca047f2a58b743c6006f48a332eb4dc71b8aa2
 
 
 
@@ -58,9 +62,17 @@
 
 
     <!-- Featured Games Carousel -->
+<<<<<<< HEAD
     <div class="max-w-7xl mx-auto my-12">
 
         <h2 class="text-3xl font-bold text-center mb-8 text-gray-100">Featured Games</h2>
+=======
+    
+    <div class="max-w-7xl mx-auto my-12 px-6 py-12 ">
+
+        <h2 class="text-3xl font-bold text-center mb-8 text-gray-100">Featured Games</h2>
+    
+>>>>>>> 73ca047f2a58b743c6006f48a332eb4dc71b8aa2
        
         <div class="featured-carousel h-[450px]">
 
@@ -82,7 +94,12 @@
                         </a>
                         
                         <!-- Side Features -->
+<<<<<<< HEAD
                         <div class="side-features">
+=======
+                         
+                        <div class="side-features  ">
+>>>>>>> 73ca047f2a58b743c6006f48a332eb4dc71b8aa2
                             {% with next_items=carousel_items|get_next_items:forloop.counter0 %}
                                 {% for side_item in next_items %}
                                     <a href="{% url 'item:detail' side_item.id %}" class="side-feature group hover:shadow-md cursor-pointer transition-shadow duration-300">
@@ -109,6 +126,10 @@
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 73ca047f2a58b743c6006f48a332eb4dc71b8aa2
     {% comment %} new items {% endcomment %}
 
     <div class="relative w-full overflow-hidden rounded-xl">
@@ -169,6 +190,7 @@
 
 
 
+<<<<<<< HEAD
         <!-- Category Carousel -->
     <div class="mt-12 px-6 py-12 bg-black/40 rounded-xl border relative">
     <h2 class="text-3xl font-bold text-center mb-8 text-gray-100">Categories</h2>
@@ -210,6 +232,55 @@
         </button>
     </div>
 </div>
+=======
+
+        <!-- Category Carousel -->
+    <div class="mt-12 px-6 py-12 bg-black/40  rounded-xl border relative">
+
+        <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 ">Categories</h2>
+
+        <div class="relative">
+            <div id="category-carousel" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar px-2">
+                {% for category in categories %}
+                    <a href="{% url 'item:browse' %}?category={{ category.id }}" 
+                        class="carousel-item relative flex-shrink-0 w-56 h-56 rounded-2xl bg-slate-800 overflow-hidden group cursor-pointer border-none transition block animate-gentle-zoom">
+
+
+                        <!-- Image avec flou léger au repos, retiré au hover -->
+                        <img src="{{ MEDIA_URL }}item_images/{{ category.name }}.jpg" 
+                            alt="{{ category.name }}"
+                            class="absolute inset-0 w-full h-full object-cover 
+                                    blur-sm group-hover:blur-0 transition duration-700 ease-in-out" />
+
+                        <!-- Overlay sombre -->
+                        <div class="absolute inset-0 bg-black/30 transition duration-700 ease-in-out group-hover:bg-black/10"></div>
+
+                        <!-- Texte centré qui descend doucement au hover -->
+                        <div class="relative h-full flex items-center justify-center p-4">
+                            <span class="text-white font-semibold text-lg text-center 
+                                        transform transition duration-700 ease-in-out 
+                                        group-hover:translate-y-16 drop-shadow-md">
+                                {{ category.name }}
+                            </span>
+                        </div>
+                    </a>
+    
+                {% endfor %}
+            </div>
+
+
+                <!-- Scroll buttons -->
+                <button onclick="scrollCategories(-300)"
+                        class="absolute left-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button onclick="scrollCategories(300)"
+                        class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-900/80 text-white p-2 rounded-full hover:bg-slate-700 transition z-10">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+        </div>
+    </div>
+>>>>>>> 73ca047f2a58b743c6006f48a332eb4dc71b8aa2
 
 
 
@@ -486,12 +557,15 @@ function scrollCategories(offset) {
     if (!container) return;
     container.scrollBy({ left: offset, behavior: 'smooth' });
 }
+<<<<<<< HEAD
 
 
 
 
 
 
+=======
+>>>>>>> 73ca047f2a58b743c6006f48a332eb4dc71b8aa2
 </script>
 
 {% endblock %}

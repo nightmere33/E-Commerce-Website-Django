@@ -16,27 +16,95 @@
     <!-- Ajout de FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Ajoutez ces styles */
-        html, body {
-            height: 100%;
-            margin: 0;
-        }
-        
-        body {
-            display: flex;
+
+        #chat-container {
+            display: none;
             flex-direction: column;
-            min-height: 100vh;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 320px;
+            max-height: 400px;
+            background: white;
+            border: 2px solid #38b2ac; /* teal-500 */
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            font-family: Arial, sans-serif;
+            color: #333;
+            z-index: 1000;
         }
-        
-        .content-wrapper {
-            flex: 1 0 auto;
-            padding-bottom: 60px; /* Espace en bas du contenu */
+
+        #chat-messages {
+            padding: 12px;
+            overflow-y: auto;
+            flex-grow: 1;
+            max-height: 300px;
+            border-bottom: 1px solid #ccc;
         }
-        
-        footer {
-            flex-shrink: 0;
-            margin-top: auto;
+
+        #chat-input-container {
+            display: flex;
+            padding: 8px;
+            gap: 8px;
         }
+
+        #chat-input {
+            flex-grow: 1;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        #chat-input:focus {
+            border-color: #38b2ac;
+            box-shadow: 0 0 5px #38b2ac;
+        }
+
+        button.chat-btn {
+            background-color: #38b2ac;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        button.chat-btn:hover {
+            background-color: #2c7a7b;
+        }
+
+        #chat-header {
+            background-color: #38b2ac;
+            color: white;
+            padding: 10px 14px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #chat-header button {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+
+
+
+
+
+
+
 
         .cloned {
             pointer-events: none;
@@ -153,28 +221,6 @@
             visibility: visible;
         }
 
-        /* Définir une animation de zoom progressif pour les slides du carousel */
-        @keyframes zoomIn {
-            0% {
-                transform: scale(1);
-            }
-            100% {
-                transform: scale(1.15);  /* Zoom légèrement plus prononcé */
-            }
-        }
-
-        /* Appliquer cette animation à l'image principale du carousel quand le slide est actif */
-        .carousel-slide.active .main-feature img {
-            animation: zoomIn 8s ease-out forwards;  /* Animation plus longue (8s) pour un effet plus progressif */
-        }
-
-        /* Réinitialiser l'image quand le slide n'est pas actif */
-        .carousel-slide:not(.active) .main-feature img {
-            transform: scale(1);
-            transition: none;
-            animation: none;
-        }
-
         /* Boutons de navigation */
         .carousel-nav-button {
             position: absolute;
@@ -248,6 +294,20 @@
             align-items: center;
             justify-content: center;
             background: rgba(0, 0, 0, 0.2);
+        }
+
+        .main-feature img {
+            transform-origin: center;
+            transition: transform 8s ease;
+        }
+
+        .carousel-slide.active .main-feature img {
+            transform: scale(1.1);
+        }
+
+        .carousel-slide:not(.active) .main-feature img {
+            transform: scale(1);
+            transition: none;
         }
 
         .main-feature:hover::before {
@@ -335,35 +395,27 @@
         
         .side-features {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Deux colonnes égales */
-            grid-template-rows: 1fr 1fr;    /* Deux rangées égales */
-            gap: 0.5rem;                    /* Espacement uniforme et minimal */
-            height: 100%;                   /* Hauteur complète */
-            width: 100%;                    /* Largeur complète */
-            margin: 0;                      /* Pas de marges */
-            padding: 0;                     /* Pas de padding */
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 0.5rem;
+            height: 100%;
+            padding-right: 0;
         }
         
         .side-feature {
             position: relative;
-            border-radius: 0.75rem;
+            height: auto;
+            aspect-ratio: 1;
+            border-radius: 0;
+            background: rgba(0, 0, 0, 0.2);
             overflow: hidden;
-            height: 100%;                   /* Prend toute la hauteur disponible */
-            width: 100%;                    /* Prend toute la largeur disponible */
-            aspect-ratio: 1/1;              /* Force un rapport hauteur/largeur carré */
-            max-height: none;               /* Supprime toute hauteur maximale */
-            min-height: 0;                  /* Réinitialise la hauteur minimale */
-            margin: 0;                      /* Supprime les marges */
-            padding: 0;                     /* Supprime les paddings */
         }
         
         .side-feature img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center;
-            margin: 0;
-            padding: 0;
+            border-radius: 0;
         }
         
         .side-feature .feature-info {
@@ -545,15 +597,15 @@
         .animate-fade-in {
             animation: fade-in 1s ease-out;
         }
-
-
-
-        
-
-
-        
-
     </style>
+
+
+
+
+
+
+
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> <!-- Jquery cdn-->
     <title>{% block title %}{% endblock %} | GameVerse</title>
 </head>
@@ -561,8 +613,12 @@
 <body>
 
     <nav class="nav-gradient py-4 px-6 flex justify-between items-center shadow-lg">
+
+
             <!-- Left section: logo + categories -->
             <div class="flex items-center space-x-6 relative">
+
+                <!-- logo-->
                 <a href="/" class="text-2xl font-bold text-white hover:text-gray-200 transition duration-300">
                     <i class="fas fa-gamepad mr-2"></i>GameVerse
                 </a>
@@ -582,104 +638,77 @@
                         {% endfor %}
                     </div>
                 </div>
-            </div>
-        
 
-
-
-            {% block left_nav_extras %}
-                {% block search_bar %}
-                    <form method="GET" action="{% url 'item:browse' %}" class="flex items-center space-x-2 ml-0 pl-0">
-                        <input type="text" name="query" placeholder="Search games..."
-                            class="px-3 py-1.5 rounded-md text-sm bg-white text-black focus:outline-none focus:ring-2 focus:ring-teal-400 placeholder-gray-500" />
-                        <button type="submit"
-                                class="px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-600 transition">
+                    
+                    <!-- Search + Chatbot -->
+                    <form method="GET" action="{% url 'item:browse' %}" class="flex items-center  ml-4">
+                        {% block search_input %}
+                            <input type="text" name="query" placeholder="Search games..."
+                                    class="px-3 py-1.5 rounded-md text-sm bg-white text-black focus:outline-none focus:ring-2 focus:ring-teal-400 placeholder-gray-500" />
+                            <button type="submit"
+                                    class="ml-2 px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-600 transition">
                                     Search
-                        </button>
-                    </form>
-                {% endblock %}
-            {% endblock %}
+                            </button>
+                        {% endblock %}
 
+                        {% block chatbot_button %}
+                            <button onclick="toggleChatbot()" type="button"
+                                title="Need help? VerseBot is here to assist you!"
+                                class=" ml-7 px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-600 transition chatbot-button flex items-center">
+                                <i class="fas fa-robot mr-2"></i>
+
+                                 VerseBot
+                            </button>
+                        {% endblock %}
+                    </form>
+            </div>   
 
 
             <!-- Right section: nav links + user -->
-    <div class="flex items-center space-x-4">
-        <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-gray-200 transition duration-300">Browse</a>
+            <div class="flex items-center space-x-4">
+                <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-gray-200 transition duration-300">Browse</a>
 
-        {% if request.user.is_authenticated %}
-            <a href="{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
-            <a href="{% url 'my_games' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">My Games</a>
-            {% if request.user.is_superuser %}
-                <a href="{% url 'dashboard:index' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
-            
-                <a href="{% url 'item:new' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">New item</a>
-            {% endif %}
-
-            <!--  Shopping Cart Button -->
-            <a href="{% url 'cart:cart_summary' %}" class="flex items-center px-4 py-2 text-sm font-semibold bg-white text-gray-800 rounded-xl hover:bg-gray-100 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6h13l-1.5-6M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
-                </svg>
-                <span>Cart</span>
-                <span id="cart_quantity" class="ml-2 bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded-full">{{ cart|length}}</span>
-            </a>
-
-            <!--  User dropdown -->
-            <div class="relative group inline-block" tabindex="0">
-                <button class="w-10 h-10 rounded-full bg-teal-400 flex items-center justify-center hover:bg-teal-600 transition duration-300 focus:outline-none">
-                    <i class="fas fa-user-edit text-white"></i>
-                </button>
-
-                <div class="absolute right-0 mt-2 w-56 bg-slate-900 border border-slate-700 rounded-xl shadow-lg z-50 
-                    opacity-0 invisible 
-                    group-hover:opacity-100 group-hover:visible 
-                    group-focus-within:opacity-100 group-focus-within:visible 
-                    transition-all duration-200">
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
+                    <a href="{% url 'my_games' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">My Games</a>
+                    {% if request.user.is_superuser %}
+                        <a href= "{% url 'dashboard:index' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
                     
-                    <!-- Navigation menu items -->
-                    <div class="py-2">
-                        <a href="{% url 'core:edit_profile' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
-                            <i class="fas fa-user-edit w-6 text-center mr-3 text-teal-400"></i>
-                            <span>My Profile</span>
-                        </a>
-                        
-                        <a href="{% url 'dashboard:index' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
-                            <i class="fas fa-box w-6 text-center mr-3 text-teal-400"></i>
-                            <span>My Items</span>
-                        </a>
-                        
-                        <a href="{% url 'conversation:inbox' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
-                            <i class="fas fa-envelope w-6 text-center mr-3 text-teal-400"></i>
-                            <span>Messages</span>
-                            <!-- Uncomment to add unread count badge -->
-                            <!-- <span class="ml-auto bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">2</span> -->
-                        </a>
-                        
-                        <a href="{% url 'cart:cart_summary' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
-                            <i class="fas fa-shopping-cart w-6 text-center mr-3 text-teal-400"></i>
-                            <span>My Cart</span>
-                        </a>
+                        <a href="{% url 'item:new' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">New item</a>
+                    {% endif %}
+
+                    <!--  Shopping Cart Button -->
+                    <a href="{% url 'cart:cart_summary' %}" class="flex items-center px-4 py-2 text-sm font-semibold bg-white text-gray-800 rounded-xl hover:bg-gray-100 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6h13l-1.5-6M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
+                        </svg>
+                        <span>Cart</span>
+                        <span id="cart_quantity" class="ml-2 bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded-full">{{ cart|length}}</span>
+                    </a>
+
+                    <!--  User dropdown -->
+                    <div class="relative group inline-block" tabindex="0">
+                        <button class="w-10 h-10 rounded-full bg-teal-400 flex items-center justify-center hover:bg-teal-600 transition duration-300 focus:outline-none">
+                            <i class="fas fa-user-edit text-white"></i>
+                        </button>
+
+                        <div class="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-700 rounded-xl shadow-lg z-50 
+                            opacity-0 invisible 
+                            group-hover:opacity-100 group-hover:visible 
+                            group-focus-within:opacity-100 group-focus-within:visible 
+                            transition-all duration-200">
+
+                            <a href="{% url 'core:edit_profile' %}" class="block px-4 py-2 text-sm text-white hover:bg-slate-700 transition">Edit Profile</a>
+                            {% if request.user.is_superuser %}
+                                <a href="{% url 'dashboard:index' %}" class="block px-4 py-2 text-sm text-white hover:bg-slate-700 transition">Dashboard</a>
+                            {% endif %}
+
+                            <form method="POST" action="{% url 'core:logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-slate-700 transition">Logout</button>
+                            </form>
+                        </div>
                     </div>
-                    
-                    <!-- Divider -->
-                    <div class="border-t border-slate-700"></div>
-                    
-                    <!-- Account actions -->
-                    <div class="py-2">
-                        {% if request.user.is_authenticated %}
-                            <a href="{% url 'core:logout' %}" class="flex items-center w-full px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-red-400 transition-colors text-left">
-                                <i class="fas fa-sign-out-alt w-6 text-center mr-3 text-red-400"></i>
-                                <span>Sign Out</span>
-                            </a>
-                        {% else %}
-                            <a href="{% url 'core:login' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
-                                <i class="fas fa-sign-in-alt w-6 text-center mr-3 text-teal-400"></i>
-                                <span>Sign In</span>
-                            </a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
 
                 {% else %}
                     <a href="{% url 'core:signup' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>
@@ -689,15 +718,11 @@
     </nav>
 
 
-    <!-- Wrapper autour du contenu principal -->
-    <div class="content-wrapper">
-        <div class="px-6 py-6">
-            {% block content %}
-            {% endblock %}
-        </div>
+    <div class="px-6 py-6 min-h-[calc(100vh-80px)]">
+        {% block content %}
+        {% endblock %}
     </div>
-    
-    <!-- Footer existant -->
+
     <footer class="bg-gray-900 text-gray-400 py-12 px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
             <!--what is GameVerse-->
@@ -740,7 +765,111 @@
     </footer>
     
     {% block scripts %}{% endblock %}
+
+
+
+
+    {% comment %} Fenetre chatbot {% endcomment %}
+
+    <div id="chat-container" class="flex flex-col">
+        <div id="chat-header" class="flex justify-between items-center px-4 py-2 bg-teal-600 text-white rounded-t-lg">
+            <span class="font-semibold">
+                <i class="fas fa-robot mr-2"></i>
+                VerseBot</span>
+            <div class="flex gap-2 items-center">
+                <!-- Reset Button -->
+                <button id="reset-chat" title="Reset conversation" class="hover:text-yellow-300 text-lg">↻</button>
+                <!-- Close Button -->
+                <button id="stop-chat" title="Stop conversation & close" class="hover:text-red-300 text-lg">✖</button>
+            </div>
+        </div>
+
+    <div id="chat-messages" class="bg-white text-black p-3 h-64 overflow-y-auto"></div>
+
+    <div id="chat-input-container" class="flex border-t border-gray-300">
+        <input id="chat-input" type="text" placeholder="Ask Your Question..."
+               class="flex-grow px-3 py-2 text-sm focus:outline-none">
+        <button id="send-chat" class="chat-btn bg-teal-500 text-white px-4 py-2 hover:bg-teal-600 transition">Send</button>
+    </div>
+</div>
+
+
+
+{% comment %} Script du ChatBot {% endcomment %}
+<script>
+  function toggleChatbot() {
+    const container = document.getElementById("chat-container");
+    container.style.display = container.style.display === "flex" ? "none" : "flex";
+  }
+
+  const chatInput = document.getElementById("chat-input");
+  const chatMessages = document.getElementById("chat-messages");
+  const sendBtn = document.getElementById("send-chat");
+  const stopBtn = document.getElementById("stop-chat");
+
+  async function sendMessage() {
+    const input = chatInput.value.trim();
+    if (!input) return;
+
+    chatMessages.innerHTML += `<div><strong>You:</strong> ${input}</div>`;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    chatInput.value = "";
+
+    try {
+      const response = await fetch("/chatbot/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input })
+      });
+      const data = await response.json();
+      chatMessages.innerHTML += `<div><strong>VerseBot:</strong> ${data.reply}</div>`;
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    } catch (error) {
+      chatMessages.innerHTML += `<div style="color:red;"><strong>Error:</strong> Le serveur ne répond pas.</div>`;
+    }
+  }
+
+  sendBtn.addEventListener("click", sendMessage);
+
+  chatInput.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  });
+
+  stopBtn.addEventListener("click", () => {
+    chatMessages.innerHTML = ""; // vide la conversation
+    toggleChatbot();             // ferme la fenêtre
+  });
+
+  // Reset chat only
+    document.getElementById("reset-chat").addEventListener("click", () => {
+        const chatBox = document.getElementById("chat-messages");
+        chatBox.innerHTML = "<div  id='reset-msg' style='color:gray;'>💬 Conversation reset.</div>";
+        setTimeout(() => {
+            const resetMsg = document.getElementById("reset-msg");
+            if (resetMsg) resetMsg.remove();
+        }, 1600); // 1600 ms = 1.6 second
+    });
+</script>
+
+
+
+
+
 </body>
 <!-- Chargement de jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
 </html>

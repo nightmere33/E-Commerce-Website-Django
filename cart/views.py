@@ -29,7 +29,6 @@ def cart_summary(request):
         "platform_cut": platform_cut,
         "grand_total": grand_total
     })
-
 def cart_add(request):
     #get the cart
     cart = Cart(request)
