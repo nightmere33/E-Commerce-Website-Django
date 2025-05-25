@@ -14,6 +14,8 @@ import requests
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.conf import settings
+from langdetect import detect
 
 def index(request):
     # Get all categories
@@ -118,22 +120,9 @@ def edit_profile(request):
     })
 
 
+#chatbot AI
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-API_KEY = "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"  # remplace par ta clé OpenRouter
+API_KEY = settings.OPENROUTER_API_KEY
 
 @csrf_exempt
 def chatbot(request):
@@ -147,19 +136,60 @@ def chatbot(request):
         }
 
         payload = {
-            "model": "mistralai/mistral-7b-instruct",  # ou un autre modèle OpenRouter
+            "model": "mistralai/mistral-7b-instruct",
             "messages": [
-                {"role": "system", "content": "Tu es un assistant utile."},
+                {
+                    "role": "system",
+                    "content": (
+                        "You are VerseBot, the intelligent assistant of the GameVerse website.\n"
+                        "First, detect the user's language (French or English) based on the message.\n"
+                        "Then, always respond in the same language the user used.\n\n"
+
+                        "If the question is about how to use the GameVerse website (e.g., login, sign up, search games, add to cart, see invoice, pay, contact admin), "
+                        "give a clear, helpful, and simple answer.\n\n"
+
+                        "Examples:\n"
+                        "- FR : Comment puis-je me connecter ?\n"
+                        "- EN : How can I log in?\n"
+                        "- FR : Où puis-je créer un compte ?\n"
+                        "- EN : How to create an account?\n"
+                        "- FR : Comment rechercher un jeu ?\n"
+                        "- EN : How can I search for a game?\n"
+                        "- FR : Comment ajouter un jeu au panier ?\n"
+                        "- EN : How to add a game to the cart?\n"
+                        "- FR : Où voir ma facture ?\n"
+                        "- EN : Where can I see my invoice?\n"
+                        "- FR : Comment payer mes jeux ?\n"
+                        "- EN : How to pay for my games?\n"
+                        "- FR : Comment contacter l’administrateur ?\n"
+                        "- EN : How to contact the administrator?\n\n"
+
+                        "If the user asks something else, respond like a helpful assistant.\n"
+                        "Never mix languages in your answer. Always match the language of the user's question."
+                    )
+
+                },
                 {"role": "user", "content": user_input}
-            ]
-        }
+        ]
+    }
 
-        response = requests.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers=headers,
-            json=payload
-        )
+        try:
 
-        result = response.json()
-        reply = result["choices"][0]["message"]["content"]
-        return JsonResponse({"reply": reply})
+            response = requests.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers=headers,
+                json=payload,
+                timeout=20
+            )
+            result = response.json()
+
+            if "choices" in result:
+                reply = result["choices"][0]["message"]["content"]
+                return JsonResponse({"reply": reply})
+            else:
+                print("Erreur dans la réponse OpenRouter :", result)
+                return JsonResponse({"reply": "Une erreur est survenue. Vérifie ta clé ou ton quota OpenRouter."}, status=500)
+        
+        except Exception as e:
+            print("Erreur chatbot :", str(e))
+            return JsonResponse({"reply": "Une erreur de communication avec le serveur est survenue."}, status=500)

@@ -1,5 +1,14 @@
 from pathlib import Path
 import dj_database_url
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()  # charge les variables du fichier .env
+
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
