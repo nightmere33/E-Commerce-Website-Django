@@ -687,28 +687,61 @@
                     </a>
 
                     <!--  User dropdown -->
-                    <div class="relative group inline-block" tabindex="0">
-                        <button class="w-10 h-10 rounded-full bg-teal-400 flex items-center justify-center hover:bg-teal-600 transition duration-300 focus:outline-none">
-                            <i class="fas fa-user-edit text-white"></i>
-                        </button>
+            <div class="relative group inline-block" tabindex="0">
+                <button class="w-10 h-10 rounded-full bg-teal-400 flex items-center justify-center hover:bg-teal-600 transition duration-300 focus:outline-none">
+                    <i class="fas fa-user-edit text-white"></i>
+                </button>
 
-                        <div class="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-700 rounded-xl shadow-lg z-50 
-                            opacity-0 invisible 
-                            group-hover:opacity-100 group-hover:visible 
-                            group-focus-within:opacity-100 group-focus-within:visible 
-                            transition-all duration-200">
-
-                            <a href="{% url 'core:edit_profile' %}" class="block px-4 py-2 text-sm text-white hover:bg-slate-700 transition">Edit Profile</a>
-                            {% if request.user.is_superuser %}
-                                <a href="{% url 'dashboard:index' %}" class="block px-4 py-2 text-sm text-white hover:bg-slate-700 transition">Dashboard</a>
-                            {% endif %}
-
-                            <form method="POST" action="{% url 'core:logout' %}">
-                                {% csrf_token %}
-                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-slate-700 transition">Logout</button>
-                            </form>
-                        </div>
+                <div class="absolute right-0 mt-2 w-56 bg-slate-900 border border-slate-700 rounded-xl shadow-lg z-50 
+                    opacity-0 invisible 
+                    group-hover:opacity-100 group-hover:visible 
+                    group-focus-within:opacity-100 group-focus-within:visible 
+                    transition-all duration-200">
+                    
+                    <!-- Navigation menu items -->
+                    <div class="py-2">
+                        <a href="{% url 'core:edit_profile' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
+                            <i class="fas fa-user-edit w-6 text-center mr-3 text-teal-400"></i>
+                            <span>My Profile</span>
+                        </a>
+                        
+                        <a href="{% url 'dashboard:index' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
+                            <i class="fas fa-box w-6 text-center mr-3 text-teal-400"></i>
+                            <span>My Items</span>
+                        </a>
+                        
+                        <a href="{% url 'conversation:inbox' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
+                            <i class="fas fa-envelope w-6 text-center mr-3 text-teal-400"></i>
+                            <span>Messages</span>
+                            <!-- Uncomment to add unread count badge -->
+                            <!-- <span class="ml-auto bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">2</span> -->
+                        </a>
+                        
+                        <a href="{% url 'cart:cart_summary' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
+                            <i class="fas fa-shopping-cart w-6 text-center mr-3 text-teal-400"></i>
+                            <span>My Cart</span>
+                        </a>
                     </div>
+                    
+                    <!-- Divider -->
+                    <div class="border-t border-slate-700"></div>
+                    
+                    <!-- Account actions -->
+                    <div class="py-2">
+                        {% if request.user.is_authenticated %}
+                            <a href="{% url 'core:logout' %}" class="flex items-center w-full px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-red-400 transition-colors text-left">
+                                <i class="fas fa-sign-out-alt w-6 text-center mr-3 text-red-400"></i>
+                                <span>Sign Out</span>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'core:login' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
+                                <i class="fas fa-sign-in-alt w-6 text-center mr-3 text-teal-400"></i>
+                                <span>Sign In</span>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
 
                 {% else %}
                     <a href="{% url 'core:signup' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>

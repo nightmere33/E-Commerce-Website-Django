@@ -12,8 +12,4 @@ def index(request):
         'items': items,
     })
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 73ca047f2a58b743c6006f48a332eb4dc71b8aa2
 

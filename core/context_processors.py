@@ -6,6 +6,8 @@ def media_url(request):
         'MEDIA_URL': settings.MEDIA_URL,
     }
 
-
 def categories(request):
+    return {'categories': Category.objects.all()}
+
+def categories_processor(request):
     return {'categories': Category.objects.all()}

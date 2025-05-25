@@ -47,10 +47,7 @@ def inbox(request):
     
     return render(request, 'conversation/inbox.html', {
         'conversations': conversations,
-<<<<<<< HEAD
         'categories': Category.objects.all(),
-=======
->>>>>>> 73ca047f2a58b743c6006f48a332eb4dc71b8aa2
     } )
 
 

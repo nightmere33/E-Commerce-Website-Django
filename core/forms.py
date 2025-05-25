@@ -77,10 +77,8 @@ class ContactForm(forms.Form):
 
 
 class EditProfileForm(forms.ModelForm):
-<<<<<<< HEAD
     new_password = forms.CharField(widget=forms.PasswordInput(), required=False)
     confirm_password = forms.CharField(widget=forms.PasswordInput(), required=False)
-=======
     new_password = forms.CharField(
         required=False,
         widget=forms.PasswordInput(attrs={
@@ -95,7 +93,7 @@ class EditProfileForm(forms.ModelForm):
             'placeholder': 'Confirm password'
         })
     )
->>>>>>> 73ca047f2a58b743c6006f48a332eb4dc71b8aa2
+
 
     class Meta:
         model = User
