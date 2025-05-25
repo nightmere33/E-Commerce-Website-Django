@@ -49,9 +49,11 @@
 
 
     <!-- Featured Games Carousel -->
-    <div class="max-w-7xl mx-auto my-12">
+    
+    <div class="max-w-7xl mx-auto my-12 px-6 py-12 ">
 
         <h2 class="text-3xl font-bold text-center mb-8 text-gray-100">Featured Games</h2>
+    
        
         <div class="featured-carousel h-[450px]">
 
@@ -73,7 +75,8 @@
                         </a>
                         
                         <!-- Side Features -->
-                        <div class="side-features">
+                         
+                        <div class="side-features  ">
                             {% with next_items=carousel_items|get_next_items:forloop.counter0 %}
                                 {% for side_item in next_items %}
                                     <a href="{% url 'item:detail' side_item.id %}" class="side-feature group hover:shadow-md cursor-pointer transition-shadow duration-300">
