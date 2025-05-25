@@ -679,46 +679,95 @@
     </div>
     
     <!-- Footer existant -->
-    <footer class="bg-gray-900 text-gray-400 py-12 px-6">
-      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-        <!--what is GameVerse-->
-        <div>
-            <h3 class="text-xl font-semibold text-teal-400 luckiest-guy-regular mb-4">What is GameVerse?</h3>
-            <p class="text-sm leading-relaxedtext-lg text-gray-400">GameVerse is a digital space for gamers <br> to exchange, 
-                connect, and grow their <br> 
-                gaming experience.
-            </p>
-        </div>
-        <!--useful links-->
-        <div>
-            <h3 class="text-xl font-semibold text-teal-400 luckiest-guy-regular mb-4">Useful Links</h3>
-            <ul class="space-y-3">
-                <li>
-                    <a href="{% url 'core:contact' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Contact</a>                   
-                </li>
-                <li>
-                    <a href="{% url 'core:privacy' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Privacy Policy</a>                 
-                </li>
-                <li>
-                    <a href="{% url 'core:termsofuse' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Terms Of Use</a>                   
-                </li>
-            </ul>
-        </div>
-        <div>
-            <h3 class="text-xl font-semibold text-teal-400 mb-4 luckiest-guy-regular">Follow Us</h3>
-            <div class="flex space-x-4">
-                <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="GitHub"><i class="fab fa-github"></i></a>
+    <!-- Remplacez votre footer actuel par ce code -->
+{% load static %}
+<footer class="relative text-gray-400 py-6 px-6 overflow-hidden min-h-80">
+    <!-- Image de fond avec préservation des couleurs originales -->
+    <div class="absolute inset-0 z-0">
+        <img src="/media/images/footer_bg.jpg" alt="GameVerse Footer Background" 
+             class="w-full h-full object-cover" />
+        <!-- Overlay très léger pour assurer la lisibilité du texte -->
+        <div class="absolute inset-0 bg-black/30"></div>
+    </div>
+
+    <!-- Contenu principal du footer -->
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+        <!-- Logo GameVerse à gauche avec style arcade -->
+        <div class="flex justify-center md:justify-start items-start md:self-end md:pb-2">
+            <div class="flex flex-col items-center md:items-start">
+                <div class="mb-3 flex items-center">
+                    <i class="fas fa-gamepad text-orange-700 text-4xl mr-3"></i>
+                    <span class="press-start-font text-2xl font-bold text-white">
+                        Game<span class="text-gray-200">Verse</span>
+                    </span>
+                </div>
+                <p class="text-sm leading-relaxed text-gray-300">GameVerse is a digital space for gamers to exchange, 
+                buy, and discover games.</p>
             </div>
         </div>
-      </div>
-      <div class="mt-12 border-t border-gray-700 pt-6 text-center text-sm text-gray-500 select-none">
-        © 2025 GameVerse. All rights reserved.
-      </div>
         
-    </footer>
+        <!-- Navigation liens au milieu - avec Privacy Policy restauré -->
+        <div class="text-center self-start mt-10">
+    <h3 class="text-2xl font-semibold text-orange-700 luckiest-guy-regular mb-4">Quick Links</h3>
+    <ul class="space-y-1 mt-7">
+        <li><a href="{% url 'core:index' %}" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-xs sm:text-lg">Home</a></li>
+        <li><a href="{% url 'core:contact' %}" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-xs sm:text-lg">Contact</a></li>
+        <li><a href="{% url 'core:termsofuse' %}" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-xs sm:text-lg">Terms of Use</a></li>
+        <li><a href="{% url 'core:privacy' %}" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-xs sm:text-lg">Privacy Policy</a></li>
+    </ul>
+</div>
+        
+        <!-- Réseaux sociaux à droite - positionnés avec transformation -->
+        <div class="text-left md:text-left md:self-end ml-20 relative transform -translate-y-4">
+            <h3 class="text-xl font-semibold text-orange-700 luckiest-guy-regular mb-2">Join Our Community</h3>
+            <!-- Social Media Icons - Mise à jour avec X et YouTube -->
+            <div class="flex justify-start space-x-5 mb-2">
+                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-lg" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-lg" aria-label="X (Twitter)">
+                    <i class="fab fa-x-twitter"></i>
+                </a>
+                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-lg" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-lg" aria-label="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-lg" aria-label="GitHub">
+                    <i class="fab fa-github"></i>    
+                </a>
+                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-xl" aria-label="TikTok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Copyright avec style gamifié subtil -->
+    <div class="mt-20 pt-3 border-t border-gray-700/30 text-center relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <p class="luckiest-guy-regular text-xs tracking-wide text-gray-500 py-2">
+                © 2025 <span class="text-orange-700/80">GAME<span class="text-orange-500/70">VERSE</span></span> · ALL RIGHTS RESERVED
+            </p>
+        </div>
+    </div>
+
+    <style>
+        .press-start-font {
+            font-family: 'Press Start 2P', cursive;
+            letter-spacing: 0px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            line-height: 1.2;
+        }
+        
+        @media (max-width: 640px) {
+            .press-start-font {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</footer>
     
     {% block scripts %}{% endblock %}
 </body>
