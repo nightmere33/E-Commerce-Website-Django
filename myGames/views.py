@@ -7,5 +7,5 @@ from .models import MyGame
 
 @login_required
 def my_games(request):
-    owned_games = MyGame.objects.filter(user=request.user)
+    owned_games =  MyGame.objects.filter(user=request.user).select_related('product')
     return render(request, 'my_games.html', {'games': owned_games})

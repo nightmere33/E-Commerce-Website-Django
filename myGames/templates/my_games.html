@@ -1,4 +1,6 @@
 {% extends 'core/base.html' %}
+<!--{% load static %}-->
+
 
 {% block title %}Dashboard{% endblock %}
 {% block left_nav_extras %}
@@ -14,22 +16,55 @@
 
 {% block content %}
 
-    <h1> your games</h1>
+    
 
-    {% if owned_games %}
-    <ul>
-        {% for owned in owned_games %}
-            <li>
-                <strong>{{ owned.game.name }}</strong><br>
-                Key: <code>{{ owned.key }}</code>
-            </li>
-        {% endfor %}
-    </ul>
+    {% if games %}
+    <div class="max-w-7xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-8 text-gray-100 animate-zoom">Your Items</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            {% for owned in games %}
+                <div class="game-card bg-white/20 backdrop-blur-sm rounded-lg overflow-hidden relative group">
+                    <a href="{% url 'item:detail' owned.product.id %}" class="block">
+                        <div class="image-container relative">
+                            <img src="{{ owned.product.image.url }}"
+                                 class="game-image opacity-200"
+                                 alt="{{ owned.product.name }}">
+                        </div>
+                    </a>
+
+                    <div class="p-4">
+                        <h3 class="font-medium text-gray-100 truncate mb-2">{{ owned.product.name }}</h3>
+
+                        <!-- Key hidden by default -->
+                        <div class="key-wrapper">
+                            <button onclick="toggleKey(this)" class="text-teal-400 text-sm hover:underline focus:outline-none">
+                                Show Key
+                            </button>
+                            <code class="hidden block mt-1 text-gray-100 bg-black/30 rounded px-2 py-1 text-xs break-all">
+                                {{ owned.key }}
+                            </code>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
     {% else %}
         <p>You don't own any games yet.</p>
     {% endif %}
 
+    <!-- Toggle Script -->
+    <script>
+        function toggleKey(button) {
+            const keyEl = button.nextElementSibling;
+            if (keyEl.classList.contains('hidden')) {
+                keyEl.classList.remove('hidden');
+                button.textContent = 'Hide Key';
+            } else {
+                keyEl.classList.add('hidden');
+                button.textContent = 'Show Key';
+            }
+        }
+    </script>
 
-
-
-{% endblock%}
+{% endblock %}
