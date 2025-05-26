@@ -647,7 +647,7 @@
             <div class="flex items-center space-x-6 relative">
 
                 <!-- logo-->
-                <a href="/" class="text-l font-bold text-white hover:text-gray-200 transition duration-300 press-start-font">
+                <a href="/" class="text-l font-bold text-white hover:text-teal-400 transition duration-300 press-start-font">
                     <i class="fas fa-gamepad mr-2 text-xl"></i>GameVerse
                 </a>
 
@@ -687,7 +687,7 @@
                             <input type="text" name="query" placeholder="Search games..."
                                     class="px-3 py-1.5 rounded-md text-sm bg-white text-black focus:outline-none focus:ring-2 focus:ring-teal-400 placeholder-gray-500" />
                             <button type="submit"
-                                    class="ml-2 px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-600 transition">
+                                    class="ml-2 px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-400 transition">
                                     Search
                             </button>
                         {% endblock %}
@@ -695,7 +695,7 @@
                         {% block chatbot_button %}
                             <button onclick="toggleChatbot()" type="button"
                                 title="Need help? VerseBot is here to assist you!"
-                                class=" ml-7 px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-600 transition chatbot-button flex items-center">
+                                class=" ml-7 px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-400 transition chatbot-button flex items-center">
                                 <i class="fas fa-robot mr-2"></i>
 
                                  VerseBot
@@ -707,19 +707,19 @@
 
             <!-- Right section: nav links + user -->
             <div class="flex items-center space-x-4">
-                <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-gray-200 transition duration-300" title="Explore all available games">Browse</a>
+                <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-teal-400 transition duration-300" title="Explore all available games">Browse</a>
 
                 {% if request.user.is_authenticated %}
                     
                     
                     {% if request.user.is_superuser %}
-                        <a href= "{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700" title="Check your messages and chat history">Inbox</a>
+                        <a href= "{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-400" title="Check your messages and chat history">Inbox</a>
                     
-                        <a href="{% url 'item:new' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700 whitespace-nowrap" title="Add a new item"  >New item</a>
+                        <a href="{% url 'item:new' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-400 whitespace-nowrap" title="Add a new item"  >New item</a>
                     {% endif %}
 
                     <!--  Shopping Cart Button -->
-                    <a href="{% url 'cart:cart_summary' %}" class="flex items-center px-4 py-2 text-sm font-semibold bg-white text-gray-800 rounded-xl hover:bg-gray-100 transition">
+                    <a href="{% url 'cart:cart_summary' %}" class="flex items-center px-4 py-2 text-sm font-semibold bg-white text-gray-800 rounded-xl hover:bg-gray-300 transition" title="Redirecting to your shopping cart...">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6h13l-1.5-6M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
                         </svg>
@@ -729,7 +729,7 @@
 
                     <!--  User dropdown -->
             <div class="relative group inline-block" tabindex="0">
-                <button class="w-10 h-10 rounded-full bg-teal-400 flex items-center justify-center hover:bg-teal-600 transition duration-300 focus:outline-none">
+                <button class="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center hover:bg-teal-400 transition duration-300 focus:outline-none">
                     <i class="fas fa-user-edit text-white"></i>
                 </button>
 
@@ -750,10 +750,12 @@
                             <i class="fas fa-box w-6 text-center mr-3 text-teal-400"></i>
                             <span>My Items</span>
                         </a>
-                        <a href="{% url 'my_games' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
-                            <i class="fas fa-gamepad w-6 text-center mr-3 text-teal-400"></i>
-                            <span>My Games</span>
-                        </a>
+                        {% if request.user.is_authenticated and request.user.is_staff %}
+                            <a href="{% url 'my_games' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
+                                <i class="fas fa-gamepad w-6 text-center mr-3 text-teal-400"></i>
+                                <span>My Games</span>
+                            </a>
+                        {%endif%}
                         
                         <a href="{% url 'conversation:inbox' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
                             <i class="fas fa-envelope w-6 text-center mr-3 text-teal-400"></i>
@@ -789,8 +791,8 @@
             </div>
 
         {% else %}
-            <a href="{% url 'core:signup' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>
-            <a href="{% url 'core:login' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Log in</a>
+            <a href="{% url 'core:signup' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-400">Sign up</a>
+            <a href="{% url 'core:login' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-400">Log in</a>
         {% endif %}
     </div>
 </nav>

@@ -58,11 +58,11 @@
                                     {% endif %}
                                 {% endfor %}
 
-                                <div class="flex justify-between items-center mt-3">
+                                <div class="flex justify-between items-center mt-3 ">
                                     <span class="text-teal-400 font-semibold">
                                         ${{ conversation.item.price }}
                                     </span>
-                                    <span class="bg-teal-500/20 text-teal-400 text-sm px-3 py-1 rounded-full">
+                                    <span class="bg-teal-500/20 text-teal-400 text-sm px-3 py-1 rounded-full ">
                                         <i class="fas fa-comments mr-1"></i>
                                         {{ conversation.messages.count }} message{{ conversation.messages.count|pluralize }}
                                     </span>
