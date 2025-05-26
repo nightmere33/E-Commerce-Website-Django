@@ -20,42 +20,63 @@
     <div class="pb-6 grid grid-cols-4 gap-4">
         <!-- Sidebar -->
         <div class="col-span-1">
-            <form method="GET" action="{% url 'item:browse' %}" class="mt-6">
-                <input type="text" 
-                       name="query" 
-                       placeholder="Search..." 
-                       class="w-full p-4 bg-slate-800 border border-slate-700 rounded-xl text-gray-100 placeholder-gray-400 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500" 
-                       value="{{ query }}">
-                <button type="submit" 
-                        class="mt-2 py-4 px-8 bg-teal-500 text-white text-lg rounded-xl hover:bg-teal-600 transition duration-200">
+            <form method="GET" action="{% url 'item:browse' %}" class="mt-6 max-w-md mx-auto flex">
+                <input
+                    type="text"
+                    name="query"
+                    placeholder="Search..."
+                    class="flex-grow p-4 rounded-l-xl bg-slate-800 border border-slate-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200"
+                    value="{{ query }}"
+                >
+                <button
+                    type="submit"
+                    class="py-4 px-6 bg-teal-500 rounded-r-xl text-white text-lg font-semibold hover:bg-teal-600 transition duration-200 shadow-md"
+                >
                     Search
                 </button>
             </form>
+
 
             <hr class="my-6 border-slate-700">
 
             
 
-            <p class="font-semibold text-gray-100 mb-4">Categories</p>
+            <p class="font-semibold text-gray-200 mb-3 text-lg tracking-wide">Categories</p>
 
-            <ul class="space-y-2">
-                <!-- Lien "All" -->
-                <li class="py-2 px-4 rounded-xl {% if not category_id %} bg-slate-700 {% endif %} hover:bg-slate-700 transition duration-200">
-                    <a href="{% url 'item:browse' %}?query={{ query }}" class="text-gray-300 hover:text-teal-400">
-                        All
-                    </a>
-                </li>
+            <ul class="space-y-1">
+            <!-- Lien "All" -->
+            <li class="rounded-md
+                {% if not category_id %}
+                bg-slate-700 text-white
+                {% else %}
+                text-gray-400 hover:text-white hover:bg-slate-700
+                {% endif %}
+                transition-colors duration-200 cursor-pointer
+                px-4 py-2"
+            >
+                <a href="{% url 'item:browse' %}?query={{ query }}" class="block w-full">
+                All
+                </a>
+            </li>
 
-                <!-- Catégories dynamiques -->
-                {% for category in categories %}
-                    <li class="py-2 px-4 rounded-xl {% if category.id == category_id %} bg-slate-700 {% endif %} hover:bg-slate-700 transition duration-200">
-                         <a href="{% url 'item:browse' %}?query={{ query }}&category={{ category.id }}" 
-                            class="text-gray-300 hover:text-teal-400">
-                            {{ category.name }}
-                        </a>
-                    </li>
-                {% endfor %}
+            <!-- Catégories dynamiques -->
+            {% for category in categories %}
+            <li class="rounded-md
+                {% if category.id == category_id %}
+                bg-slate-700 text-white
+                {% else %}
+                text-gray-400 hover:text-white hover:bg-slate-700
+                {% endif %}
+                transition-colors duration-200 cursor-pointer
+                px-4 py-2"
+            >
+                <a href="{% url 'item:browse' %}?query={{ query }}&category={{ category.id }}" class="block w-full">
+                {{ category.name }}
+                </a>
+            </li>
+            {% endfor %}
             </ul>
+
 
 
             <hr class="my-6 border-slate-700">
