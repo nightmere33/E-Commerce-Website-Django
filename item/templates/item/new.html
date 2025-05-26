@@ -17,54 +17,532 @@
 {% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto p-6">
-    <div class="bg-gradient-to-b from-slate-800 to-slate-900 rounded-xl shadow-lg p-8 border border-slate-700">
-        <h1 class="text-3xl font-bold mb-8 text-gray-100 text-center">{{title}}</h1>
-        
-        <form method="POST" action="." enctype="multipart/form-data" class="space-y-6">
-            {% csrf_token %}
-            
-            {% for field in form %}
-            <div class="space-y-2">
-                <label class="block text-gray-300 font-semibold mb-2">{{ field.label }}</label>
-                {{ field }}
-                {% if field.help_text %}
-                    <p class="text-sm text-gray-400">{{ field.help_text }}</p>
-                {% endif %}
-            </div>
-            {% endfor %}
-
-            {% if form.errors or form.non_field_errors %}
-                <div class="p-4 bg-red-900/50 border border-red-500 rounded-lg">
-                    <p class="text-red-400 font-medium">Please correct the following errors:</p>
-                    <ul class="list-disc pl-5 text-red-400">
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    {% endfor %}
-                    {{ form.non_field_errors }}
-                    </ul>
-                </div>
-            {% endif %}
-
-            <div class="flex space-x-4 mt-8">
-                <button type="submit" class="flex-1 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-600 rounded-xl text-white transition duration-200 font-semibold">
-                    <i class="fas fa-save mr-2"></i> Submit
-                </button>
-                <a href="/" class="flex-1 py-4 px-8 text-lg bg-slate-700 hover:bg-slate-600 rounded-xl text-white transition duration-200 text-center font-semibold">
-                    <i class="fas fa-times mr-2"></i> Cancel
-                </a>
-            </div>
-        </form>
+<div class="max-w-6xl mx-auto p-6">
+    <!-- Header with Animation -->
+    <div class="text-center mb-10">
+        <h1 class="text-4xl font-bold text-white mb-2 relative inline-block">
+            <span class="relative z-10">{{title}}</span>
+            <!-- Suppression de la ligne de soulignage ci-dessous -->
+            <!-- <span class="absolute bottom-0 left-0 w-full h-1 bg-teal-500 transform -skew-x-12"></span> -->
+        </h1>
+        <p class="text-slate-400 text-lg">Complete the form below to add a new game to the marketplace</p>
     </div>
 
-    <!-- Preview Section -->
-    <div class="mt-8 bg-gradient-to-b from-slate-800 to-slate-900 rounded-xl shadow-lg p-8 border border-slate-700">
-        <h2 class="text-2xl font-bold mb-6 text-gray-100">Image Preview</h2>
-        <div id="imagePreview" class="w-full h-64 bg-slate-700/50 rounded-lg flex items-center justify-center">
-            <p class="text-gray-400">Image preview will appear here</p>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Form Section -->
+        <div class="lg:col-span-2">
+            <div class="bg-gradient-to-b from-slate-800 to-slate-900 rounded-xl shadow-lg p-8 border border-slate-700">
+                <form method="POST" action="." enctype="multipart/form-data" class="space-y-6" id="itemForm">
+                    {% csrf_token %}
+                    
+                    <!-- Custom Category Field - Avec icône uniquement à côté du titre -->
+                    <div class="space-y-2">
+                        <!-- Garder l'icône à côté du titre Category -->
+                        <label class="block text-gray-300 font-semibold mb-2 flex items-center">
+                            <i class="fas fa-tag text-teal-400 mr-2"></i>
+                            Category
+                        </label>
+                        <!-- Le champ de sélection sans icône -->
+                        <div class="custom-select-container relative">
+                            <div class="custom-select">
+                                <div class="custom-select__trigger">
+                                    <span>Select a category</span>
+                                    <div class="arrow"></div>
+                                </div>
+                                <div class="custom-options">
+                                    {% for id, name in form.Category.field.choices %}
+                                        {% if id %}
+                                            <span class="custom-option" data-value="{{ id }}">{{ name }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <select name="Category" id="id_Category" class="hidden">
+                                {% for id, name in form.Category.field.choices %}
+                                    <option value="{{ id }}">{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Other form fields -->
+                    {% for field in form %}
+                        {% if field.name != 'Category' %}
+                            <div class="space-y-2">
+                                <label class="block text-gray-300 font-semibold mb-2 flex items-center">
+                                    {% if field.name == 'name' %}
+                                        <i class="fas fa-gamepad text-teal-400 mr-2"></i>
+                                    {% elif field.name == 'description' %}
+                                        <i class="fas fa-align-left text-teal-400 mr-2"></i>
+                                    {% elif field.name == 'price' %}
+                                        <i class="fas fa-dollar-sign text-teal-400 mr-2"></i>
+                                    {% elif field.name == 'image' %}
+                                        <i class="fas fa-image text-teal-400 mr-2"></i>
+                                    {% elif field.name == 'is_sold' %}
+                                        <i class="fas fa-check-circle text-teal-400 mr-2"></i>
+                                    {% endif %}
+                                    {{ field.label }}
+                                </label>
+                                
+                                {% if field.name == 'image' %}
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <i class="fas fa-file-upload text-gray-500"></i>
+                                        </div>
+                                        <div class="w-full py-3 px-4 pl-10 rounded-xl border border-slate-600 bg-slate-700/50 text-gray-100 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition duration-200">
+                                            {{ field }}
+                                        </div>
+                                        <p class="text-xs text-gray-400 mt-1">Select an image file (JPG, PNG) for your game</p>
+                                    </div>
+                                {% else %}
+                                    {{ field }}
+                                {% endif %}
+                                
+                                {% if field.help_text %}
+                                    <p class="text-xs text-gray-400 mt-1">{{ field.help_text }}</p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if form.errors or form.non_field_errors %}
+                        <div class="p-4 bg-gradient-to-r from-red-900/50 to-red-800/30 border border-red-500 rounded-lg animate-pulse">
+                            <p class="text-red-400 font-medium flex items-center">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                Please correct the following errors:
+                            </p>
+                            <ul class="list-disc pl-5 text-red-400 mt-2">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                            {{ form.non_field_errors }}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    <div class="flex space-x-4 mt-8">
+                        <button type="submit" class="flex-1 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-600 rounded-xl text-white transition duration-300 font-semibold shadow-lg hover:shadow-teal-500/30 flex items-center justify-center">
+                            <i class="fas fa-save mr-2"></i> Submit
+                        </button>
+                        <a href="/" class="flex-1 py-4 px-8 text-lg bg-slate-700 hover:bg-slate-600 rounded-xl text-white transition duration-300 text-center font-semibold shadow-lg flex items-center justify-center">
+                            <i class="fas fa-times mr-2"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Preview Section -->
+        <div class="lg:col-span-1">
+            <div class="bg-gradient-to-b from-slate-800 to-slate-900 rounded-xl shadow-lg border border-slate-700 sticky top-6">
+                <div class="p-6 bg-gradient-to-r from-teal-500/20 to-transparent border-b border-slate-700">
+                    <h3 class="text-lg font-semibold text-white flex items-center">
+                        <i class="fas fa-eye mr-2 text-teal-400"></i>
+                        Preview
+                    </h3>
+                </div>
+                
+                <div class="p-6 space-y-6">
+                    <!-- Game Card Preview -->
+                    <div class="game-card bg-white/10 rounded-lg overflow-hidden relative group w-full max-w-xs mx-auto">
+                        <div class="image-container relative">
+                            <!-- Remplacer le div imagePreview existant par celui-ci -->
+                            <div class="image-preview-container transition-all duration-300 overflow-hidden">
+                                <div id="imagePreview" class="w-full min-h-[200px] max-h-[500px] bg-slate-700/70 flex items-center justify-center overflow-hidden rounded-lg">
+                                    <i class="fas fa-image text-5xl text-slate-500"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 id="namePreview" class="font-medium text-gray-100 truncate mb-2">Game Name</h3>
+                            <div id="pricePreview" class="price-tag mb-2 text-teal-400">$0.00</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Description Preview - Version corrigée pour afficher sur plusieurs lignes -->
+                    <div class="mt-4 bg-slate-700/30 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-300 mb-2">Description Preview:</h4>
+                        <p id="descriptionPreview" class="text-sm text-gray-400 break-words whitespace-normal">Your description will appear here...</p>
+                    </div>
+                    
+                    <div class="text-xs text-center text-gray-500 mt-6">
+                        <p>This is how your listing will appear to users</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<style>
+/* Custom Select Styling - Sans icône dans le champ */
+.custom-select-container {
+    position: relative;
+    user-select: none;
+    margin-bottom: 1rem;
+}
+
+.custom-select {
+    position: relative;
+}
+
+.custom-select__trigger {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1.2rem;
+    font-size: 1rem;
+    color: #f1f5f9;
+    background: linear-gradient(to right, rgba(51, 65, 85, 0.7), rgba(51, 65, 85, 0.5));
+    cursor: pointer;
+    border-radius: 0.75rem;
+    border: 1px solid #475569;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Supprimer complètement le pseudo-élément :before qui pourrait ajouter une icône */
+.custom-select__trigger::before {
+    content: none !important;
+    display: none !important;
+}
+
+.custom-select__trigger:hover {
+    background: linear-gradient(to right, rgba(71, 85, 105, 0.8), rgba(71, 85, 105, 0.6));
+    border-color: #64748b;
+}
+
+/* Style du texte "Select Category" centré */
+.custom-select__trigger span {
+    font-weight: 500;
+    letter-spacing: 0.03em;
+}
+
+/* Flèche à droite */
+.arrow {
+    position: absolute;
+    height: 12px;
+    width: 12px;
+    right: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+/* Style pour le reste de l'arrow */
+.arrow::before, .arrow::after {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    width: 0.15rem;
+    height: 100%;
+    background-color: #94a3b8;
+    transition: all 0.3s;
+}
+
+.arrow::before {
+    left: -2px;
+    transform: rotate(45deg);
+}
+
+.arrow::after {
+    left: 2px;
+    transform: rotate(-45deg);
+}
+
+.open .arrow {
+    transform: rotate(180deg);
+}
+
+.custom-options {
+    position: absolute;
+    display: block;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 1px solid #475569;
+    border-top: 0;
+    background-color: #1e293b;
+    transition: all 0.3s;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 2;
+    border-radius: 0 0 0.75rem 0.75rem;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.custom-select.open .custom-options {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+    animation: fadeInDown 0.3s ease forwards;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.custom-option {
+    position: relative;
+    display: block;
+    padding: 0.85rem 1.2rem;
+    color: #f1f5f9;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.custom-option:not(:last-of-type) {
+    border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+.custom-option:hover {
+    background: linear-gradient(to right, #2dd4bf, #14b8a6);
+    color: #0f172a; /* Texte foncé au lieu de blanc */
+    font-weight: 500; /* Un peu plus gras pour améliorer la lisibilité */
+}
+
+.custom-option.selected {
+    background: rgba(45, 212, 191, 0.1);
+    color: #2dd4bf;
+    font-weight: 500;
+}
+
+/* Ajouter une icône de vérification à l'option sélectionnée */
+.custom-option.selected:after {
+    content: '\f00c';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 1.2rem;
+    color: #2dd4bf;
+}
+
+/* Styling for the scrollbar in the dropdown */
+.custom-options::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-options::-webkit-scrollbar-track {
+    background: #334155;
+    border-radius: 0 0 0.75rem 0;
+}
+
+.custom-options::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #2dd4bf, #14b8a6);
+    border-radius: 20px;
+}
+
+/* Style pour le focus sur le dropdown */
+.custom-select:focus-within .custom-select__trigger {
+    border-color: #2dd4bf;
+    box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.2);
+}
+
+/* Ajouter ces styles à votre section <style> */
+.image-preview-container {
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+
+#imagePreview {
+    transition: height 0.3s ease-in-out, background-color 0.3s ease;
+}
+
+#imagePreview img {
+    max-height: 500px;
+    margin: 0 auto;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Vérifier et supprimer toute icône qui pourrait être ajoutée dynamiquement
+    const selectTrigger = document.querySelector('.custom-select__trigger');
+    if (selectTrigger) {
+        // Observer les changements du DOM pour supprimer toute icône ajoutée dynamiquement
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.addedNodes.length) {
+                    // Vérifier s'il y a des icônes ajoutées et les supprimer
+                    const icons = selectTrigger.querySelectorAll('i, svg, .fa, .fas, .far, .fal, .fab');
+                    icons.forEach(icon => icon.remove());
+                }
+            });
+        });
+        
+        observer.observe(selectTrigger, { childList: true, subtree: true });
+        
+        // Supprimer immédiatement toute icône existante
+        const existingIcons = selectTrigger.querySelectorAll('i, svg, .fa, .fas, .far, .fal, .fab');
+        existingIcons.forEach(icon => icon.remove());
+    }
+    
+    // Custom Select Implementation
+    document.querySelector('.custom-select__trigger').addEventListener('click', function() {
+        this.parentElement.classList.toggle('open');
+    });
+    
+    // Close the dropdown if the user clicks outside of it
+    window.addEventListener('click', function(e) {
+        const select = document.querySelector('.custom-select');
+        if (!select.contains(e.target)) {
+            select.classList.remove('open');
+        }
+    });
+    
+    // Handle option selection
+    document.querySelectorAll('.custom-option').forEach(option => {
+        option.addEventListener('click', function() {
+            if (!this.classList.contains('selected')) {
+                // Update the selected option
+                this.parentNode.querySelector('.custom-option.selected')?.classList.remove('selected');
+                this.classList.add('selected');
+                
+                // Update the trigger text with nice animation
+                const customSelect = this.closest('.custom-select');
+                const triggerSpan = customSelect.querySelector('.custom-select__trigger span');
+                
+                // Fade out animation
+                triggerSpan.style.opacity = "0";
+                setTimeout(() => {
+                    triggerSpan.textContent = this.textContent;
+                    // Fade in animation
+                    triggerSpan.style.opacity = "1";
+                }, 200);
+                
+                // Update the hidden select field value
+                document.getElementById('id_Category').value = this.getAttribute('data-value');
+                
+                // Close the dropdown
+                customSelect.classList.remove('open');
+            }
+        });
+    });
+    
+    // Preview functionality
+    const nameInput = document.getElementById('id_name'); // S'assurer que cet ID est correct
+    const descInput = document.getElementById('id_description'); // S'assurer que cet ID est correct
+    const priceInput = document.getElementById('id_price'); // S'assurer que cet ID est correct
+    const imageInput = document.querySelector('input[type="file"]'); // Cibler l'input de type file
+    
+    const namePreview = document.getElementById('namePreview');
+    const descriptionPreview = document.getElementById('descriptionPreview');
+    const pricePreview = document.getElementById('pricePreview');
+    const imagePreview = document.getElementById('imagePreview');
+    
+    // Vérifier si tous les éléments existent avant d'ajouter les écouteurs d'événements
+    if (nameInput && namePreview) {
+        nameInput.addEventListener('input', function() {
+            namePreview.textContent = this.value || 'Game Name';
+        });
+    }
+    
+    if (descInput && descriptionPreview) {
+        descInput.addEventListener('input', function() {
+            descriptionPreview.textContent = this.value || 'Your description will appear here...';
+        });
+    }
+    
+    if (priceInput && pricePreview) {
+        priceInput.addEventListener('input', function() {
+            pricePreview.textContent = '$' + (parseFloat(this.value) || 0).toFixed(2);
+        });
+    }
+    
+    if (imageInput && imagePreview) {
+        imageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                const imagePreviewContainer = document.querySelector('.image-preview-container');
+                
+                reader.onload = function(e) {
+                    // Créer une image temporaire pour obtenir les dimensions naturelles
+                    const tempImg = new Image();
+                    tempImg.src = e.target.result;
+                    
+                    tempImg.onload = function() {
+                        // Calculer le ratio hauteur/largeur de l'image
+                        const imgRatio = this.height / this.width;
+                        
+                        // Créer l'élément img avec object-contain
+                        imagePreview.innerHTML = '<img src="' + e.target.result + '" class="w-full object-contain" alt="Image preview">';
+                        
+                        // Récupérer l'image dans le DOM
+                        const imgElement = imagePreview.querySelector('img');
+                        
+                        // Ajuster la hauteur du conteneur en fonction du ratio de l'image
+                        // tout en respectant les limites min et max
+                        let containerWidth = imagePreview.offsetWidth;
+                        let calculatedHeight = containerWidth * imgRatio;
+                        
+                        // Limiter la hauteur entre min-h-[200px] et max-h-[500px]
+                        calculatedHeight = Math.max(200, Math.min(calculatedHeight, 500));
+                        
+                        // Appliquer la nouvelle hauteur avec une animation
+                        imagePreview.style.height = calculatedHeight + 'px';
+                        
+                        // Animation d'apparition
+                        imgElement.style.opacity = '0';
+                        setTimeout(() => {
+                            imgElement.style.opacity = '1';
+                            imgElement.style.transition = 'opacity 0.3s ease-in-out';
+                        }, 50);
+                    };
+                };
+                
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                imagePreview.innerHTML = '<i class="fas fa-image text-5xl text-slate-500"></i>';
+                // Réinitialiser la hauteur à la valeur par défaut
+                imagePreview.style.height = '200px';
+            }
+        });
+    }
+    
+    // Log pour aider au débogage
+    console.log({
+        nameInput,
+        descInput, 
+        priceInput,
+        imageInput,
+        namePreview,
+        descriptionPreview,
+        pricePreview,
+        imagePreview
+    });
+    
+    // Form submission animation
+    const form = document.getElementById('itemForm');
+    if (form) {
+        form.addEventListener('submit', function() {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Submitting...';
+                submitBtn.disabled = true;
+            }
+        });
+    }
+    
+    // Add pre-selected option if form has errors and category was previously selected
+    const hiddenSelect = document.getElementById('id_Category');
+    if (hiddenSelect && hiddenSelect.value) {
+        const selectedOption = document.querySelector(`.custom-option[data-value="${hiddenSelect.value}"]`);
+        if (selectedOption) {
+            selectedOption.classList.add('selected');
+            document.querySelector('.custom-select__trigger span').textContent = selectedOption.textContent;
+        }
+    }
+});
+</script>
 {% endblock %}

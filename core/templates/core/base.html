@@ -743,12 +743,12 @@
                 </div>
             </div>
 
-                {% else %}
-                    <a href="{% url 'core:signup' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>
-                    <a href="{% url 'core:login' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Log in</a>
-                {% endif %}
-            </div>
-    </nav>
+        {% else %}
+            <a href="{% url 'core:signup' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>
+            <a href="{% url 'core:login' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Log in</a>
+        {% endif %}
+    </div>
+</nav>
 
 
     <div class="px-6 py-6 min-h-[calc(100vh-80px)]">
@@ -788,14 +788,39 @@
                     <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                     <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="GitHub"><i class="fab fa-github"></i></a>
+
                 </div>
+                <p class="text-sm leading-relaxed text-gray-300">GameVerse is a digital space for gamers to exchange, 
+                buy, and discover games.</p>
             </div>
         </div>
-        <div class="mt-12 border-t border-gray-700 pt-6 text-center text-sm text-gray-500 select-none">
-            © 2025 GameVerse. All rights reserved.
-        </div>
         
-    </footer>
+       
+    
+    <!-- Copyright avec style gamifié subtil -->
+    <div class="mt-20 pt-3 border-t border-gray-700/30 text-center relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <p class="luckiest-guy-regular text-xs tracking-wide text-gray-500 py-2">
+                © 2025 <span class="text-orange-700/80">GAME<span class="text-orange-500/70">VERSE</span></span> · ALL RIGHTS RESERVED
+            </p>
+        </div>
+    </div>
+
+    <style>
+        .press-start-font {
+            font-family: 'Press Start 2P', cursive;
+            letter-spacing: 0px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            line-height: 1.2;
+        }
+        
+        @media (max-width: 640px) {
+            .press-start-font {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</footer>
     
     {% block scripts %}{% endblock %}
 
