@@ -820,7 +820,7 @@
                 <h3 class="text-xl font-semibold text-teal-400 luckiest-guy-regular mb-4">Useful Links</h3>
                 <ul class="space-y-3">
                     <li>
-                        <a href="{% url 'core:index' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Menu</a>                   
+                        <a href="{% url 'core:index' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Home</a>                   
                     </li>
                     <li>
                         <a href="{% url 'core:contact' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Contact</a>                   
@@ -992,19 +992,90 @@
 
 
 
-</body>
-<!-- Chargement de jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+// Script pour le carousel featured games
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialisation du carousel
+    const slides = document.querySelectorAll('.carousel-slide');
+    const indicators = document.querySelectorAll('.indicator');
+    const prevBtn = document.querySelector('.carousel-prev');
+    const nextBtn = document.querySelector('.carousel-next');
+    let currentSlide = 0;
+    
+    // Fonction pour afficher un slide spécifique
+    function showSlide(index) {
+        // Masquer tous les slides
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+        });
+        
+        // Désactiver tous les indicateurs
+        indicators.forEach(indicator => {
+            indicator.classList.remove('active');
+        });
+        
+        // Activer le slide et l'indicateur courant
+        slides[index].classList.add('active');
+        indicators[index].classList.add('active');
+        
+        // Mettre à jour l'index du slide courant
+        currentSlide = index;
+    }
+    
+    // Navigation vers le slide précédent
+    function prevSlide() {
+        const newIndex = currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
+        showSlide(newIndex);
+    }
+    
+    // Navigation vers le slide suivant
+    function nextSlide() {
+        const newIndex = currentSlide === slides.length - 1 ? 0 : currentSlide + 1;
+        showSlide(newIndex);
+    }
+    
+    // Ajouter les écouteurs d'événements
+    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+    
+    // Ajouter les écouteurs d'événements pour les indicateurs
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            showSlide(index);
+        });
+    });
+    
+    // Démarrage du carousel automatique
+    if (slides.length > 0) {
+        // Afficher le premier slide
+        showSlide(0);
+        
+        // Rotation automatique toutes les 6 secondes
+        setInterval(() => {
+            nextSlide();
+        }, 6000);
+    }
+    
+    // ----------------- Add to Cart AJAX ------------------
+    $(document).on('click', '.add-cart', function(e) {
+        e.preventDefault();
+        const productId = $(this).val();
 
-
-
-
-
-
-
-
-
-
-
-
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart:cart_add" %}',
+            data: {
+                product_id: productId,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function(json) {
+                console.log(json);
+                document.getElementById('cart_quantity').textContent = json.qty;
+                alert('Added to cart!');
+            }
+        });
+    });
+});
+</script>
 </html>

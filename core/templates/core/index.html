@@ -362,6 +362,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     })();
 
+    document.addEventListener('DOMContentLoaded', function() {
+    const track = document.getElementById('carouselTrack');
+    if (!track) return; // Vérifier si l'élément existe
+    
+    const slides = track.querySelectorAll('.carousel-slide');
+    let currentSlide = 0;
+    let autoplayInterval = null;
+    let isHovered = false;
+
     // Créer les indicateurs
     const indicators = document.createElement('div');
     indicators.className = 'carousel-indicators';
@@ -372,94 +381,135 @@ document.addEventListener('DOMContentLoaded', function() {
         indicators.appendChild(dot);
     });
     track.parentElement.appendChild(indicators);
-
+    
+    // Fonction pour mettre à jour les indicateurs
     function updateIndicators() {
         const dots = document.querySelectorAll('.indicator');
         dots.forEach((dot, index) => {
             dot.classList.toggle('active', index === currentSlide);
         });
     }
-
-    function goToSlide(index) {
-        // Désactive le slide courant et réinitialise l'animation du texte
-        slides[currentSlide].classList.remove('active');
-        
-        // Réinitialise les transformations des textes de l'ancien slide
-        const oldTitles = slides[currentSlide].querySelectorAll('.feature-info h3, .feature-info p');
-        oldTitles.forEach(title => {
-            title.style.opacity = '0';
-            title.style.transform = 'translateY(20px)';
-        });
-        
-        // Active le nouveau slide
-        currentSlide = index;
-        slides[currentSlide].classList.add('active');
-        
-        // Force un reflow pour réinitialiser les animations
-        const featureInfo = slides[currentSlide].querySelector('.main-feature .feature-info');
-        if (featureInfo) {
-            // Force un reflow pour l'animation du conteneur
-            featureInfo.style.transition = 'none';
-            void featureInfo.offsetWidth;
-            featureInfo.style.transition = '';
-        }
-        
-        // Réinitialise l'animation de zoom pour le nouveau slide
-        const mainImg = slides[currentSlide].querySelector('.main-feature img');
-        if (mainImg) {
-            mainImg.style.animation = 'none';
-            void mainImg.offsetWidth;
-            mainImg.style.animation = '';
-        }
-        
-        // Met à jour les indicateurs
-        updateIndicators();
-    }
-
-    function nextSlide() {
-        goToSlide((currentSlide + 1) % slides.length);
-    }
-
-    function startAutoplay() {
-        if (!isHovered && !autoplayInterval) {
-            autoplayInterval = setInterval(nextSlide, 5000);
-        }
-    }
-
-    function stopAutoplay() {
-        if (autoplayInterval) {
-            clearInterval(autoplayInterval);
-            autoplayInterval = null;
-        }
-    }
-
+    
+    // Boutons de navigation
     const prevButton = document.createElement('button');
     prevButton.className = 'carousel-nav-button carousel-prev';
     prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+    
     const nextButton = document.createElement('button');
     nextButton.className = 'carousel-nav-button carousel-next';
     nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+    
     track.parentElement.appendChild(prevButton);
     track.parentElement.appendChild(nextButton);
+    
+    // S'assurer que les boutons sont visibles
+    setTimeout(() => {
+        prevButton.style.display = 'flex';
+        nextButton.style.display = 'flex';
+        indicators.style.display = 'flex';
+    }, 100);
+    
+    // Autres fonctions du carousel...
+});
 
-    prevButton.addEventListener('click', () => {
-        goToSlide((currentSlide - 1 + slides.length) % slides.length);
+// Créer les indicateurs
+const indicators = document.createElement('div');
+indicators.className = 'carousel-indicators';
+slides.forEach((_, index) => {
+    const dot = document.createElement('div');
+    dot.className = `indicator ${index === 0 ? 'active' : ''}`;
+    dot.addEventListener('click', () => goToSlide(index));
+    indicators.appendChild(dot);
+});
+track.parentElement.appendChild(indicators);
+
+function updateIndicators() {
+    const dots = document.querySelectorAll('.indicator');
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
     });
-    nextButton.addEventListener('click', nextSlide);
+}
 
-    slides[0].classList.add('active');
+function goToSlide(index) {
+    // Désactive le slide courant et réinitialise l'animation du texte
+    slides[currentSlide].classList.remove('active');
+    
+    // Réinitialise les transformations des textes de l'ancien slide
+    const oldTitles = slides[currentSlide].querySelectorAll('.feature-info h3, .feature-info p');
+    oldTitles.forEach(title => {
+        title.style.opacity = '0';
+        title.style.transform = 'translateY(20px)';
+    });
+    
+    // Active le nouveau slide
+    currentSlide = index;
+    slides[currentSlide].classList.add('active');
+    
+    // Force un reflow pour réinitialiser les animations
+    const featureInfo = slides[currentSlide].querySelector('.main-feature .feature-info');
+    if (featureInfo) {
+        // Force un reflow pour l'animation du conteneur
+        featureInfo.style.transition = 'none';
+        void featureInfo.offsetWidth;
+        featureInfo.style.transition = '';
+    }
+    
+    // Réinitialise l'animation de zoom pour le nouveau slide
+    const mainImg = slides[currentSlide].querySelector('.main-feature img');
+    if (mainImg) {
+        mainImg.style.animation = 'none';
+        void mainImg.offsetWidth;
+        mainImg.style.animation = '';
+    }
+    
+    // Met à jour les indicateurs
     updateIndicators();
-    startAutoplay();
+}
 
-    const carouselContainer = track.parentElement;
-    carouselContainer.addEventListener('mouseenter', () => {
-        isHovered = true;
-        stopAutoplay();
-    });
-    carouselContainer.addEventListener('mouseleave', () => {
-        isHovered = false;
-        startAutoplay();
-    });
+function nextSlide() {
+    goToSlide((currentSlide + 1) % slides.length);
+}
+
+function startAutoplay() {
+    if (!isHovered && !autoplayInterval) {
+        autoplayInterval = setInterval(nextSlide, 5000);
+    }
+}
+
+function stopAutoplay() {
+    if (autoplayInterval) {
+        clearInterval(autoplayInterval);
+        autoplayInterval = null;
+    }
+}
+
+const prevButton = document.createElement('button');
+prevButton.className = 'carousel-nav-button carousel-prev';
+prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+const nextButton = document.createElement('button');
+nextButton.className = 'carousel-nav-button carousel-next';
+nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+track.parentElement.appendChild(prevButton);
+track.parentElement.appendChild(nextButton);
+
+prevButton.addEventListener('click', () => {
+    goToSlide((currentSlide - 1 + slides.length) % slides.length);
+});
+nextButton.addEventListener('click', nextSlide);
+
+slides[0].classList.add('active');
+updateIndicators();
+startAutoplay();
+
+const carouselContainer = track.parentElement;
+carouselContainer.addEventListener('mouseenter', () => {
+    isHovered = true;
+    stopAutoplay();
+});
+carouselContainer.addEventListener('mouseleave', () => {
+    isHovered = false;
+    startAutoplay();
+});
 });
 
 // ----------------- Add to Cart AJAX ------------------
