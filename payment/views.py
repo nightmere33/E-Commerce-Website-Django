@@ -143,45 +143,53 @@ YOUR GAME KEYS
         # Ajoute les clés de jeu pour chaque produit acheté
         order_items = OrderItem.objects.filter(order=order)
         for item in order_items:
-            generated_key = generate_key()
-           
-             # Try to fetch the actual product
-           
-            try:
-                product = item.product
-            except:
-                product = None
-
-            if product:
-                MyGame.objects.create(
-                    user=request.user,
-                    product=product,
-                    order=order,
-                    key=generated_key
-                )
-
-
-
-            # Trouver le nom du produit de façon sécurisée
-            try:
-                product_name = item.product.name
-            except AttributeError:
+            # Récupérer la quantité de l'article acheté
+            quantity = item.quantity if hasattr(item, 'quantity') else 1
+            
+            # Générer une clé distincte pour chaque exemplaire acheté
+            for i in range(quantity):
+                generated_key = generate_key()
+                
+                # Try to fetch the actual product
                 try:
-                    product_name = item.item.name
+                    product = item.product
+                except:
+                    product = None
+
+                if product:
+                    # Créer une entrée MyGame pour chaque exemplaire
+                    MyGame.objects.create(
+                        user=request.user,
+                        product=product,
+                        order=order,
+                        key=generated_key
+                    )
+
+                # Trouver le nom du produit de façon sécurisée
+                try:
+                    product_name = item.product.name
                 except AttributeError:
                     try:
-                        product_name = item.name
+                        product_name = item.item.name
                     except AttributeError:
-                        product_name = f"Game Item {item.id}"
+                        try:
+                            product_name = item.name
+                        except AttributeError:
+                            product_name = f"Game Item {item.id}"
 
-            key = generated_key  #generate la cle
-            game_key = f"{key}"  # Générer une vraie clé
-            
-            # Ajouter au message HTML
-            html_message += f'<li><strong>{product_name}:</strong> <span class="game-key">{game_key}</span></li>\n'
-            
-            # Ajouter au message texte
-            text_message += f"{product_name}: {game_key}\n"
+                # Ajouter au message HTML en incluant le numéro si plusieurs exemplaires
+                key_label = f"Copy #{i+1}" if quantity > 1 else ""
+                game_key = f"{generated_key}"
+                
+                # Ajouter au message HTML avec indication du numéro d'exemplaire si nécessaire
+                if quantity > 1:
+                    html_message += f'<li><strong>{product_name} ({key_label}):</strong> <span class="game-key">{game_key}</span></li>\n'
+                    # Ajouter au message texte
+                    text_message += f"{product_name} ({key_label}): {game_key}\n"
+                else:
+                    html_message += f'<li><strong>{product_name}:</strong> <span class="game-key">{game_key}</span></li>\n'
+                    # Ajouter au message texte
+                    text_message += f"{product_name}: {game_key}\n"
         
         # Fermer la liste et ajouter les instructions
         html_message += """
