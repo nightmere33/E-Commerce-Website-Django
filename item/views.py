@@ -61,7 +61,7 @@ def new(request):
 
 @login_required
 def edit(request,pk):
-    item = get_object_or_404(Item, pk=pk , created_by=request.user)
+    item = get_object_or_404(Item, pk=pk )
     if request.method == 'POST':
         form = EditItemForm(request.POST,request.FILES , instance=item)
         #checking if the form is valid and saving it
