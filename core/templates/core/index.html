@@ -26,7 +26,7 @@
 
          <div class="absolute inset-0 z-0">
             <!-- Video background -->
-            <video autoplay muted loop playsinline class="w-full h-full object-cover">
+            <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-90">
                 <source src="{{ MEDIA_URL }}video/vd.mp4" type="video/mp4">
 
                 Your browser does not support the video tag.
@@ -59,7 +59,7 @@
 
     <!-- Featured Games Carousel -->
 
-    <div class="max-w-7xl mx-auto my-12">
+    <div class="max-w-7xl mx-auto my-12 ">
 
         <h2 class="text-3xl font-bold text-center mb-8 text-gray-100">Featured Games</h2>
        
@@ -70,9 +70,10 @@
                 <div class="carousel-slide {% if forloop.first %}active{% endif %}">
                     <div class="carousel-container">
                         <!-- Main Feature -->
-                        <a href="{% url 'item:detail' main_item.id %}" class="main-feature group hover:shadow-xl cursor-pointer transition-shadow duration-300">
+                        <a href="{% url 'item:detail' main_item.id %}" class="main-feature group hover:shadow-xl cursor-pointer transition-shadow duration-300 ">
                             {% if main_item.carousel_image %}
-                            <img src="{{ main_item.carousel_image.url }}" alt="{{ main_item.name }}">
+                            <img src="{{ main_item.carousel_image.url }}" alt="{{ main_item.name }}"
+                                    class="w-full h-full object-cover rounded-xl animate-zoom-only" />
                             {% else %}
                             <img src="{{ main_item.image.url }}" alt="{{ main_item.name }}">
                             {% endif %}
@@ -87,7 +88,8 @@
                             {% with next_items=carousel_items|get_next_items:forloop.counter0 %}
                                 {% for side_item in next_items %}
                                     <a href="{% url 'item:detail' side_item.id %}" class="side-feature group hover:shadow-md cursor-pointer transition-shadow duration-300">
-                                        <img src="{{ side_item.image.url }}" alt="{{ side_item.name }}">
+                                        <img src="{{ side_item.image.url }}" alt="{{ side_item.name }}"
+                                                class="w-full h-full object-cover rounded-md animate-zoom-only" />
                                         <div class="feature-info">
                                             <h4 class="text-white">{{ side_item.name }}</h4>
                                         </div>

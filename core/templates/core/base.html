@@ -17,6 +17,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
 
+
+
+        @keyframes slowZoomOnly {
+            0% {
+              transform: scale(1);
+            }
+            100% {
+               transform: scale(1.08);
+            }
+        }
+
+        .animate-zoom-only {
+            animation: slowZoomOnly 8s ease-in-out infinite alternate;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         #chat-container {
             display: none;
             flex-direction: column;
@@ -612,32 +639,46 @@
 
 <body>
 
-    <nav class="nav-gradient py-4 px-6 flex justify-between items-center shadow-lg">
+    <nav class="bg-slate-900 bg-opacity-80 py-4 px-6 flex justify-between items-center shadow-lg">
+
 
 
             <!-- Left section: logo + categories -->
             <div class="flex items-center space-x-6 relative">
 
                 <!-- logo-->
-                <a href="/" class="text-2xl font-bold text-white hover:text-gray-200 transition duration-300">
-                    <i class="fas fa-gamepad mr-2"></i>GameVerse
+                <a href="/" class="text-l font-bold text-white hover:text-teal-400 transition duration-300 press-start-font">
+                    <i class="fas fa-gamepad mr-2 text-xl"></i>GameVerse
                 </a>
 
+               
                 <!-- Dropdown: Categories -->
                 <div class="relative group">
                     <button class="text-white font-semibold hover:text-teal-300 transition duration-300 flex items-center">
                         Categories
                         <i class="fas fa-chevron-down ml-2 text-sm"></i>
                     </button>
-                    <div class="absolute left-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all z-50">
-                        <a href="{% url 'item:browse' %}" class="block px-4 py-2 hover:bg-teal-100">All</a>
+                    <div class="absolute left-0 mt-3 w-52 bg-white text-gray-800 rounded-xl shadow-xl 
+                                opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+                                transition-all duration-300 z-50 border border-gray-200">
+        
+                        <!-- All categories -->
+                        <a href="{% url 'item:browse' %}" 
+                            class="block px-5 py-3 hover:bg-teal-50 hover:text-teal-600 font-semibold transition-colors duration-200 rounded-t-xl">
+                            <i class="fas fa-th-large mr-2 text-teal-400"></i> All
+                        </a>
+
+                        <div class="border-t border-gray-200"></div> <!-- Optional separator -->
+
                         {% for category in categories %}
-                            <a href="{% url 'item:browse' %}?category={{ category.id }}" class="block px-4 py-2 hover:bg-teal-100">
-                                {{ category.name }}
+                            <a href="{% url 'item:browse' %}?category={{ category.id }}" 
+                                class="block px-5 py-3 hover:bg-teal-50 hover:text-teal-600 transition-colors duration-200">
+                                <i class="fas fa-angle-right mr-2 text-teal-400"></i> {{ category.name }}
                             </a>
                         {% endfor %}
                     </div>
                 </div>
+
 
                     
                     <!-- Search + Chatbot -->
@@ -646,7 +687,7 @@
                             <input type="text" name="query" placeholder="Search games..."
                                     class="px-3 py-1.5 rounded-md text-sm bg-white text-black focus:outline-none focus:ring-2 focus:ring-teal-400 placeholder-gray-500" />
                             <button type="submit"
-                                    class="ml-2 px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-600 transition">
+                                    class="ml-2 px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-400 transition">
                                     Search
                             </button>
                         {% endblock %}
@@ -654,7 +695,7 @@
                         {% block chatbot_button %}
                             <button onclick="toggleChatbot()" type="button"
                                 title="Need help? VerseBot is here to assist you!"
-                                class=" ml-7 px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-600 transition chatbot-button flex items-center">
+                                class=" ml-7 px-3 py-1.5 bg-teal-500 text-white text-sm rounded-md hover:bg-teal-400 transition chatbot-button flex items-center">
                                 <i class="fas fa-robot mr-2"></i>
 
                                  VerseBot
@@ -666,19 +707,19 @@
 
             <!-- Right section: nav links + user -->
             <div class="flex items-center space-x-4">
-                <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-gray-200 transition duration-300">Browse</a>
+                <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-teal-400 transition duration-300" title="Explore all available games">Browse</a>
 
                 {% if request.user.is_authenticated %}
-                    <a href="{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
-                    <a href="{% url 'my_games' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">My Games</a>
-                    {% if request.user.is_superuser %}
-                        <a href= "{% url 'dashboard:index' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
                     
-                        <a href="{% url 'item:new' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">New item</a>
+                    
+                    {% if request.user.is_superuser %}
+                        <a href= "{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-400" title="Check your messages and chat history">Inbox</a>
+                    
+                        <a href="{% url 'item:new' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-400 whitespace-nowrap" title="Add a new item"  >New item</a>
                     {% endif %}
 
                     <!--  Shopping Cart Button -->
-                    <a href="{% url 'cart:cart_summary' %}" class="flex items-center px-4 py-2 text-sm font-semibold bg-white text-gray-800 rounded-xl hover:bg-gray-100 transition">
+                    <a href="{% url 'cart:cart_summary' %}" class="flex items-center px-4 py-2 text-sm font-semibold bg-white text-gray-800 rounded-xl hover:bg-gray-300 transition" title="Redirecting to your shopping cart...">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6h13l-1.5-6M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
                         </svg>
@@ -688,7 +729,7 @@
 
                     <!--  User dropdown -->
             <div class="relative group inline-block" tabindex="0">
-                <button class="w-10 h-10 rounded-full bg-teal-400 flex items-center justify-center hover:bg-teal-600 transition duration-300 focus:outline-none">
+                <button class="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center hover:bg-teal-400 transition duration-300 focus:outline-none">
                     <i class="fas fa-user-edit text-white"></i>
                 </button>
 
@@ -709,6 +750,12 @@
                             <i class="fas fa-box w-6 text-center mr-3 text-teal-400"></i>
                             <span>My Items</span>
                         </a>
+                        
+                            <a href="{% url 'my_games' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
+                                <i class="fas fa-gamepad w-6 text-center mr-3 text-teal-400"></i>
+                                <span>My Games</span>
+                            </a>
+                       
                         
                         <a href="{% url 'conversation:inbox' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
                             <i class="fas fa-envelope w-6 text-center mr-3 text-teal-400"></i>
@@ -744,8 +791,8 @@
             </div>
 
         {% else %}
-            <a href="{% url 'core:signup' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>
-            <a href="{% url 'core:login' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Log in</a>
+            <a href="{% url 'core:signup' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-400">Sign up</a>
+            <a href="{% url 'core:login' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-400">Log in</a>
         {% endif %}
     </div>
 </nav>
@@ -756,20 +803,25 @@
         {% endblock %}
     </div>
 
-    <footer class="bg-gray-900 text-gray-400 py-12 px-6">
+    <footer class="bg-gray-900/80 text-gray-400 py-6 px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
             <!--what is GameVerse-->
             <div>
-                <h3 class="text-xl font-semibold text-teal-400 luckiest-guy-regular mb-4">What is GameVerse?</h3>
-                <p class="text-sm leading-relaxedtext-lg text-gray-400">GameVerse is a digital space for gamers <br> to exchange, 
+                <a href="/" class="text-2xl font-bold text-teal-400 hover:text-gray-200 transition duration-300 press-start-font">
+                    <i class="fas fa-gamepad mr-2 text-4xl"></i>GameVerse
+                </a>
+                <p class="text-sm leading-relaxedtext-lg text-gray-400"><br>GameVerse is a digital space for gamers <br> to exchange, 
                     connect, and grow their <br> 
                     gaming experience.
                 </p>
             </div>
             <!--useful links-->
-            <div>
+            <div  class="ml-40">
                 <h3 class="text-xl font-semibold text-teal-400 luckiest-guy-regular mb-4">Useful Links</h3>
                 <ul class="space-y-3">
+                    <li>
+                        <a href="{% url 'core:index' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Menu</a>                   
+                    </li>
                     <li>
                         <a href="{% url 'core:contact' %}" class="hover:text-teal-400 transition-colors duration-300 font-medium">Contact</a>                   
                     </li>
@@ -781,27 +833,38 @@
                     </li>
                 </ul>
             </div>
-            <div>
-                <h3 class="text-xl font-semibold text-teal-400 mb-4 luckiest-guy-regular">Follow Us</h3>
+
+            {% comment %} join us {% endcomment %}
+            <div  class="ml-40">
+                <h3 class="text-xl font-semibold text-teal-400 mb-4 luckiest-guy-regular">Join Our Community</h3>
                 <div class="flex space-x-4">
-                    <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Facebook"><i class="fab fa-facebook-f text-xl"></i></a>
+                    <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Twitter"><i class="fab fa-x-twitter text-xl"></i></a>
+                    <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Instagram"><i class="fab fa-instagram text-xl"></i></a>
+                    <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="GitHub"><i class="fab fa-github text-xl"></i></a>
+                    <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="TikTok">
+                        <i class="fab fa-tiktok text-xl"></i>
+                    </a>
+                    <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="YouTube">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+
 
                 </div>
-                <p class="text-sm leading-relaxed text-gray-300">GameVerse is a digital space for gamers to exchange, 
-                buy, and discover games.</p>
+                
             </div>
         </div>
         
        
     
     <!-- Copyright avec style gamifié subtil -->
-    <div class="mt-20 pt-3 border-t border-gray-700/30 text-center relative z-10">
+    <div class="mt-7 pt-3 border-t border-gray-700/30 text-center relative z-10">
         <div class="max-w-7xl mx-auto">
-            <p class="luckiest-guy-regular text-xs tracking-wide text-gray-500 py-2">
-                © 2025 <span class="text-orange-700/80">GAME<span class="text-orange-500/70">VERSE</span></span> · ALL RIGHTS RESERVED
+            <p class="luckiest-guy-regular text-l tracking-wide text-gray-500 py-2">
+                © 2025 <span class="bg-gradient-to-r from-teal-400 via-teal-300 to-teal-200 bg-clip-text text-transparent font-bold">
+                            GAMEVERSE
+                        </span>
+                        · ALL RIGHTS RESERVED
             </p>
         </div>
     </div>
@@ -910,6 +973,20 @@
         }, 1600); // 1600 ms = 1.6 second
     });
 </script>
+
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+.press-start-font {
+    font-family: 'Press Start 2P', cursive;
+    letter-spacing: 1px;
+    text-shadow: 0 0 4px rgba(0, 255, 255, 0.4);
+}
+</style>
+
 
 
 
