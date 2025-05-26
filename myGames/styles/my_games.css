@@ -1,0 +1,28 @@
+/* my_games.css */
+.game-card {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.key-wrapper {
+  position: relative;
+}
+
+.key-wrapper code {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0.7);
+  padding: 8px;
+  border-radius: 5px;
+  display: none;
+  color: white;
+}
+
+.key-wrapper.show code {
+  display: block;
+}
