@@ -597,17 +597,6 @@
         .animate-fade-in {
             animation: fade-in 1s ease-out;
         }
-<<<<<<< HEAD
-=======
-
-
-
-        
-
-
-
-
->>>>>>> 9135e9b86b57cda9cf06e7faa215015a86896bc0
     </style>
 
 
@@ -624,7 +613,6 @@
 <body>
 
     <nav class="nav-gradient py-4 px-6 flex justify-between items-center shadow-lg">
-<<<<<<< HEAD
 
 
             <!-- Left section: logo + categories -->
@@ -679,34 +667,6 @@
             <!-- Right section: nav links + user -->
             <div class="flex items-center space-x-4">
                 <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-gray-200 transition duration-300">Browse</a>
-=======
-    <!-- Left section: logo + categories -->
-    <div class="flex items-center space-x-6">
-        <a href="/" class="text-2xl font-bold text-white hover:text-gray-200 transition duration-300">
-            <i class="fas fa-gamepad mr-2"></i>GameVerse
-        </a>
-
-        <!-- Dropdown: Categories -->
-        <div class="relative group">
-            <button class="text-white font-semibold hover:text-teal-300 transition duration-300 flex items-center">
-                Categories
-                <i class="fas fa-chevron-down ml-2 text-sm"></i>
-            </button>
-            <div class="absolute left-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all z-50">
-                <a href="{% url 'item:browse' %}" class="block px-4 py-2 hover:bg-teal-100">All</a>
-                {% for category in categories %}
-                    <a href="{% url 'item:browse' %}?category={{ category.id }}" class="block px-4 py-2 hover:bg-teal-100">
-                        {{ category.name }}
-                    </a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-
-    <!-- Right section: nav links + user -->
-    <div class="flex items-center space-x-4">
-        <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-gray-200 transition duration-300">Browse</a>
->>>>>>> 9135e9b86b57cda9cf06e7faa215015a86896bc0
 
                 {% if request.user.is_authenticated %}
                     <a href="{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
@@ -795,7 +755,6 @@
         {% block content %}
         {% endblock %}
     </div>
-<<<<<<< HEAD
 
     <footer class="bg-gray-900 text-gray-400 py-12 px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -829,74 +788,14 @@
                     <a  target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                     <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-400 hover:text-teal-400 transition-colors duration-300" aria-label="GitHub"><i class="fab fa-github"></i></a>
-=======
-    
-    <!-- Footer existant -->
-    <!-- Remplacez votre footer actuel par ce code -->
-{% load static %}
-<footer class="relative text-gray-400 py-6 px-6 overflow-hidden min-h-80">
-    <!-- Image de fond avec préservation des couleurs originales -->
-    <div class="absolute inset-0 z-0">
-        <img src="/media/images/footer_bg.jpg" alt="GameVerse Footer Background" 
-             class="w-full h-full object-cover" />
-        <!-- Overlay très léger pour assurer la lisibilité du texte -->
-        <div class="absolute inset-0 bg-black/30"></div>
-    </div>
 
-    <!-- Contenu principal du footer -->
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
-        <!-- Logo GameVerse à gauche avec style arcade -->
-        <div class="flex justify-center md:justify-start items-start md:self-end md:pb-2">
-            <div class="flex flex-col items-center md:items-start">
-                <div class="mb-3 flex items-center">
-                    <i class="fas fa-gamepad text-orange-700 text-4xl mr-3"></i>
-                    <span class="press-start-font text-2xl font-bold text-white">
-                        Game<span class="text-gray-200">Verse</span>
-                    </span>
->>>>>>> 9135e9b86b57cda9cf06e7faa215015a86896bc0
                 </div>
                 <p class="text-sm leading-relaxed text-gray-300">GameVerse is a digital space for gamers to exchange, 
                 buy, and discover games.</p>
             </div>
         </div>
         
-        <!-- Navigation liens au milieu - avec Privacy Policy restauré -->
-        <div class="text-center self-start mt-10">
-    <h3 class="text-2xl font-semibold text-orange-700 luckiest-guy-regular mb-4">Quick Links</h3>
-    <ul class="space-y-1 mt-7">
-        <li><a href="{% url 'core:index' %}" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-xs sm:text-lg">Home</a></li>
-        <li><a href="{% url 'core:contact' %}" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-xs sm:text-lg">Contact</a></li>
-        <li><a href="{% url 'core:termsofuse' %}" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-xs sm:text-lg">Terms of Use</a></li>
-        <li><a href="{% url 'core:privacy' %}" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-xs sm:text-lg">Privacy Policy</a></li>
-    </ul>
-</div>
-        
-        <!-- Réseaux sociaux à droite - positionnés avec transformation -->
-        <div class="text-left md:text-left md:self-end ml-20 relative transform -translate-y-4">
-            <h3 class="text-xl font-semibold text-orange-700 luckiest-guy-regular mb-2">Join Our Community</h3>
-            <!-- Social Media Icons - Mise à jour avec X et YouTube -->
-            <div class="flex justify-start space-x-5 mb-2">
-                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-lg" aria-label="Facebook">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-lg" aria-label="X (Twitter)">
-                    <i class="fab fa-x-twitter"></i>
-                </a>
-                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-lg" aria-label="Instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-lg" aria-label="YouTube">
-                    <i class="fab fa-youtube"></i>
-                </a>
-                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-lg" aria-label="GitHub">
-                    <i class="fab fa-github"></i>    
-                </a>
-                <a target="_blank" href="https://github.com/nightmere33/E-Commerce-Website-Django" class="text-gray-300 hover:text-orange-500 transition-colors duration-300 text-xl" aria-label="TikTok">
-                    <i class="fab fa-tiktok"></i>
-                </a>
-            </div>
-        </div>
-    </div>
+       
     
     <!-- Copyright avec style gamifié subtil -->
     <div class="mt-20 pt-3 border-t border-gray-700/30 text-center relative z-10">
@@ -1020,7 +919,6 @@
 <!-- Chargement de jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<<<<<<< HEAD
 
 
 
@@ -1032,31 +930,4 @@
 
 
 
-=======
-<!-- Script pour la fonctionnalité du panier -->
-<script>
-/*document.addEventListener('DOMContentLoaded', function() {
-    // ----------------- Add to Cart AJAX ------------------
-    $(document).on('click', '.add-cart', function(e) {
-        e.preventDefault();
-        const productId = $(this).val();
-
-        $.ajax({
-            type: 'POST',
-            url: '{% url "cart:cart_add" %}',
-            data: {
-                product_id: productId,
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-                action: 'post'
-            },
-            success: function(json) {
-                console.log(json);
-                document.getElementById('cart_quantity').textContent = json.qty;
-                alert('Added to cart!');
-            }
-        }); // Cette accolade fermante manquait
-    });
-});*/
-</script>
->>>>>>> 9135e9b86b57cda9cf06e7faa215015a86896bc0
 </html>
