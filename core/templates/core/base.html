@@ -710,23 +710,9 @@
             <div class="flex items-center space-x-4">
                 <a href="{% url 'item:browse' %}" class="text-lg font-semibold text-white hover:text-teal-400 transition duration-300" title="Explore all available games">Browse</a>
 
-                {% if request.user.is_authenticated %}
+        {% if request.user.is_authenticated %}
+
                     
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    <a href= "{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-400" title="Check your messages and chat history">Inbox</a>
-                    {% if request.user.is_superuser %}
-                        
-=======
-                    
->>>>>>> 73c598f (rien)
-=======
-                    <a href= "{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-400" title="Check your messages and chat history">Inbox</a>
-                    {% if request.user.is_superuser %}
-                        
->>>>>>> 5fef07a (script)
-                    
->>>>>>> c6cfa5b (rien)
                         <a href= "{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-400" title="Check your messages and chat history">Inbox</a>
                     {% if request.user.is_superuser %}
                         <a href="{% url 'item:new' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-400 whitespace-nowrap" title="Add a new item"  >New item</a>
@@ -740,6 +726,8 @@
                         <span>Cart</span>
                         <span id="cart_quantity" class="ml-2 bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded-full">{{ cart|length}}</span>
                     </a>
+                
+
 
                     <!--  User dropdown -->
             <div class="relative group inline-block" tabindex="0">
@@ -760,10 +748,10 @@
                             <span>My Profile</span>
                         </a>
                         {%if request.user.is_superuser%}
-                        <a href="{% url 'dashboard:index' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
-                            <i class="fas fa-box w-6 text-center mr-3 text-teal-400"></i>
-                            <span>All Products</span>
-                        </a>
+                            <a href="{% url 'dashboard:index' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
+                                <i class="fas fa-box w-6 text-center mr-3 text-teal-400"></i>
+                                <span>All Products</span>
+                            </a>
                         {% endif %}
                         
                             <a href="{% url 'my_games' %}" class="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-slate-800 hover:text-teal-400 transition-colors">
@@ -805,7 +793,7 @@
                 </div>
             </div>
 
-        {% else %}
+        
             <a href="{% url 'core:signup' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-400">Sign up</a>
             <a href="{% url 'core:login' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-400">Log in</a>
         {% endif %}
