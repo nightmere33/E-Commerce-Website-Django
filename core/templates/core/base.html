@@ -713,12 +713,18 @@
                 {% if request.user.is_authenticated %}
                     
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <a href= "{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-400" title="Check your messages and chat history">Inbox</a>
                     {% if request.user.is_superuser %}
                         
 =======
                     
 >>>>>>> 73c598f (rien)
+=======
+                    <a href= "{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-400" title="Check your messages and chat history">Inbox</a>
+                    {% if request.user.is_superuser %}
+                        
+>>>>>>> 5fef07a (script)
                     
                         <a href= "{% url 'conversation:inbox' %}" class="px-4 py-2 text-sm font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-400" title="Check your messages and chat history">Inbox</a>
                     {% if request.user.is_superuser %}
