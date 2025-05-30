@@ -17,4 +17,4 @@ RUN pip install -r requirements.txt
 COPY . /app/
 
 # Run app
-CMD ["gunicorn", "puddle.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "project.wsgi:application", "--bind", "0.0.0.0:$PORT"]
