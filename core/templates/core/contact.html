@@ -57,6 +57,7 @@
             {% endfor %}
         {% endif %}
 
+        {%if request.user.is_authenticated%}
         <!-- Submit Button -->
         <div>
             <button type="submit"
@@ -65,6 +66,11 @@
                 Send Message
             </button>
         </div>
+        {% else %}
+            <div>
+                <a href="{% url 'core:login' %}" class="px-4 py-2 text-sm font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-400">Log in</a>
+            </div>
+        {%endif%}
     </form>
 </div>
 
