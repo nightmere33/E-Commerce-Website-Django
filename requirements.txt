@@ -12,7 +12,7 @@ dotenv==0.9.9
 idna==3.10
 langdetect==1.0.9
 pillow==11.2.1
-psycopg2==2.9.10
+psycopg2-binary==2.9.10
 python-dotenv==1.1.0
 requests==2.32.3
 six==1.17.0
