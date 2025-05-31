@@ -17,4 +17,6 @@ RUN pip install -r requirements.txt
 COPY . /app/
 
 # Run app
-CMD ["gunicorn", "puddle.wsgi:application", "--bind", "0.0.0.0:$PORT"]
+CMD ["daphne", "-b", "0.0.0.0", "-p", "$PORT", "puddle.asgi:application"]
+
+
